@@ -1,0 +1,377 @@
+:root { --vermelho: #ed1c24; }
+body { background-color: #222; display: flex; justify-content: center; font-family: 'Arial Black', sans-serif; padding: 20px; }
+
+.ficha-container {
+    width: 600px; background: white; border: 2px solid black;
+    border-left: 15px solid var(--vermelho); /* Borda lateral conforme o molde  */
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px;
+}
+
+.header-preto { 
+    background: black; 
+    color: white; 
+    padding: 15px; 
+    min-height: 100px; 
+}
+
+.header-preto h1 { 
+    margin: 0; 
+    font-size: 22px; 
+}
+/* Estilo do novo Input de Nome */
+#player_nome_input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Arial Black', sans-serif; /* Mesma fonte do resto da ficha */
+    font-size: 22px;
+    width: 100%;
+    margin-top: 10px;
+    outline: none;
+    text-transform: uppercase; /* Opcional: deixa o nome sempre em maiúsculas como no molde */
+}
+
+/* Cor do "Digite seu nome..." (Placeholder) */
+#player_nome_input::placeholder {
+    color: #555; /* Tom claro solicitado */
+    text-transform: none; /* Placeholder não fica em maiúsculas */
+}
+
+#campo_lv {
+    background: transparent; color: white; border: none;
+    font-size: 21px; font-weight: bold; cursor: pointer; font-family: inherit;
+    outline: none;
+}
+#campo_lv option { background: black; }
+
+.moldura-foto-container {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.upload-area {
+    width: 100%;
+    height: 20px;
+    background-color: #f9f9f9;
+    /* Bordas arredondadas e pontilhadas/tracejadas */
+    border: 40px dashed #ccc; 
+    border-radius: 10px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Efeito ao passar o mouse */
+.upload-area:hover {
+    background-color: #f0f0f0;
+    border-color: #888;
+}
+
+#placeholder_upload {
+    text-align: center;
+    pointer-events: none;
+}
+
+#placeholder_upload p {
+    margin-top: 10px;
+    color: #999;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: none; /* Mantém minúsculas como na imagem */
+}
+
+.nuvem-icone {
+    opacity: 0.6;
+    transition: transform 0.3s ease;
+}
+
+/* ... (mantenha o início do código igual) */
+
+.upload-area {
+    width: 100%;
+    height: 250px;
+    background-color: #f9f9f9;
+    border: 2px dashed #ccc; 
+    /* DIMINUÍDO: De 20px para 8px para a moldura externa */
+    border-radius: 8px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Estado Ativo: Quando a classe 'foto-postada' é adicionada via JS */
+.upload-area.foto-postada {
+    border: 1px solid #420101; /* Muda de tracejado para LINHA SÓLIDA */
+    background-color: white;
+}
+
+/* Efeito de hover suave apenas quando já tem a foto */
+.upload-area.foto-postada:hover {
+    border-color: var(--vermelho); /* Destaque sutil com a cor da ficha */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: scale(1.01);
+}
+#preview_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center;
+    /* DIMINUÍDO: De 10px para 5px para a foto interna */
+    border-radius: 5px; 
+    display: block;
+}
+
+/* ... (resto do código igual) */
+
+.titulo-sessao { background: black; color: white; text-align: center; padding: 5px; font-size: 14px; margin: 5px 0; }
+.tabela-dados { width: 100%; border-collapse: collapse; }
+.tabela-dados td { border: 1px solid black; padding: 5px; font-size: 11px; }
+.tabela-dados input { border: none; width: 100%; outline: none; font-weight: bold; }
+
+.status-bar { border: 1px solid black; padding: 5px; margin-bottom: 2px; font-size: 12px; }
+.progresso { height: 6px; width: 85%; border: 1px solid black; margin-top: 4px; }
+.verde { background: #8efc69; } .roxo { background: #8a59ff; } .amarelo { background: #ffeb3b; }
+
+.attr-item { display: flex; justify-content: space-between; border: 2px solid black; padding: 4px; margin-bottom: 2px; font-size: 12px; }
+.attr-item input { width: 35px; text-align: center; }
+
+.grid-pericias { display: grid; grid-template-columns: repeat(5, 1fr); border: 2px solid black; text-align: center; font-size: 12px; }
+.p-col { padding: 8px; border-right: 1px solid black; font-weight: bold; }
+
+/* Estilo do Input de Espécie para parecer clicável */
+#especie_input {
+    cursor: pointer;
+    color: var(--vermelho);
+    transition: background 0.3s;
+}
+#especie_input:hover { background: #fff0f0; }
+
+/* O MODAL (Fundo escurecido) */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+/* CONTEÚDO DO MODAL */
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    border: 3px solid black;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* BOTÃO DE FECHAR NO MODAL */
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white; /* Cor branca solicitada */
+    line-height: 1;
+    transition: color 0.2s ease;
+    z-index: 1001; /* Garante que fique acima da barra preta */
+}
+
+.close-btn:hover {
+    color: #ccc; /* Fica cinza claro ao passar o mouse */
+}
+
+/* Ajuste opcional na barra de título para destacar o botão */
+.modal-content h2.titulo-sessao {
+    margin: -20px -20px 20px -20px; /* Alinha com as bordas do modal */
+    border-radius: 7px 7px 0 0;
+    padding: 15px;
+    position: relative;
+}
+
+/* GRID DE BOTÕES */
+.grid-especies-modal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.categoria-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tag-attr {
+    background: black;
+    color: white;
+    width: fit-content;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.categoria-modal button {
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+
+.categoria-modal button:hover {
+    background: #f0f0f0;
+    color: var(--vermelho);
+    border-bottom-color: var(--vermelho);
+}
+
+/* Cores das Tags de Atributo */
+.tag-attr.for { background-color: #ed1c24; color: white; } /* Vermelho */
+.tag-attr.vig { background-color: #2ecc71; color: white; } /* Verde */
+.tag-attr.des { background-color: #f1c40f; color: black; } /* Amarelo */
+.tag-attr.car { background-color: #e91e63; color: white; } /* Rosa */
+.tag-attr.int { background-color: #3498db; color: white; } /* Azul */
+.tag-attr.nul { background-color: #555555; color: white; } /* Cinza */
+
+/* Efeito de Hover Colorido nos Botões */
+.categoria-modal:has(.for) button:hover { color: #ed1c24; border-bottom-color: #ed1c24; }
+.categoria-modal:has(.vig) button:hover { color: #2ecc71; border-bottom-color: #2ecc71; }
+.categoria-modal:has(.des) button:hover { color: #f1c40f; border-bottom-color: #f1c40f; }
+.categoria-modal:has(.car) button:hover { color: #e91e63; border-bottom-color: #e91e63; }
+.categoria-modal:has(.int) button:hover { color: #3498db; border-bottom-color: #3498db; }
+.categoria-modal:has(.nul) button:hover { color: #524f4f; border-bottom-color: #000000; }
+
+
+/* Estilo base das tags para manter consistência */
+.tag-attr {
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    width: fit-content;
+    margin-bottom: 5px;
+    text-align: center;
+    min-width: 40px;
+}
+
+/* Estilo da Ficha Explicativa */
+.ficha-explicativa {
+    max-width: 450px;
+    border: 4px solid black;
+}
+
+.header-detalhes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.foto-especie-container {
+    width: 100%;
+    height: 200px;
+    background: #eee;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.foto-especie-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-texto p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.btn-confirmar {
+    width: 100%;
+    padding: 12px;
+    background: black;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn-confirmar:hover {
+    background: var(--vermelho);
+}
+
+/* AJUSTES PARA CELULAR (Telas menores que 650px) */
+@media (max-width: 650px) {
+    body {
+        padding: 10px;
+    }
+
+    .ficha-container {
+        width: 100%; /* Ocupa a largura total da tela do celular */
+        grid-template-columns: 1fr; /* Transforma as 2 colunas em apenas 1 */
+        border-left: 5px solid var(--vermelho); /* Diminui a borda lateral para ganhar espaço */
+        padding: 10px;
+    }
+
+    .header-preto {
+        min-height: auto;
+        padding: 10px;
+    }
+
+    .header-preto h1 {
+        font-size: 18px;
+    }
+
+    #player_nome_input {
+        font-size: 18px;
+    }
+
+    .upload-area {
+        height: 200px; /* Diminui a altura da foto no celular */
+    }
+
+    .grid-especies-modal {
+        grid-template-columns: 1fr; /* No modal, as espécies ficam em uma lista única */
+    }
+
+    .modal-content {
+        width: 95%; /* Modal ocupa quase a tela toda no celular */
+        margin: 10% auto;
+    }
+
+    /* Ajuste para a mini ficha explicativa não sumir da tela */
+    .corpo-detalhes {
+        display: flex;
+        flex-direction: column;
+    }
+}
