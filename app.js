@@ -1,189 +1,293 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+let radarChart;
+let especieTemporaria = ""; // Armazena a escolha antes de confirmar
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha RPG - LUVES</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+// 1. Inicializa o Gráfico Radar
+function initChart() {
+    const ctx = document.getElementById('radarChart');
+    radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['FOR', 'VIG', 'DES', 'CAR', 'INT'],
+            datasets: [{
+                data: [0, 0, 0, 0, 0],
+                backgroundColor: 'rgba(237, 28, 36, 0.3)',
+                borderColor: '#ed1c24',
+                pointRadius: 2
+            }]
+        },
+        options: {
+            scales: { r: { min: 0, max: 5, ticks: { display: false } } },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
 
-<body>
-    <div class="ficha-container">
-        <div class="col-esquerda">
-            <header class="header-preto">
-                <div class="cabecalho-topo">
-                    <h1>FICHA LV
-                        <select id="campo_lv">
-                            <script>
-                                for (let i = 0; i <= 15; i++) {
-                                    document.write(`<option value="${i}">${i}</option>`);
-                                }
-                            </script>
-                        </select>
-                    </h1>
-                    <input type="text" id="player_nome_input" placeholder="Digite seu nome..." spellcheck="false">
-                </div>
-            </header>
+// 2. Atualiza o Gráfico e os Modificadores [+x]
+function atualizarTudo() {
+    const vals = [
+        parseInt(document.getElementById('base_for').value) || 0,
+        parseInt(document.getElementById('base_vig').value) || 0,
+        parseInt(document.getElementById('base_des').value) || 0,
+        parseInt(document.getElementById('base_car').value) || 0,
+        parseInt(document.getElementById('base_int').value) || 0
+    ];
 
-            <div class="moldura-foto-container">
-                <div id="container_foto" class="upload-area" onclick="document.getElementById('input_foto').click()">
-                    <img id="preview_img" src="#" style="display:none;">
-                    <div id="placeholder_upload">
-                        <div class="nuvem-icone">
-                            <svg viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="#888" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M17.5 19a5.5 5.5 0 0 0 0-11h-1.5a7 7 0 1 0-13.5 3.5"></path>
-                                <polyline points="12 12 12 16"></polyline>
-                                <polyline points="9 13 12 10 15 13"></polyline>
-                            </svg>
-                        </div>
-                        <p>ARRASTE OU CLIQUE PARA ENVIAR</p>
-                    </div>
-                    <input type="file" id="input_foto" accept="image/*" onchange="carregarFoto(event)" hidden>
-                </div>
-            </div>
+    radarChart.data.datasets[0].data = vals;
+    radarChart.update();
 
-            <table class="tabela-dados">
-                <tr>
-                    <td>PERSONA</td>
-                    <td><input type="text" placeholder="Ex: Sr.Dogo"></td>
-                </tr>
-                <tr>
-                    <td>ESPÉCIE</td>
-                    <td>
-                        <input type="text" id="especie_input" placeholder="Clique para escolher..." readonly
-                            onclick="abrirModal()">
-                    </td>
-                </tr>
+    const ids = ['p_for', 'p_vig', 'p_des', 'p_car', 'p_int'];
+    ids.forEach((id, index) => {
+        document.getElementById(id).innerText = `[+${vals[index] + 2}]`;
+    });
+}
 
-                <div id="modal_especies" class="modal">
-                    <div class="modal-content">
-                        <span class="close-btn" onclick="fecharModal()">&times;</span>
-                        <h2 class="titulo-sessao">ESCOLHA SUA ESPÉCIE</h2>
+// 3. Sistema de Upload de Foto
+function carregarFoto(event) {
+    const reader = new FileReader();
+    const file = event.target.files[0];
 
-                        <div class="grid-especies-modal">
-                            <div class="categoria-modal">
-                                <div class="tag-attr nul">NULO</div> <button
-                                    onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
-                            </div>
+    if (file) {
+        reader.onload = () => {
+            const img = document.getElementById('preview_img');
+            const placeholder = document.getElementById('placeholder_upload');
+            const container = document.getElementById('container_foto');
 
-                            
-                            <div class="categoria-modal">
-                                <div class="tag-attr for">FOR</div> <button <button
-                                    onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button>
-                                <button onclick="selecionarEspecie('Feras', 'FOR')">Feras</button>
-                                <button onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
-                            </div>
+            img.src = reader.result;
+            img.style.display = 'block';
+            placeholder.style.display = 'none';
+            container.classList.add('foto-postada');
 
-                            <div class="categoria-modal">
-                                <div class="tag-attr vig">VIG</div> <button <button
-                                    onclick="selecionarEspecie('Plantas', 'VIG')">Plantas</button>
-                                <button onclick="selecionarEspecie('Reencarnados', 'VIG')">Reencarnados</button>
-                                <button onclick="selecionarEspecie('Vampiros', 'VIG')">Vampiros</button>
-                            </div>
+            img.style.opacity = 0;
+            setTimeout(() => {
+                img.style.opacity = 1;
+                img.style.transition = "opacity 0.5s ease";
+            }, 10);
+        };
+        reader.readAsDataURL(file);
+    }
+}
 
-                            <div class="categoria-modal">
-                                <div class="tag-attr des">DES</div> <button <button <button <button
-                                    onclick="selecionarEspecie('Goblins', 'DES')">Goblins</button>
-                                <button onclick="selecionarEspecie('Insectos', 'DES')">Insectos</button>
-                                <button onclick="selecionarEspecie('Limosos', 'DES')">Limosos</button>
-                            </div>
+function abrirModal() {
+    document.getElementById('modal_especies').style.display = 'block';
+    document.body.classList.add('modal-aberto'); // Trava a rolagem do fundo
+}
 
-                            <div class="categoria-modal">
-                                <div class="tag-attr car">CAR</div> <button <button
-                                    onclick="selecionarEspecie('Anjos', 'CAR')">Anjos</button>
-                                <button onclick="selecionarEspecie('Demônios', 'CAR')">Demônios</button>
-                                <button onclick="selecionarEspecie('Gemas', 'CAR')">Gemas</button>
-                            </div>
+function fecharModal() {
+    document.getElementById('modal_especies').style.display = 'none';
+    document.body.classList.remove('modal-aberto'); // Devolve a rolagem ao fundo
+}
 
-                            <div class="categoria-modal">
-                                <div class="tag-attr int">INT</div> <button <button
-                                    onclick="selecionarEspecie('Construtos', 'INT')">Construtos</button>
-                                <button onclick="selecionarEspecie('Elfos', 'INT')">Elfos</button>
-                                <button onclick="selecionarEspecie('Marcianos', 'INT')">Marcianos</button>
-                            </div>
-                        </div>
-                        <tr>
-                            <div id="modal_detalhes" class="modal">
-                                <div class="modal-content ficha-explicativa">
-                                    <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
+function fecharDetalhes() {
+    document.getElementById('modal_detalhes').style.display = 'none';
+}
 
-                                    <div class="header-detalhes">
-                                        <h2 id="detalhe_nome">Nome da Espécie</h2>
-                                        <div class="tag-attr" id="detalhe_tag">ATTR</div>
-                                    </div>
+// Fecha modais ao clicar fora
+window.onclick = function (event) {
+    const modalEspecies = document.getElementById('modal_especies');
+    const modalDetalhes = document.getElementById('modal_detalhes');
+    if (event.target == modalEspecies) fecharModal();
+    if (event.target == modalDetalhes) fecharDetalhes();
+}
 
-                                    <div class="topo-detalhes-grid">
-                                        <div class="foto-especie-container">
-                                            <img id="detalhe_img" src="" alt="Representação">
-                                        </div>
-                                        <div class="mini-resumo">
-                                            <h3>RESUMO</h3>
-                                            <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
-                                        </div>
-                                    </div>
+// 5. Banco de Dados das Espécies
+const dadosEspecies = {
+    //NULO - HUMANO
+    "Humanos": {
+        attr: "NUL",
+        resumo: "A raça mais versátil e ambiciosa das terras conhecidas.",
+        bonus: "Seu status de Nulo aumenta em +1",
+        desc: "Variam imensamente em aparência, altura e cultura.",
+        idade: "Maturidade aos 18, vivem até os 90 anos.",
+        tamanho: "Médio",
+        img: "https://via.placeholder.com/150" // Troque pelo link real
+    },
+    //FORÇA - DRAGÕES, FERAS E MUTANTE
+    "Dragões": {
+        attr: "FOR",
+        resumo: "Seres de linhagem ancestral e imenso poder físico.",
+        bonus: "Seu status de Força aumenta em +1",
+        desc: "Escamas resistentes e feições imponentes.",
+        idade: "Podem viver milênios.",
+        tamanho: "Grande",
+        img: "https://via.placeholder.com/150"
+    },
+    "Feras": {
+        attr: "FOR",
+        resumo: "Híbridos com instintos aguçados e conexão selvagem.",
+        bonus: "Seu status de Força aumenta em +1",
+        desc: "Humanoides com aspectos físicos do reino animal.",
+        idade: "Maturidade aos 18 anos, vivem cerca de 90 anos.",
+        tamanho: "Pequeno/Médio/Grande",
+        img: "https://via.placeholder.com/150"
+    },
+    "Mutante": {
+        attr: "FOR",
+        resumo: "Seres mutados com poderes únicos e instáveis latentes.",
+        bonus: "Seu status de Constituição aumenta em +1",
+        desc: "Humanoides com mutações físicas variadas e traços anormais.",
+        idade: "Maturidade aos 16 anos, vivem cerca de 80 anos.",
+        tamanho: "Pequeno/Médio/Grande",
+        img: "https://via.placeholder.com/150"
+    },
+    //VIGOR - PLANTAS, REENCARNADOS, VAMPIROS
+    "Plantas": {
+        attr: "VIG",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Reencarnados": {
+        attr: "VIG",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Vampiros": {
+        attr: "VIG",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    //DESTREZA - GOBLINS, INSECTOS, LIMOSOS
+    "Goblins": {
+        attr: "DES",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Insectos": {
+        attr: "DES",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Limosos": {
+        attr: "DES",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    //CARISMA - ANJOS, DEMÔNIOS, GEMAS
+    "Anjos": {
+        attr: "CAR",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Demônios": {
+        attr: "CAR",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Gemas": {
+        attr: "CAR",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    //INTELECTO - CONSTRUTOS, ELFOS, MARCIANOS
+    "Construtos": {
+        attr: "INT",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Elfos": {
+        attr: "INT",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+    "Marcianos": {
+        attr: "INT",
+        resumo: "???",
+        bonus: "???",
+        desc: "???",
+        idade: "???",
+        tamanho: "???",
+        img: "https://via.placeholder.com/150"
+    },
+};
 
-                                    <div class="info-texto">
-                                        <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
-                                        <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
-                                        <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
-                                        <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
-                                    </div>
+// 6. Lógica de Seleção e Exibição de Detalhes
+function selecionarEspecie(nome) {
+    const info = dadosEspecies[nome];
+    if (!info) return;
 
-                                    <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA
-                                        ESPÉCIE</button>
-                                </div>
-                            </div>
-                            <td>CLASSE</td>
-                            <td><input type="text" placeholder="Ex: Fera"></td>
-                        </tr>
-            </table>
+    especieTemporaria = nome; // Guarda o nome para confirmar depois
 
-            <div class="sessao-status">
-                <h2 class="titulo-sessao">STATUS</h2>
-                <div class="status-bar"><span>PV</span> <input type="text" placeholder="100/100">
-                    <div class="progresso verde"></div>
-                </div>
-                <div class="status-bar"><span>PS</span> <input type="text" placeholder="100/100">
-                    <div class="progresso roxo"></div>
-                </div>
-                <div class="status-bar"><span>PE</span> <input type="text" placeholder="100/100">
-                    <div class="progresso amarelo"></div>
-                </div>
-            </div>
-        </div>
+    // Preenche o Modal de Detalhes
+    document.getElementById('detalhe_nome').innerText = nome;
+    document.getElementById('detalhe_tag').innerText = info.attr;
+    document.getElementById('detalhe_resumo_curto').innerText = info.resumo;
+    document.getElementById('detalhe_bonus').innerText = info.bonus;
+    document.getElementById('detalhe_desc').innerText = info.desc;
+    document.getElementById('detalhe_idade').innerText = info.idade;
+    document.getElementById('detalhe_tamanho').innerText = info.tamanho;
+    document.getElementById('detalhe_img').src = info.img;
+    
 
-        <div class="col-direita">
-            <h2 class="titulo-sessao">ATRIBUTOS</h2>
-            <div class="chart-container"><canvas id="radarChart"></canvas></div>
-            <div class="lista-atributos">
-                <div class="attr-item">FORÇA <input type="number" id="base_for" value="0" oninput="atualizarTudo()">
-                </div>
-                <div class="attr-item">VIGOR <input type="number" id="base_vig" value="0" oninput="atualizarTudo()">
-                </div>
-                <div class="attr-item">DESTREZA <input type="number" id="base_des" value="0" oninput="atualizarTudo()">
-                </div>
-                <div class="attr-item">CARISMA <input type="number" id="base_car" value="0" oninput="atualizarTudo()">
-                </div>
-                <div class="attr-item">INTELECTO <input type="number" id="base_int" value="0" oninput="atualizarTudo()">
-                </div>
-            </div>
-        </div>
+    // Aplica a cor da tag
+    document.getElementById('detalhe_tag').className = `tag-attr ${info.attr.toLowerCase()}`;
 
-        <footer class="footer-pericias">
-            <h2 class="titulo-sessao">PERÍCIAS</h2>
-            <div class="grid-pericias">
-                <div class="p-col">FOR<br><span id="p_for">[+0]</span></div>
-                <div class="p-col">VIG<br><span id="p_vig">[+0]</span></div>
-                <div class="p-col">DES<br><span id="p_des">[+0]</span></div>
-                <div class="p-col">CAR<br><span id="p_car">[+0]</span></div>
-                <div class="p-col">INT<br><span id="p_int">[+0]</span></div>
-            </div>
-        </footer>
-    </div>
-    <script src="app.js"></script>
-</body>
+    // Abre a mini ficha
+    document.getElementById('modal_detalhes').style.display = 'block';
+    document.body.classList.add('modal-aberto'); 
+}
 
-</html>
+function fecharDetalhes() {
+    document.getElementById('modal_detalhes').style.display = 'none';
+    // Só remove se o outro modal também estiver fechado
+    if(document.getElementById('modal_especies').style.display !== 'block') {
+        document.body.classList.remove('modal-aberto');
+    }
+}
+
+// 7. Confirmação Final
+function confirmarEscolha() {
+    if (especieTemporaria) {
+        document.getElementById('especie_input').value = especieTemporaria;
+        fecharDetalhes();
+        fecharModal();
+        console.log("Espécie confirmada: " + especieTemporaria);
+    }
+}
+
+// Inicialização
+window.onload = function () {
+    initChart();
+}
