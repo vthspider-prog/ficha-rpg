@@ -69,11 +69,12 @@
                                     onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
                             </div>
 
+                            
                             <div class="categoria-modal">
                                 <div class="tag-attr for">FOR</div> <button <button
                                     onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button>
                                 <button onclick="selecionarEspecie('Feras', 'FOR')">Feras</button>
-                                <button onclick="selecionarEspecie('???', 'FOR')">???</button>
+                                <button onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
                             </div>
 
                             <div class="categoria-modal">
@@ -107,24 +108,28 @@
                         <tr>
                             <div id="modal_detalhes" class="modal">
                                 <div class="modal-content ficha-explicativa">
-                                    <span class="close-btn" onclick="fecharDetalhes()">+</span>
+                                    <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
+
                                     <div class="header-detalhes">
                                         <h2 id="detalhe_nome">Nome da Espécie</h2>
                                         <div class="tag-attr" id="detalhe_tag">ATTR</div>
                                     </div>
 
-                                    <div class="corpo-detalhes">
+                                    <div class="topo-detalhes-grid">
                                         <div class="foto-especie-container">
-                                            <img id="detalhe_img" src="" alt="Representação da Espécie">
+                                            <img id="detalhe_img" src="" alt="Representação">
                                         </div>
+                                        <div class="mini-resumo">
+                                            <h3>RESUMO</h3>
+                                            <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
+                                        </div>
+                                    </div>
 
-                                        <div class="info-texto">
-                                            <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span>
-                                            </p>
-                                            <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
-                                            <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
-                                            <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
-                                        </div>
+                                    <div class="info-texto">
+                                        <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
+                                        <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
+                                        <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
+                                        <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
                                     </div>
 
                                     <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA
