@@ -397,3 +397,160 @@ body.modal-aberto {
     line-height: 1.4;
 }
 
+/* O wrapper precisa deixar os itens lado a lado */
+.campo-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    width: 100%;
+}
+
+/* O botão sutil */
+.btn-lixeira-sutil {
+    display: none; /* Começa escondido */
+    background: none;
+    border: none;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #ccc;
+    font-weight: bold;
+}
+
+/* REGRA CRÍTICA: Se o input tiver a classe, mostra o botão vizinho */
+#especie_input.tem-conteudo + .btn-lixeira-sutil {
+    display: inline-block !important;
+}
+
+.btn-lixeira-sutil:hover {
+    color: #ed1c24;
+}
+
+
+.header-preta {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    font-weight: 800;
+    padding: 10px;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    
+    /* ESTA LINHA CRIA O ESPAÇO ACIMA */
+    margin-top: 8px; 
+    
+    margin-bottom: 8px;
+    display: block; /* Garante que a margem funcione corretamente */
+}
+
+.status-card {
+    display: flex;
+    border: 1px solid #000;
+    margin-bottom: 6px;
+    background: #fff;
+    height: 75px;
+}
+
+.corpo-principal {
+    flex: 1;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* ÁREA LATERAL BEM ENCOLHIDA */
+.bonus-slim {
+    width: 60px; /* Largura mínima para o bônus */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.divisor-v { width: 1.5px; background: #000; align-self: stretch; }
+
+.dado-val, .bonus-val {
+    width: 100%;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    outline: none;
+}
+.dado-val { font-size: 15px; color: #333; }
+.bonus-val { font-size: 14px; margin-top: -3px; }
+
+/* Barras e Inputs */
+.topo { display: flex; align-items: center; gap: 10px; }
+.sigla-status { font-weight: 900; font-size: 20px; width: 30px; }
+.barra-externa { flex-grow: 1; height: 10px; background: #ddd; border-radius: 5px; border: 1px solid #bbb; overflow: hidden; }
+.barra-interna { height: 100%; width: 0%; transition: width 0.4s ease-out; }
+
+.inputs-row { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.input-unidade { display: flex; flex-direction: column; align-items: center; }
+.input-unidade input { width: 52px; height: 26px; text-align: center; font-weight: bold; border: 1px solid #ccc; border-radius: 4px; }
+.input-unidade label { font-size: 8px; font-weight: 900; color: #555; margin-top: 2px; }
+.bg-read { background: #fff5f5; color: #d00; border: none !important; }
+.barra-div { font-weight: bold; font-size: 16px; margin-top: -12px; }
+
+/* Cores dos Temas */
+.bg-pv { background: #2ecc71; } .cor-pv { color: #27ae60; } .borda-pv { border-left: 6px solid #27ae60; }
+.bg-ps { background: #9b59b6; } .cor-ps { color: #8e44ad; } .borda-ps { border-left: 6px solid #8e44ad; }
+.bg-pe { background: #f1c40f; } .cor-pe { color: #f39c12; } .borda-pe { border-left: 6px solid #f39c12; }
+
+.sorte-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid #000;
+    margin-top: 10px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 0 15px;
+}
+
+.sorte-label {
+    font-weight: 900;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: #000; /* Texto "SORTE" sempre preto */
+}
+
+.sorte-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.input-sorte {
+    width: 35px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    /* Cor do texto que o player digita */
+    color: #000; 
+    outline: none;
+}
+
+/* --- EFEITO DE TEXTO DE FUNDO (PLACEHOLDER) --- */
+.input-sorte::placeholder {
+    /* Cor do texto de exemplo (claro como o "Sr. Dogo") */
+    color: #ccc; 
+    font-weight: 600;
+    opacity: 1;
+}
+
+/* Remove as setinhas do campo de número */
+.input-sorte::-webkit-inner-spin-button, 
+.input-sorte::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+.separador {
+    font-weight: bold;
+    color: #000;
+}
