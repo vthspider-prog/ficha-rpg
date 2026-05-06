@@ -277,17 +277,108 @@ function fecharDetalhes() {
     }
 }
 
-// 7. Confirmação Final
 function confirmarEscolha() {
     if (especieTemporaria) {
-        document.getElementById('especie_input').value = especieTemporaria;
+        const inputEspecie = document.getElementById('especie_input');
+        inputEspecie.value = especieTemporaria; // Coloca o nome (ex: Feras)
+        
+        // FORÇA a lixeira a aparecer adicionando a classe
+        inputEspecie.classList.add('tem-conteudo'); 
+
         fecharDetalhes();
         fecharModal();
-        console.log("Espécie confirmada: " + especieTemporaria);
+        
+        if (typeof atualizarTudo === "function") atualizarTudo();
     }
 }
-
 // Inicialização
 window.onload = function () {
     initChart();
+}
+
+function atualizarVisibilidadeLixeira() {
+    const input = document.getElementById('especie_input');
+    const btn = document.getElementById('btn_limpar_especie');
+    
+    // Se o valor não for vazio e não for o placeholder padrão
+    if (input.value.trim() !== "" && input.value !== "Selecione...") {
+        input.classList.add('tem-conteudo');
+    } else {
+        input.classList.remove('tem-conteudo');
+    }
+}
+
+// E a função de limpar deve REMOVER a classe
+function limparEspecie() {
+    const inputEspecie = document.getElementById('especie_input');
+    inputEspecie.value = ""; 
+    
+    // REMOVE a lixeira
+    inputEspecie.classList.remove('tem-conteudo'); 
+    
+    if (typeof atualizarTudo === "function") atualizarTudo();
+}
+
+function atualizarStatus(tipo) {
+    const total = parseFloat(document.getElementById(tipo + '_total').value) || 0;
+    const dano = parseFloat(document.getElementById(tipo + '_dano').value) || 0;
+    
+    let atual = total - dano;
+    if (atual < 0) atual = 0;
+    
+    document.getElementById(tipo + '_atual').value = atual;
+    
+    const porcentagem = total > 0 ? (atual / total) * 100 : 0;
+    document.getElementById('barra_' + tipo).style.width = porcentagem + "%";
+}
+
+function calcularStatus(tipo) {
+    // Pega os valores dos campos
+    const total = parseFloat(document.getElementById(`${tipo}_total`).value) || 0;
+    const dano = parseFloat(document.getElementById(`${tipo}_dano`).value) || 0;
+    
+    // Lógica: Vida Atual é o Total menos o que foi perdido
+    let atual = total - dano;
+
+    // Impede que a vida fique negativa (opcional)
+    if (atual < 0) atual = 0;
+
+    // Atualiza o campo vermelho (Bloqueado)
+    document.getElementById(`${tipo}_atual`).value = atual;
+
+    // Atualiza a Barra Visual (porcentagem)
+    const porcentagem = total > 0 ? (atual / total) * 100 : 0;
+    document.getElementById(`barra_${tipo}`).style.width = porcentagem + "%";
+}
+
+// Função para o "+" automático no bônus
+function formatarBonus(input) {
+    let valor = input.value.replace(/[^0-9-]/g, ''); // Permite apenas números e o sinal de menos
+    if (valor !== "" && !valor.startsWith('-')) {
+        input.value = "+" + valor;
+    } else {
+        input.value = valor;
+    }
+}
+
+function autoMais(el) {
+    let val = el.value.replace(/[^0-9-]/g, ''); // Remove letras
+    if (val !== "" && !val.startsWith('-')) {
+        el.value = "+" + val;
+    } else {
+        el.value = val;
+    }
+}
+
+function atualizar(status) {
+    const total = parseFloat(document.getElementById(status + '_total').value) || 0;
+    const dano = parseFloat(document.getElementById(status + '_dano').value) || 0;
+    
+    let atual = total - dano;
+    if (atual < 0) atual = 0;
+    
+    document.getElementById(status + '_atual').value = atual;
+    
+    const porcento = total > 0 ? (atual / total) * 100 : 0;
+    document.getElementById('barra_' + status).style.width = porcento + "%";
 }
