@@ -53,108 +53,209 @@
                 <tr>
                     <td>ESPÉCIE</td>
                     <td>
-                        <input type="text" id="especie_input" placeholder="Clique para escolher..." readonly
-                            onclick="abrirModal()">
-                    </td>
-                </tr>
-
-                <div id="modal_especies" class="modal">
-                    <div class="modal-content">
-                        <span class="close-btn" onclick="fecharModal()">&times;</span>
-                        <h2 class="titulo-sessao">ESCOLHA SUA ESPÉCIE</h2>
-
-                        <div class="grid-especies-modal">
-                            <div class="categoria-modal">
-                                <div class="tag-attr nul">NULO</div> <button
-                                    onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
-                            </div>
-
-                            
-                            <div class="categoria-modal">
-                                <div class="tag-attr for">FOR</div> <button <button
-                                    onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button>
-                                <button onclick="selecionarEspecie('Feras', 'FOR')">Feras</button>
-                                <button onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
-                            </div>
-
-                            <div class="categoria-modal">
-                                <div class="tag-attr vig">VIG</div> <button <button
-                                    onclick="selecionarEspecie('Plantas', 'VIG')">Plantas</button>
-                                <button onclick="selecionarEspecie('Reencarnados', 'VIG')">Reencarnados</button>
-                                <button onclick="selecionarEspecie('Vampiros', 'VIG')">Vampiros</button>
-                            </div>
-
-                            <div class="categoria-modal">
-                                <div class="tag-attr des">DES</div> <button <button <button <button
-                                    onclick="selecionarEspecie('Goblins', 'DES')">Goblins</button>
-                                <button onclick="selecionarEspecie('Insectos', 'DES')">Insectos</button>
-                                <button onclick="selecionarEspecie('Limosos', 'DES')">Limosos</button>
-                            </div>
-
-                            <div class="categoria-modal">
-                                <div class="tag-attr car">CAR</div> <button <button
-                                    onclick="selecionarEspecie('Anjos', 'CAR')">Anjos</button>
-                                <button onclick="selecionarEspecie('Demônios', 'CAR')">Demônios</button>
-                                <button onclick="selecionarEspecie('Gemas', 'CAR')">Gemas</button>
-                            </div>
-
-                            <div class="categoria-modal">
-                                <div class="tag-attr int">INT</div> <button <button
-                                    onclick="selecionarEspecie('Construtos', 'INT')">Construtos</button>
-                                <button onclick="selecionarEspecie('Elfos', 'INT')">Elfos</button>
-                                <button onclick="selecionarEspecie('Marcianos', 'INT')">Marcianos</button>
-                            </div>
+                        <div class="campo-wrapper">
+                            <input type="text" id="especie_input" placeholder="Selecione..." readonly
+                                onclick="abrirModal()">
+                            <button id="btn_limpar_especie" class="btn-lixeira-sutil" onclick="limparEspecie()"
+                                title="Limpar">
+                                ✕
+                            </button>
                         </div>
-                        <tr>
-                            <div id="modal_detalhes" class="modal">
-                                <div class="modal-content ficha-explicativa">
-                                    <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
+                    </td>
 
-                                    <div class="header-detalhes">
-                                        <h2 id="detalhe_nome">Nome da Espécie</h2>
-                                        <div class="tag-attr" id="detalhe_tag">ATTR</div>
-                                    </div>
+                    <div id="modal_especies" class="modal">
+                        <div class="modal-content">
+                            <span class="close-btn" onclick="fecharModal()">&times;</span>
+                            <h2 class="titulo-sessao">ESCOLHA SUA ESPÉCIE</h2>
 
-                                    <div class="topo-detalhes-grid">
-                                        <div class="foto-especie-container">
-                                            <img id="detalhe_img" src="" alt="Representação">
-                                        </div>
-                                        <div class="mini-resumo">
-                                            <h3>RESUMO</h3>
-                                            <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
-                                        </div>
-                                    </div>
+                            <div class="grid-especies-modal">
+                                <div class="categoria-modal">
+                                    <div class="tag-attr nul">NULO</div> <button
+                                        onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
+                                </div>
 
-                                    <div class="info-texto">
-                                        <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
-                                        <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
-                                        <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
-                                        <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
-                                    </div>
+                                <div class="categoria-modal">
+                                    <div class="tag-attr for">FOR</div> <button <button
+                                        onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button>
+                                    <button onclick="selecionarEspecie('Feras', 'FOR')">Feras</button>
+                                    <button onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
+                                </div>
 
-                                    <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA
-                                        ESPÉCIE</button>
+                                <div class="categoria-modal">
+                                    <div class="tag-attr vig">VIG</div> <button <button
+                                        onclick="selecionarEspecie('Plantas', 'VIG')">Plantas</button>
+                                    <button onclick="selecionarEspecie('Reencarnados', 'VIG')">Reencarnados</button>
+                                    <button onclick="selecionarEspecie('Vampiros', 'VIG')">Vampiros</button>
+                                </div>
+
+                                <div class="categoria-modal">
+                                    <div class="tag-attr des">DES</div> <button <button <button <button
+                                        onclick="selecionarEspecie('Goblins', 'DES')">Goblins</button>
+                                    <button onclick="selecionarEspecie('Insectos', 'DES')">Insectos</button>
+                                    <button onclick="selecionarEspecie('Limosos', 'DES')">Limosos</button>
+                                </div>
+
+                                <div class="categoria-modal">
+                                    <div class="tag-attr car">CAR</div> <button <button
+                                        onclick="selecionarEspecie('Anjos', 'CAR')">Anjos</button>
+                                    <button onclick="selecionarEspecie('Demônios', 'CAR')">Demônios</button>
+                                    <button onclick="selecionarEspecie('Gemas', 'CAR')">Gemas</button>
+                                </div>
+
+                                <div class="categoria-modal">
+                                    <div class="tag-attr int">INT</div> <button <button
+                                        onclick="selecionarEspecie('Construtos', 'INT')">Construtos</button>
+                                    <button onclick="selecionarEspecie('Elfos', 'INT')">Elfos</button>
+                                    <button onclick="selecionarEspecie('Marcianos', 'INT')">Marcianos</button>
+                                </div>
+
+                            </div>
+                <tr>
+                    <div id="modal_detalhes" class="modal">
+                        <div class="modal-content ficha-explicativa">
+                            <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
+
+                            <div class="header-detalhes">
+                                <h2 id="detalhe_nome">Nome da Espécie</h2>
+                                <div class="tag-attr" id="detalhe_tag">ATTR</div>
+                            </div>
+
+                            <div class="topo-detalhes-grid">
+                                <div class="foto-especie-container">
+                                    <img id="detalhe_img" src="" alt="Representação">
+                                </div>
+                                <div class="mini-resumo">
+                                    <h3>RESUMO</h3>
+                                    <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
                                 </div>
                             </div>
-                            <td>CLASSE</td>
-                            <td><input type="text" placeholder="Ex: Fera"></td>
-                        </tr>
+
+                            <div class="info-texto">
+                                <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
+                                <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
+                                <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
+                                <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
+                            </div>
+
+                            <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA
+                                ESPÉCIE</button>
+                        </div>
+                    </div>
+                    <td>CLASSE</td>
+                    <td><input type="text" placeholder="Ex: Fera"></td>
+                </tr>
             </table>
 
-            <div class="sessao-status">
-                <h2 class="titulo-sessao">STATUS</h2>
-                <div class="status-bar"><span>PV</span> <input type="text" placeholder="100/100">
-                    <div class="progresso verde"></div>
+            <div class="container-status">
+                <div class="header-preta">STATUS</div>
+
+                <div class="lista-status">
+                    <div class="status-card borda-pv">
+                        <div class="corpo-principal">
+                            <div class="topo">
+                                <span class="sigla-status">PV</span>
+                                <div class="barra-externa">
+                                    <div id="barra_pv" class="barra-interna bg-pv"></div>
+                                </div>
+                            </div>
+                            <div class="inputs-row">
+                                <div class="input-unidade">
+                                    <input type="number" id="pv_total" placeholder="0" oninput="atualizar('pv')">
+                                    <label>TOTAL</label>
+                                </div>
+                                <span class="barra-div">/</span>
+                                <div class="input-unidade">
+                                    <input type="number" id="pv_atual" value="0" readonly class="bg-read">
+                                    <label>ATUAL</label>
+                                </div>
+                                <span class="barra-div">/</span>
+                                <div class="input-unidade">
+                                    <input type="number" id="pv_dano" placeholder="0" oninput="atualizar('pv')">
+                                    <label>DANO</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divisor-v"></div>
+                        <div class="bonus-slim">
+                            <input type="text" class="dado-val" placeholder="1d10">
+                            <input type="text" class="bonus-val cor-pv" placeholder="+0" oninput="autoMais(this)">
+                        </div>
+                    </div>
+
+                    <div class="status-card borda-ps">
+                        <div class="corpo-principal">
+                            <div class="topo">
+                                <span class="sigla-status">PS</span>
+                                <div class="barra-externa">
+                                    <div id="barra_ps" class="barra-interna bg-ps"></div>
+                                </div>
+                            </div>
+                            <div class="inputs-row">
+                                <div class="input-unidade">
+                                    <input type="number" id="ps_total" placeholder="0" oninput="atualizar('ps')">
+                                    <label>TOTAL</label>
+                                </div>
+                                <span class="barra-div">/</span>
+                                <div class="input-unidade">
+                                    <input type="number" id="ps_atual" value="0" readonly class="bg-read">
+                                    <label>ATUAL</label>
+                                </div>
+                                <span class="barra-div">/</span>
+                                <div class="input-unidade">
+                                    <input type="number" id="ps_dano" placeholder="0" oninput="atualizar('ps')">
+                                    <label>DANO</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divisor-v"></div>
+                        <div class="bonus-slim">
+                            <input type="text" class="dado-val" placeholder="1d8">
+                            <input type="text" class="bonus-val cor-ps" placeholder="+0" oninput="autoMais(this)">
+                        </div>
+                    </div>
+
+                    <div class="status-card borda-pe">
+                        <div class="corpo-principal">
+                            <div class="topo">
+                                <span class="sigla-status">PE</span>
+                                <div class="barra-externa">
+                                    <div id="barra_pe" class="barra-interna bg-pe"></div>
+                                </div>
+                            </div>
+                            <div class="inputs-row">
+                                <div class="input-unidade">
+                                    <input type="number" id="pe_total" placeholder="0" oninput="atualizar('pe')">
+                                    <label>TOTAL</label>
+                                </div>
+                                <span class="barra-div">/</span>
+                                <div class="input-unidade">
+                                    <input type="number" id="pe_atual" value="0" readonly class="bg-read">
+                                    <label>ATUAL</label>
+                                </div>
+                                <span class="barra-div">/</span>
+                                <div class="input-unidade">
+                                    <input type="number" id="pe_dano" placeholder="0" oninput="atualizar('pe')">
+                                    <label>DANO</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divisor-v"></div>
+                        <div class="bonus-slim">
+                            <input type="text" class="dado-val" placeholder="1d6">
+                            <input type="text" class="bonus-val cor-pe" placeholder="+0" oninput="autoMais(this)">
+                        </div>
+                    </div>
                 </div>
-                <div class="status-bar"><span>PS</span> <input type="text" placeholder="100/100">
-                    <div class="progresso roxo"></div>
-                </div>
-                <div class="status-bar"><span>PE</span> <input type="text" placeholder="100/100">
-                    <div class="progresso amarelo"></div>
+            </div>
+            <div class="sorte-container">
+                <div class="sorte-label">SORTE</div>
+                <div class="sorte-inputs">
+                    <input type="number" class="input-sorte" placeholder="2">
+                    <span class="separador">/</span>
+                    <input type="number" class="input-sorte" placeholder="2">
                 </div>
             </div>
         </div>
-
         <div class="col-direita">
             <h2 class="titulo-sessao">ATRIBUTOS</h2>
             <div class="chart-container"><canvas id="radarChart"></canvas></div>
