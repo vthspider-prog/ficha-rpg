@@ -739,6 +739,8 @@ body.modal-aberto {
     border: 2px solid #000;
     background: #fff;
     box-sizing: border-box; /* Impede que a borda jogue o campo para fora */
+    display: block;
+    clear: both;
 }
 
 .titulo-pericias {
@@ -775,4 +777,24 @@ body.modal-aberto {
     font-family: 'Arial Black', sans-serif;
     font-size: 18px;
     outline: none;
+}
+
+/* Container que segura Esquerda e Direita */
+.miolo-da-ficha {
+    display: flex !important;
+    flex-direction: row !important; /* Força ficar um ao lado do outro sempre */
+    flex-wrap: nowrap !important;  /* Impede que a coluna da direita pule para baixo */
+    width: 100%;
+    gap: 10px; /* Espaço entre as colunas */
+}
+
+/* Garante que as colunas não fiquem espremidas demais */
+.col-esquerda {
+    flex: 1; 
+    min-width: 0; /* Evita que a coluna quebre o layout */
+}
+
+.col-direita {
+    width: 320px; /* Ou a largura que você definiu */
+    min-width: 320px;
 }
