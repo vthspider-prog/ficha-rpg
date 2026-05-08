@@ -12,12 +12,32 @@ function initChart() {
                 data: [0, 0, 0, 0, 0],
                 backgroundColor: 'rgba(237, 28, 36, 0.3)',
                 borderColor: '#ed1c24',
-                pointRadius: 2
+                pointRadius: 2,
+                borderWidth: 2 // Deixa a linha um pouco mais visível
             }]
         },
         options: {
-            scales: { r: { min: 0, max: 5, ticks: { display: false } } },
-            plugins: { legend: { display: false } }
+            scales: {
+                r: {
+                    min: 0,
+                    max: 6, // ALTERADO: Agora o limite máximo é 6
+                    ticks: {
+                        display: false,
+                        stepSize: 1 // Cria as linhas de marcação de 1 em 1
+                    },
+                    grid: {
+                        color: '#ddd' // Cor das linhas da "teia"
+                    },
+                    angleLines: {
+                        color: '#ddd' // Cor das linhas que saem do centro
+                    }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            },
+            // Garante que o gráfico não mude de tamanho sozinho
+            maintainAspectRatio: false 
         }
     });
 }
@@ -382,3 +402,81 @@ function atualizar(status) {
     const porcento = total > 0 ? (atual / total) * 100 : 0;
     document.getElementById('barra_' + status).style.width = porcento + "%";
 }
+
+// 1. Limpa o sinal e valida instantaneamente enquanto digita
+function validarRapido(input) {
+    // Remove tudo que não seja número ou o sinal de menos
+    let valor = input.value.replace(/[^\d-]/g, ''); 
+    
+    if (valor === "" || valor === "-") {
+        input.value = valor;
+        atualizarTudo(); // Atualiza o gráfico mesmo vazio (vai para 0)
+        return;
+    }
+
+    let n = parseInt(valor);
+    if (isNaN(n)) n = 0;
+    if (n > 6) n = 6;
+    if (n < -1) n = -1;
+
+    // Coloca o sinal de + na hora para valores positivos
+    if (n > 0) {
+        input.value = "+" + n;
+    } else {
+        input.value = n;
+    }
+
+    atualizarTudo(); // Chama a atualização do gráfico
+}
+
+// 2. Limpa o campo ao focar para facilitar
+function removerSinal(input) {
+    input.value = ""; 
+    atualizarTudo();
+}
+
+// 3. A função que realmente move o gráfico (Blindada contra o sinal de +)
+function atualizarTudo() {
+    const ids = ['base_for', 'base_vig', 'base_des', 'base_car', 'base_int'];
+    
+    const vals = ids.map(id => {
+        const input = document.getElementById(id);
+        if (!input) return 0;
+        
+        // Remove o "+" antes de converter para número
+        let texto = input.value.replace('+', '');
+        let numero = parseInt(texto);
+        
+        return isNaN(numero) ? 0 : numero;
+    });
+
+    // Atualiza o gráfico radar
+    if (radarChart) {
+        radarChart.data.datasets[0].data = vals;
+        radarChart.update();
+    }
+
+    // Atualiza os modificadores [+x] lá embaixo, se existirem
+    const modIds = ['p_for', 'p_vig', 'p_des', 'p_car', 'p_int'];
+    modIds.forEach((id, index) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.innerText = `[+${vals[index] + 2}]`;
+        }
+    });
+}
+
+function atualizarStatusSecundarios(valoresAtributos) {
+    // Exemplo de lógica: Defesa é 10 + o valor de Destreza (índice 2 no array)
+    const destreza = valoresAtributos[2];
+    const defesaTotal = 10 + destreza;
+    
+    // Exemplo de lógica: Domínio é +2 base
+    const dominioTotal = 2; 
+
+    // Atualiza na tela
+    document.getElementById('valor_defesa').innerText = defesaTotal;
+    document.getElementById('valor_dominio').innerText = (dominioTotal >= 0 ? "+" : "") + dominioTotal;
+}
+
+// Chame essa função dentro da sua validarEAtualizar() ou atualizarTudo()
