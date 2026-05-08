@@ -11,17 +11,40 @@ body {
     margin: 0;
 }
 
+/* CONTAINER PRINCIPAL: Aumentamos a largura máxima para dar espaço aos atributos */
 .ficha-container {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr; /* Damos um pouco mais de peso para a coluna da direita */
+    gap: 25px; /* Aumentamos o espaço entre as colunas */
     width: 100%;
-    max-width: 600px; 
-    background: white; 
-    border: 2px solid black;
+    max-width: 700px; /* Aumentado de 950px para 1100px para caber tudo folgado */
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid #000;
     border-left: 15px solid var(--vermelho);
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 10px; 
-    padding: 10px;
+    padding: 25px; /* Aumentamos o respiro interno */
+    box-sizing: border-box;
+    align-items: start;
 }
+
+/* 2. Ajuste na Header de Atributos */
+.col-direita h2.titulo-sessao {
+    margin-top: 0; /* Remove qualquer espaço extra no topo */
+    height: 100px; /* Opcional: Se quiser que ela tenha a mesma altura exata do header preto da esquerda */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 3. Garantir que a coluna da direita não tenha padding extra no topo */
+.col-direita {
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
 
 /* Ajuste Mobile para a Ficha Principal */
 @media (max-width: 650px) {
@@ -140,20 +163,18 @@ body {
 
 /* ... (resto do código igual) */
 
-.titulo-sessao { background: black; color: white; text-align: center; padding: 5px; font-size: 14px; margin: 5px 0; }
+.titulo-sessao { background: black; color: white; text-align: center; padding: 5px; font-size: 21px; margin: 5px 0; }
 .tabela-dados { width: 100%; border-collapse: collapse; }
 .tabela-dados td { border: 1px solid black; padding: 5px; font-size: 11px; }
 .tabela-dados input { border: none; width: 100%; outline: none; font-weight: bold; }
 
-.status-bar { border: 1px solid black; padding: 5px; margin-bottom: 2px; font-size: 12px; }
+.status-bar { border: 1px solid black; padding: 5px; font-size: 18px; font-family: 'Arial Black', sans-serif; }
 .progresso { height: 6px; width: 85%; border: 1px solid black; margin-top: 4px; }
 .verde { background: #8efc69; } .roxo { background: #8a59ff; } .amarelo { background: #ffeb3b; }
 
 .attr-item { display: flex; justify-content: space-between; border: 2px solid black; padding: 4px; margin-bottom: 2px; font-size: 12px; }
 .attr-item input { width: 35px; text-align: center; }
 
-.grid-pericias { display: grid; grid-template-columns: repeat(5, 1fr); border: 2px solid black; text-align: center; font-size: 12px; }
-.p-col { padding: 8px; border-right: 1px solid black; font-weight: bold; }
 
 /* Estilo do Input de Espécie para parecer clicável */
 #especie_input {
@@ -432,8 +453,9 @@ body.modal-aberto {
     font-weight: 800;
     padding: 10px;
     font-size: 20px;
+    font-family: 'Arial Black', sans-serif;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     
     /* ESTA LINHA CRIA O ESPAÇO ACIMA */
     margin-top: 8px; 
@@ -538,7 +560,7 @@ body.modal-aberto {
 /* --- EFEITO DE TEXTO DE FUNDO (PLACEHOLDER) --- */
 .input-sorte::placeholder {
     /* Cor do texto de exemplo (claro como o "Sr. Dogo") */
-    color: #ccc; 
+    color: #aaaaaa; 
     font-weight: 600;
     opacity: 1;
 }
@@ -553,4 +575,204 @@ body.modal-aberto {
 .separador {
     font-weight: bold;
     color: #000;
+}
+
+/*campo de atributos
+
+/* Container que agrupa os atributos */
+.lista-atributos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre as caixas */
+    padding: 1px 0;
+}
+
+/* Atualização de Fonte para os Atributos */
+.attr-item {
+    font-family: 'Arial Black', sans-serif; /* A fonte robusta da Sorte */
+    color: #000;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    
+    /* Mantendo as bordas fechadas que você pediu */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    height: 45px;
+    padding: 0 12px;
+    background: #fff;
+}
+
+/* Efeito de foco quando passa o mouse na caixa toda */
+.attr-item:hover {
+    border-color: #4b4b4b;
+    background: #e7e7e7;
+}
+
+/* Nome do Atributo: Mais limpo e legível */
+.attr-item span, .attr-item {
+    color: #000000;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Garantindo que o input do número também use a fonte se quiser manter o padrão */
+.attr-item input {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    color: #000000; /* Cor cinza para o número como no seu print */
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 45px;
+    height: 32px;
+    text-align: center;
+    outline: none;
+}
+
+/* Quando o input é selecionado */
+.attr-item input:focus {
+    border-color: var(--vermelho);
+    background: #fff;
+    box-shadow: 0 0 4px rgba(237, 28, 36, 0.2);
+}
+
+/* Estilo para valor negativo */
+.attr-item input[value="-1"] {
+    color: #ed1c24;
+    border-color: #ffb3b3;
+}
+
+/* Remove setas padrão */
+.attr-item input::-webkit-inner-spin-button,
+.attr-item input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Container do radar */
+.chart-container {
+    width: 100% !important;
+    max-width: 350px; /* Ou o tamanho que você preferir */
+    height: 300px !important; /* ALTURA FIXA É ESSENCIAL */
+    margin: 0 auto 20px auto;
+    position: relative;
+    display: block;
+    overflow: hidden; /* Garante que nada saia do limite */
+}
+
+/* Força o Canvas a obedecer o container */
+#radarChart {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* campo de dominio */
+
+
+.status-secundario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2px solid #000; /* Borda mais grossa para combinar com o estilo */
+    border-radius: 10px;
+    margin-top: 15px;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+    height: 75px !important; /* Aumentado levemente para melhor respiro */
+    overflow: hidden;
+}
+
+.status-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+}
+
+/* Divisória interna entre Defesa e Domínio */
+.status-box:first-child {
+    border-right: 2px solid #000;
+}
+
+.status-label {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.status-valor {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+}
+
+/* Estilização do Input para parecer texto comum */
+.status-valor input {
+    width: 45px;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    text-decoration: underline; /* Mantém o estilo sublinhado da imagem original */
+    text-underline-offset: 4px;
+    outline: none;
+    padding: 0;
+}
+
+.footer-pericias {
+    width: 220% !important; /* Força ocupar a largura total da ficha */
+    margin-top: 5px;
+    border: 2px solid #000;
+    background: #fff;
+    box-sizing: border-box; /* Impede que a borda jogue o campo para fora */
+}
+
+.titulo-pericias {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    margin: 0;
+    padding: 1px 0;
+}
+
+.grid-pericias {
+    display: flex !important; /* Coloca os itens lado a lado */
+    width: 100%;
+}
+
+.p-col {
+    flex: 1; /* Faz cada uma das 5 colunas ter exatamente o mesmo tamanho */
+    text-align: center;
+    border-right: 1px solid #000;
+    padding: 3px 0;
+}
+
+.p-col:last-child {
+    border-right: none; /* Tira a linha preta da última coluna */
+}
+
+.p-col input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    outline: none;
 }
