@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=900">
-    <title>Ficha RPG - LUVES</title>
+    <title>Ficha - LUVES</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -57,99 +57,27 @@
                             <input type="text" id="especie_input" placeholder="Selecione..." readonly
                                 onclick="abrirModal()">
                             <button id="btn_limpar_especie" class="btn-lixeira-sutil" onclick="limparEspecie()"
-                                title="Limpar">
-                                ✕
-                            </button>
+                                title="Limpar">✕</button>
                         </div>
                     </td>
-
-                    <div id="modal_especies" class="modal">
-                        <div class="modal-content">
-                            <span class="close-btn" onclick="fecharModal()">&times;</span>
-                            <h2 class="titulo-sessao">ESCOLHA SUA ESPÉCIE</h2>
-
-                            <div class="grid-especies-modal">
-                                <div class="categoria-modal">
-                                    <div class="tag-attr nul">NULO</div> <button
-                                        onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
-                                </div>
-
-                                <div class="categoria-modal">
-                                    <div class="tag-attr for">FOR</div> <button <button
-                                        onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button>
-                                    <button onclick="selecionarEspecie('Feras', 'FOR')">Feras</button>
-                                    <button onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
-                                </div>
-
-                                <div class="categoria-modal">
-                                    <div class="tag-attr vig">VIG</div> <button <button
-                                        onclick="selecionarEspecie('Plantas', 'VIG')">Plantas</button>
-                                    <button onclick="selecionarEspecie('Reencarnados', 'VIG')">Reencarnados</button>
-                                    <button onclick="selecionarEspecie('Vampiros', 'VIG')">Vampiros</button>
-                                </div>
-
-                                <div class="categoria-modal">
-                                    <div class="tag-attr des">DES</div> <button <button <button <button
-                                        onclick="selecionarEspecie('Goblins', 'DES')">Goblins</button>
-                                    <button onclick="selecionarEspecie('Insectos', 'DES')">Insectos</button>
-                                    <button onclick="selecionarEspecie('Limosos', 'DES')">Limosos</button>
-                                </div>
-
-                                <div class="categoria-modal">
-                                    <div class="tag-attr car">CAR</div> <button <button
-                                        onclick="selecionarEspecie('Anjos', 'CAR')">Anjos</button>
-                                    <button onclick="selecionarEspecie('Demônios', 'CAR')">Demônios</button>
-                                    <button onclick="selecionarEspecie('Gemas', 'CAR')">Gemas</button>
-                                </div>
-
-                                <div class="categoria-modal">
-                                    <div class="tag-attr int">INT</div> <button <button
-                                        onclick="selecionarEspecie('Construtos', 'INT')">Construtos</button>
-                                    <button onclick="selecionarEspecie('Elfos', 'INT')">Elfos</button>
-                                    <button onclick="selecionarEspecie('Marcianos', 'INT')">Marcianos</button>
-                                </div>
-
-                            </div>
-                <tr>
-                    <div id="modal_detalhes" class="modal">
-                        <div class="modal-content ficha-explicativa">
-                            <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
-
-                            <div class="header-detalhes">
-                                <h2 id="detalhe_nome">Nome da Espécie</h2>
-                                <div class="tag-attr" id="detalhe_tag">ATTR</div>
-                            </div>
-
-                            <div class="topo-detalhes-grid">
-                                <div class="foto-especie-container">
-                                    <img id="detalhe_img" src="" alt="Representação">
-                                </div>
-                                <div class="mini-resumo">
-                                    <h3>RESUMO</h3>
-                                    <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
-                                </div>
-                            </div>
-
-                            <div class="info-texto">
-                                <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
-                                <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
-                                <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
-                                <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
-                            </div>
-
-                            <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA
-                                ESPÉCIE</button>
-                        </div>
-                    </div>
-                    <td>CLASSE</td>
-                    <td><input type="text" placeholder="Ex: Fera"></td>
                 </tr>
+                <tr>
+                    <td>CLASSE</td>
+                    <td>
+                        <div class="campo-wrapper">
+                            <input type="text" id="classe_input" placeholder="Selecione..." readonly
+                                onclick="abrirModalExclusivo('modalClasse')">
+
+                            <button id="btn_limpar_classe" class="btn-lixeira-sutil"
+                                onclick="removerClasseSelecionada()" title="Limpar" style="display: none;">✕</button>
+                        </div>
+                    </td>
             </table>
 
             <div class="container-status">
                 <div class="header-preta">STATUS</div>
-
                 <div class="lista-status">
+
                     <div class="status-card borda-pv">
                         <div class="corpo-principal">
                             <div class="topo">
@@ -177,11 +105,10 @@
                         </div>
                         <div class="divisor-v"></div>
                         <div class="bonus-slim">
-                            <input type="text" class="dado-val" placeholder="1d10">
+                            <input type="text" class="dado-val" placeholder="1d10" oninput="autoDado(this)">
                             <input type="text" class="bonus-val cor-pv" placeholder="+0" oninput="autoMais(this)">
                         </div>
                     </div>
-
                     <div class="status-card borda-ps">
                         <div class="corpo-principal">
                             <div class="topo">
@@ -209,11 +136,10 @@
                         </div>
                         <div class="divisor-v"></div>
                         <div class="bonus-slim">
-                            <input type="text" class="dado-val" placeholder="1d8">
+                            <input type="text" class="dado-val" placeholder="1d8" oninput="autoDado(this)">
                             <input type="text" class="bonus-val cor-ps" placeholder="+0" oninput="autoMais(this)">
                         </div>
                     </div>
-
                     <div class="status-card borda-pe">
                         <div class="corpo-principal">
                             <div class="topo">
@@ -241,21 +167,34 @@
                         </div>
                         <div class="divisor-v"></div>
                         <div class="bonus-slim">
-                            <input type="text" class="dado-val" placeholder="1d6">
+                            <input type="text" class="dado-val" placeholder="1d6" oninput="autoDado(this)">
                             <input type="text" class="bonus-val cor-pe" placeholder="+0" oninput="autoMais(this)">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="sorte-container">
-                <div class="sorte-label">SORTE</div>
-                <div class="sorte-inputs">
-                    <input type="number" class="input-sorte" placeholder="0">
-                    <span class="separador">/</span>
-                    <input type="number" class="input-sorte" placeholder="0">
+
+            <div class="card-teste-morte">
+                <div class="morte-header">TESTE DE MORTE</div>
+                <div class="morte-body">
+                    <div class="morte-grid-inputs">
+                        <label class="item-checkbox-morte">
+                            <input type="checkbox" id="morte_1" onclick="atualizarTesteMorte()">
+                            <div class="caixa-morte-design">1</div>
+                        </label>
+                        <label class="item-checkbox-morte">
+                            <input type="checkbox" id="morte_2" onclick="atualizarTesteMorte()">
+                            <div class="caixa-morte-design">2</div>
+                        </label>
+                        <label class="item-checkbox-morte">
+                            <input type="checkbox" id="morte_3" onclick="atualizarTesteMorte()">
+                            <div class="caixa-morte-design">3</div>
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="col-direita">
             <h2 class="titulo-sessao">ATRIBUTOS</h2>
 
@@ -264,62 +203,251 @@
             </div>
 
             <div class="lista-atributos">
-                <div class="attr-item">
-                    FORÇA
-                    <input type="text" id="base_for" placeholder="+0" onfocus="removerSinal(this)"
-                        oninput="validarRapido(this)">
-                </div>
-                <div class="attr-item">
-                    VIGOR
-                    <input type="text" id="base_vig" placeholder="+0" onfocus="removerSinal(this)"
-                        oninput="validarRapido(this)">
-                </div>
-                <div class="attr-item">
-                    DESTREZA
-                    <input type="text" id="base_des" placeholder="+0" onfocus="removerSinal(this)"
-                        oninput="validarRapido(this)">
-                </div>
-                <div class="attr-item">
-                    CARISMA
-                    <input type="text" id="base_car" placeholder="+0" onfocus="removerSinal(this)"
-                        oninput="validarRapido(this)">
-                </div>
-                <div class="attr-item">
-                    INTELECTO
-                    <input type="text" id="base_int" placeholder="+0" onfocus="removerSinal(this)"
-                        oninput="validarRapido(this)">
-                </div>
+                <div class="attr-item">FORÇA <input type="text" id="base_for" placeholder="+0"
+                        onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                <div class="attr-item">VIGOR <input type="text" id="base_vig" placeholder="+0"
+                        onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                <div class="attr-item">DESTREZA <input type="text" id="base_des" placeholder="+0"
+                        onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                <div class="attr-item">CARISMA <input type="text" id="base_car" placeholder="+0"
+                        onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                <div class="attr-item">INTELECTO <input type="text" id="base_int" placeholder="+0"
+                        onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
             </div>
 
-            <div class="status-secundario">
-                <div class="status-box">
-                    <span class="status-label">DEFESA</span>
-                    <div class="status-valor">
-                        [<input type="text" id="valor_defesa" placeholder="0" onfocus="this.value=''"
-                            onblur="if(this.value=='')this.value='0'">]
-                    </div>
-                </div>
-                <div class="status-box">
-                    <span class="status-label">DOMÍNIO</span>
-                    <div class="status-valor">
-                        [<input type="text" id="valor_dominio" placeholder="0" onfocus="this.value=''"
-                            onblur="if(this.value=='')this.value='0'">]
+            <div class="card-teste-morte" style="margin-top: 15px;">
+                <div class="morte-header">SORTE</div>
+                <div class="morte-body">
+                    <div class="grid-atributo-separado">
+                        <div class="caixa-atributo-design">
+                            <input type="text" id="sorte_input" placeholder="+0" oninput="autoMais(this)"
+                                class="input-atributo-morte">
+                        </div>
                     </div>
                 </div>
             </div>
 
-    </div>
-    <footer class="footer-pericias">
-        <h2 class="titulo-pericias">PERÍCIAS</h2>
-        <div class="grid-pericias">
-            <div class="p-col">FOR<br><input type="text" value="+0"></div>
-            <div class="p-col">VIG<br><input type="text" value="+0"></div>
-            <div class="p-col">DES<br><input type="text" value="+0"></div>
-            <div class="p-col">CAR<br><input type="text" value="+0"></div>
-            <div class="p-col">INT<br><input type="text" value="+0"></div>
+            <div class="card-teste-morte" style="margin-top: 15px;">
+                <div class="morte-header">DEFESA</div>
+                <div class="morte-body">
+                    <div class="grid-atributo-separado">
+                        <div class="caixa-atributo-design">
+                            <input type="number" id="defesa_input" value="10" placeholder="10"
+                                class="input-atributo-morte">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+
+        <footer class="footer-pericias">
+            <h2 class="titulo-pericias">PERÍCIAS</h2>
+            <div class="grid-pericias">
+                <div class="p-col">FOR<br><input type="text" placeholder="+0" onfocus="removerSinal(this)"
+                        onblur="aplicarSinal(this)"></div>
+                <div class="p-col">VIG<br><input type="text" placeholder="+0" onfocus="removerSinal(this)"
+                        onblur="aplicarSinal(this)"></div>
+                <div class="p-col">DES<br><input type="text" placeholder="+0" onfocus="removerSinal(this)"
+                        onblur="aplicarSinal(this)"></div>
+                <div class="p-col">CAR<br><input type="text" placeholder="+0" onfocus="removerSinal(this)"
+                        onblur="aplicarSinal(this)"></div>
+                <div class="p-col">INT<br><input type="text" placeholder="+0" onfocus="removerSinal(this)"
+                        onblur="aplicarSinal(this)"></div>
+            </div>
+        </footer>
     </div>
+
+    <div id="modal_especies" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <h2 class="titulo-sessao">ESCOLHA SUA ESPÉCIE</h2>
+            <div class="grid-especies-modal">
+                <div class="categoria-modal">
+                    <div class="tag-attr nul">NULO</div> <button
+                        onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
+                </div>
+                <div class="categoria-modal">
+                    <div class="tag-attr for">FOR</div> <button
+                        onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button><button
+                        onclick="selecionarEspecie('Feras', 'FOR')">Feras</button><button
+                        onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
+                </div>
+                <div class="categoria-modal">
+                    <div class="tag-attr vig">VIG</div> <button
+                        onclick="selecionarEspecie('Plantas', 'VIG')">Plantas</button><button
+                        onclick="selecionarEspecie('Reencarnados', 'VIG')">Reencarnados</button><button
+                        onclick="selecionarEspecie('Vampiros', 'VIG')">Vampiros</button>
+                </div>
+                <div class="categoria-modal">
+                    <div class="tag-attr des">DES</div> <button
+                        onclick="selecionarEspecie('Goblins', 'DES')">Goblins</button><button
+                        onclick="selecionarEspecie('Insectos', 'DES')">Insectos</button><button
+                        onclick="selecionarEspecie('Limosos', 'DES')">Limosos</button>
+                </div>
+                <div class="categoria-modal">
+                    <div class="tag-attr car">CAR</div> <button
+                        onclick="selecionarEspecie('Anjos', 'CAR')">Anjos</button><button
+                        onclick="selecionarEspecie('Demônios', 'CAR')">Demônios</button><button
+                        onclick="selecionarEspecie('Gemas', 'CAR')">Gemas</button>
+                </div>
+                <div class="categoria-modal">
+                    <div class="tag-attr int">INT</div> <button
+                        onclick="selecionarEspecie('Construtos', 'INT')">Construtos</button><button
+                        onclick="selecionarEspecie('Elfos', 'INT')">Elfos</button><button
+                        onclick="selecionarEspecie('Marcianos', 'INT')">Marcianos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_detalhes" class="modal">
+        <div class="modal-content ficha-explicativa">
+            <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
+            <div class="header-detalhes">
+                <h2 id="detalhe_nome">Nome da Espécie</h2>
+                <div class="tag-attr" id="detalhe_tag">ATTR</div>
+            </div>
+            <div class="topo-detalhes-grid">
+                <div class="foto-especie-container"><img id="detalhe_img" src="" alt="Representação"></div>
+                <div class="mini-resumo">
+                    <h3>RESUMO</h3>
+                    <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
+                </div>
+            </div>
+            <div class="info-texto">
+                <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
+                <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
+                <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
+                <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
+            </div>
+            <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA ESPÉCIE</button>
+        </div>
+    </div>
+
+    <div id="modalClasse" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ESCOLHA SUA CLASSE</h2>
+                <span class="fechar-modal-custom" onclick="fecharModalClasse('modalClasse')">&times;</span>
+            </div>
+
+            <div class="tabs-classes">
+                <button class="tab-btn-classe active" data-cor="vermelho"
+                    onclick="trocarAbaClasse(event, 'classe-for')">FOR</button>
+                <button class="tab-btn-classe" data-cor="verde"
+                    onclick="trocarAbaClasse(event, 'classe-vig')">VIG</button>
+                <button class="tab-btn-classe" data-cor="amarelo"
+                    onclick="trocarAbaClasse(event, 'classe-des')">DES</button>
+                <button class="tab-btn-classe" data-cor="rosa"
+                    onclick="trocarAbaClasse(event, 'classe-car')">CAR</button>
+                <button class="tab-btn-classe" data-cor="azul"
+                    onclick="trocarAbaClasse(event, 'classe-int')">INT</button>
+            </div>
+
+            <div id="classe-for" class="conteudo-classe active">
+                <div class="grid-classes">
+                    <div class="card-classe" onclick="selecionarClasse('Bárbaro')">Bárbaro <span
+                            class="sec-badge b-vig">VIG</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Carrasco')">Carrasco <span
+                            class="sec-badge b-des">DES</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Performático')">Performático <span
+                            class="sec-badge b-car">CAR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Exorcista')">Exorcista <span
+                            class="sec-badge b-int">INT</span></div>
+                </div>
+            </div>
+
+            <div id="classe-vig" class="conteudo-classe">
+                <div class="grid-classes">
+                    <div class="card-classe" onclick="selecionarClasse('Sentinela')">Sentinela <span
+                            class="sec-badge b-for">FOR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Monge')">Monge <span
+                            class="sec-badge b-des">DES</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Paladino')">Paladino <span
+                            class="sec-badge b-car">CAR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Socorrista')">Socorrista <span
+                            class="sec-badge b-int">INT</span></div>
+                </div>
+            </div>
+
+            <div id="classe-des" class="conteudo-classe">
+                <div class="grid-classes">
+                    <div class="card-classe" onclick="selecionarClasse('Assassino')">Assassino <span
+                            class="sec-badge b-for">FOR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Caçador')">Caçador <span
+                            class="sec-badge b-vig">VIG</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Gatuno')">Gatuno <span
+                            class="sec-badge b-car">CAR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Hacker')">Hacker <span
+                            class="sec-badge b-int">INT</span></div>
+                </div>
+            </div>
+
+            <div id="classe-car" class="conteudo-classe">
+                <div class="grid-classes">
+                    <div class="card-classe" onclick="selecionarClasse('Cozinheiro')">Cozinheiro <span
+                            class="sec-badge b-for">FOR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Maestro')">Maestro <span
+                            class="sec-badge b-vig">VIG</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Alfaiate')">Alfaiate <span
+                            class="sec-badge b-des">DES</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Ocultista')">Ocultista <span
+                            class="sec-badge b-int">INT</span></div>
+                </div>
+            </div>
+
+            <div id="classe-int" class="conteudo-classe">
+                <div class="grid-classes">
+                    <div class="card-classe" onclick="selecionarClasse('Mecânico')">Mecânico <span
+                            class="sec-badge b-for">FOR</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Alquimista')">Alquimista <span
+                            class="sec-badge b-vig">VIG</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Investigador')">Investigador <span
+                            class="sec-badge b-des">DES</span></div>
+                    <div class="card-classe" onclick="selecionarClasse('Arcanista')">Arcanista <span
+                            class="sec-badge b-car">CAR</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal_detalhes_classe" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header-detalhe">
+                <h2 id="detalhe_classe_nome" style="margin: 0;">BÁRBARO</h2>
+                <span id="detalhe_classe_tag" class="badge-status-classe vig">VIG</span>
+            </div>
+
+            <hr>
+
+            <div class="modal-body-layout">
+                <div class="placeholder-img-classe">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='230'><rect width='170' height='230' fill='%23222'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23666' font-family='sans-serif' font-size='12'>[Imagem da Classe]</text></svg>"
+                        alt="Espaço da Imagem">
+                </div>
+
+                <div class="modal-textos-classe">
+                    <h3>PROFICIÊNCIAS</h3>
+                    <p id="detalhe_classe_proficiencias">Carregando...</p>
+
+                    <h3>HABILIDADE INICIAL: <em id="detalhe_classe_hab_nome">Carregando...</em></h3>
+                    <p id="detalhe_classe_hab_desc">Carregando...</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="modal-botoes-footer">
+                <button class="btn-voltar-classes" onclick="voltarParaListaClasses()">← Voltar</button>
+                <button class="btn-confirmar-classe" onclick="confirmarEscolhaClasseFinal()">Confirmar
+                    Classe</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <script src="app.js"></script>
 </body>
 
