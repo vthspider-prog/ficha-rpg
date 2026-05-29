@@ -1,94 +1,117 @@
-:root { --vermelho: #ed1c24; }
+:root {
+    --vermelho: #ed1c24;
+}
 
-* { box-sizing: border-box; } /* Essencial para o cálculo de largura */
+* {
+    box-sizing: border-box;
+}
 
-body { 
-    background-color: #222; 
-    display: flex; 
-    justify-content: center; 
-    font-family: 'Arial Black', sans-serif; 
-    padding: 20px; 
+/* Essencial para o cálculo de largura */
+
+body {
+    background-color: #222;
+    display: flex;
+    justify-content: center;
+    font-family: 'Arial Black', sans-serif;
+    padding: 20px;
     margin: 0;
 }
 
 /* CONTAINER PRINCIPAL: Aumentamos a largura máxima para dar espaço aos atributos */
 .ficha-container {
     display: grid;
-    grid-template-columns: 1fr 1.1fr; /* Damos um pouco mais de peso para a coluna da direita */
-    gap: 25px; /* Aumentamos o espaço entre as colunas */
+    grid-template-columns: 1fr 1.1fr;
+    /* Damos um pouco mais de peso para a coluna da direita */
+    gap: 25px;
+    /* Aumentamos o espaço entre as colunas */
     width: 100%;
-    max-width: 700px; /* Aumentado de 950px para 1100px para caber tudo folgado */
+    max-width: 700px;
+    /* Aumentado de 950px para 1100px para caber tudo folgado */
     margin: 0 auto;
     background: #fff;
     border: 2px solid #000;
     border-left: 15px solid var(--vermelho);
-    padding: 25px; /* Aumentamos o respiro interno */
+    padding: 25px;
+    /* Aumentamos o respiro interno */
     box-sizing: border-box;
     align-items: start;
 }
 
-/* 2. Ajuste na Header de Atributos */
-.col-direita h2.titulo-sessao {
-    margin-top: 0; /* Remove qualquer espaço extra no topo */
-    height: 100px; /* Opcional: Se quiser que ela tenha a mesma altura exata do header preto da esquerda */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 3. Garantir que a coluna da direita não tenha padding extra no topo */
 .col-direita {
-    padding-top: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    width: 320px;
+    min-width: 320px;
+    /* Removemos o display: flex daqui */
+    display: block;
 }
 
+/* Criamos o espaçamento (gap) manualmente para os filhos da coluna direita */
+.col-direita>* {
+    margin-bottom: 10px;
+}
+
+.col-direita>*:last-child {
+    margin-bottom: 0;
+}
 
 
 /* Ajuste Mobile para a Ficha Principal */
 @media (max-width: 650px) {
     .ficha-container {
-        grid-template-columns: 1fr; /* Empilha as colunas no celular */
+        grid-template-columns: 1fr;
+        /* Empilha as colunas no celular */
         border-left-width: 8px;
     }
 }
-.header-preto { 
-    background: black; 
-    color: white; 
-    padding: 15px; 
-    min-height: 100px; 
+
+.header-preto {
+    background: black;
+    color: white;
+    padding: 15px;
+    min-height: 100px;
 }
 
-.header-preto h1 { 
-    margin: 0; 
-    font-size: 22px; 
+.header-preto h1 {
+    margin: 0;
+    font-size: 22px;
 }
+
 /* Estilo do novo Input de Nome */
 #player_nome_input {
     background: transparent;
     border: none;
     color: white;
-    font-family: 'Arial Black', sans-serif; /* Mesma fonte do resto da ficha */
+    font-family: 'Arial Black', sans-serif;
+    /* Mesma fonte do resto da ficha */
     font-size: 22px;
     width: 100%;
     margin-top: 10px;
     outline: none;
-    text-transform: uppercase; /* Opcional: deixa o nome sempre em maiúsculas como no molde */
+    text-transform: uppercase;
+    /* Opcional: deixa o nome sempre em maiúsculas como no molde */
 }
 
 /* Cor do "Digite seu nome..." (Placeholder) */
 #player_nome_input::placeholder {
-    color: #555; /* Tom claro solicitado */
-    text-transform: none; /* Placeholder não fica em maiúsculas */
+    color: #555;
+    /* Tom claro solicitado */
+    text-transform: none;
+    /* Placeholder não fica em maiúsculas */
 }
 
 #campo_lv {
-    background: transparent; color: white; border: none;
-    font-size: 21px; font-weight: bold; cursor: pointer; font-family: inherit;
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 21px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
     outline: none;
 }
-#campo_lv option { background: black; }
+
+#campo_lv option {
+    background: black;
+}
 
 .moldura-foto-container {
     width: 100%;
@@ -113,7 +136,8 @@ body {
     font-family: Arial, sans-serif;
     font-size: 14px;
     font-weight: normal;
-    text-transform: none; /* Mantém minúsculas como na imagem */
+    text-transform: none;
+    /* Mantém minúsculas como na imagem */
 }
 
 .nuvem-icone {
@@ -127,9 +151,9 @@ body {
     width: 100%;
     height: 250px;
     background-color: #f9f9f9;
-    border: 2px dashed #ccc; 
+    border: 2px dashed #ccc;
     /* DIMINUÍDO: De 20px para 8px para a moldura externa */
-    border-radius: 8px; 
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -141,39 +165,97 @@ body {
 
 /* Estado Ativo: Quando a classe 'foto-postada' é adicionada via JS */
 .upload-area.foto-postada {
-    border: 1px solid #420101; /* Muda de tracejado para LINHA SÓLIDA */
+    border: 1px solid #420101;
+    /* Muda de tracejado para LINHA SÓLIDA */
     background-color: white;
 }
 
 /* Efeito de hover suave apenas quando já tem a foto */
 .upload-area.foto-postada:hover {
-    border-color: var(--vermelho); /* Destaque sutil com a cor da ficha */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-color: var(--vermelho);
+    /* Destaque sutil com a cor da ficha */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transform: scale(1.01);
 }
+
 #preview_img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover;
     object-position: center;
     /* DIMINUÍDO: De 10px para 5px para a foto interna */
-    border-radius: 5px; 
+    border-radius: 5px;
     display: block;
 }
 
 /* ... (resto do código igual) */
 
-.titulo-sessao { background: black; color: white; text-align: center; padding: 5px; font-size: 21px; margin: 5px 0; }
-.tabela-dados { width: 100%; border-collapse: collapse; }
-.tabela-dados td { border: 1px solid black; padding: 5px; font-size: 11px; }
-.tabela-dados input { border: none; width: 100%; outline: none; font-weight: bold; }
+.titulo-sessao {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    font-size: 21px;
+    margin: 5px 0;
+}
 
-.status-bar { border: 1px solid black; padding: 5px; font-size: 18px; font-family: 'Arial Black', sans-serif; }
-.progresso { height: 6px; width: 85%; border: 1px solid black; margin-top: 4px; }
-.verde { background: #8efc69; } .roxo { background: #8a59ff; } .amarelo { background: #ffeb3b; }
+.tabela-dados {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-.attr-item { display: flex; justify-content: space-between; border: 2px solid black; padding: 4px; margin-bottom: 2px; font-size: 12px; }
-.attr-item input { width: 35px; text-align: center; }
+.tabela-dados td {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 11px;
+}
+
+.tabela-dados input {
+    border: none;
+    width: 100%;
+    outline: none;
+    font-weight: bold;
+}
+
+.status-bar {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 18px;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.progresso {
+    height: 6px;
+    width: 85%;
+    border: 1px solid black;
+    margin-top: 4px;
+}
+
+.verde {
+    background: #8efc69;
+}
+
+.roxo {
+    background: #8a59ff;
+}
+
+.amarelo {
+    background: #ffeb3b;
+}
+
+.attr-item {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid black;
+    padding: 4px;
+    margin-bottom: 2px;
+    font-size: 12px;
+}
+
+.attr-item input {
+    width: 35px;
+    text-align: center;
+}
 
 
 /* Estilo do Input de Espécie para parecer clicável */
@@ -182,39 +264,43 @@ body {
     color: #000000;
     transition: background 0.3s;
 }
-#especie_input:hover { background: #fff0f0; }
+
+#especie_input:hover {
+    background: #fff0f0;
+}
 
 /* O MODAL (Fundo escuro) */
 .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1000; 
-    left: 0; 
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
     top: 0;
-    width: 100%; 
+    width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.85);
+    background-color: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(4px);
-    
+
     /* MUDANÇA AQUI: Impede que o fundo role */
-    overflow: hidden; 
-    padding: 0; 
+    overflow: hidden;
+    padding: 0;
 }
 
 /* CONTEÚDO DO MODAL (A aba de resumo) */
 .modal-content {
     background-color: white;
-    margin: 5vh auto; /* 5% da altura da tela */
+    margin: 5vh auto;
+    /* 5% da altura da tela */
     padding: 20px;
     border: 3px solid black;
     width: 90%;
     max-width: 500px;
     border-radius: 10px;
     position: relative;
-    
+
     /* MUDANÇA AQUI: A rolagem fica só aqui dentro */
-    max-height: 85vh; 
-    overflow-y: auto; 
+    max-height: 85vh;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
 }
@@ -232,10 +318,12 @@ body.modal-aberto {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    color: rgb(255, 255, 255); /* Cor branca solicitada */
+    color: rgb(255, 255, 255);
+    /* Cor branca solicitada */
     line-height: 1;
     transition: color 0.2s ease;
-    z-index: 1001; /* Garante que fique acima da barra preta */
+    z-index: 1001;
+    /* Garante que fique acima da barra preta */
 }
 
 /* BOTÃO DE FECHAR NO MODAL */
@@ -246,22 +334,28 @@ body.modal-aberto {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    color: rgb(0, 0, 0); /* Cor branca solicitada */
+    color: rgb(0, 0, 0);
+    /* Cor branca solicitada */
     line-height: 1;
     transition: color 0.2s ease;
-    z-index: 1001; /* Garante que fique acima da barra preta */
+    z-index: 1001;
+    /* Garante que fique acima da barra preta */
 }
+
 .close-btn2:hover {
-    color: #eb0000; /* Fica cinza claro ao passar o mouse */
+    color: #eb0000;
+    /* Fica cinza claro ao passar o mouse */
 }
 
 .close-btn:hover {
-    color: #bd0000; /* Fica cinza claro ao passar o mouse */
+    color: #bd0000;
+    /* Fica cinza claro ao passar o mouse */
 }
 
 /* Ajuste opcional na barra de título para destacar o botão */
 .modal-content h2.titulo-sessao {
-    margin: -20px -20px 20px -20px; /* Alinha com as bordas do modal */
+    margin: -20px -20px 20px -20px;
+    /* Alinha com as bordas do modal */
     border-radius: 7px 7px 0 0;
     padding: 15px;
     position: relative;
@@ -308,21 +402,69 @@ body.modal-aberto {
 }
 
 /* Tags de Cores */
-.tag-attr { padding: 4px 10px; font-size: 11px; font-weight: bold; border-radius: 3px; color: white; width: fit-content; }
-.tag-attr.for { background: #ed1c24; }
-.tag-attr.vig { background: #2ecc71; }
-.tag-attr.des { background: #f1c40f; }
-.tag-attr.car { background: #f75ec9; }
-.tag-attr.int { background: #3498db; }
-.tag-attr.nul { background: #555555; }
+.tag-attr {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    width: fit-content;
+}
+
+.tag-attr.for {
+    background: #ed1c24;
+}
+
+.tag-attr.vig {
+    background: #2ecc71;
+}
+
+.tag-attr.des {
+    background: #f1c40f;
+}
+
+.tag-attr.car {
+    background: #f75ec9;
+}
+
+.tag-attr.int {
+    background: #3498db;
+}
+
+.tag-attr.nul {
+    background: #555555;
+}
 
 /* Efeito de Hover Colorido nos Botões */
-.categoria-modal:has(.for) button:hover { color: #ed1c24; border-bottom-color: #ed1c24; }
-.categoria-modal:has(.vig) button:hover { color: #2ecc71; border-bottom-color: #2ecc71; }
-.categoria-modal:has(.des) button:hover { color: #f1c40f; border-bottom-color: #f1c40f; }
-.categoria-modal:has(.car) button:hover { color: #e91e63; border-bottom-color: #e91e63; }
-.categoria-modal:has(.int) button:hover { color: #3498db; border-bottom-color: #3498db; }
-.categoria-modal:has(.nul) button:hover { color: #524f4f; border-bottom-color: #000000; }
+.categoria-modal:has(.for) button:hover {
+    color: #ed1c24;
+    border-bottom-color: #ed1c24;
+}
+
+.categoria-modal:has(.vig) button:hover {
+    color: #2ecc71;
+    border-bottom-color: #2ecc71;
+}
+
+.categoria-modal:has(.des) button:hover {
+    color: #f1c40f;
+    border-bottom-color: #f1c40f;
+}
+
+.categoria-modal:has(.car) button:hover {
+    color: #e91e63;
+    border-bottom-color: #e91e63;
+}
+
+.categoria-modal:has(.int) button:hover {
+    color: #3498db;
+    border-bottom-color: #3498db;
+}
+
+.categoria-modal:has(.nul) button:hover {
+    color: #524f4f;
+    border-bottom-color: #000000;
+}
 
 
 /* Estilo base das tags para manter consistência */
@@ -353,8 +495,11 @@ body.modal-aberto {
 }
 
 .foto-especie-container {
-    width: 150px; height: 150px; border: 1px solid #ddd;
-    border-radius: 4px; overflow: hidden;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .foto-especie-container img {
@@ -390,7 +535,8 @@ body.modal-aberto {
 /* Novo Layout: Foto + Resumo */
 .topo-detalhes-grid {
     display: grid;
-    grid-template-columns: 150px 1fr; /* Foto fixa em 150px e texto ocupa o resto */
+    grid-template-columns: 150px 1fr;
+    /* Foto fixa em 150px e texto ocupa o resto */
     gap: 15px;
     background: #f4f4f4;
     padding: 10px;
@@ -427,7 +573,8 @@ body.modal-aberto {
 
 /* O botão sutil */
 .btn-lixeira-sutil {
-    display: none; /* Começa escondido */
+    display: none;
+    /* Começa escondido */
     background: none;
     border: none;
     padding: 0 10px;
@@ -437,7 +584,7 @@ body.modal-aberto {
 }
 
 /* REGRA CRÍTICA: Se o input tiver a classe, mostra o botão vizinho */
-#especie_input.tem-conteudo + .btn-lixeira-sutil {
+#especie_input.tem-conteudo+.btn-lixeira-sutil {
     display: inline-block !important;
 }
 
@@ -456,12 +603,13 @@ body.modal-aberto {
     font-family: 'Arial Black', sans-serif;
     text-transform: uppercase;
     letter-spacing: 1px;
-    
+
     /* ESTA LINHA CRIA O ESPAÇO ACIMA */
-    margin-top: 8px; 
-    
+    margin-top: 8px;
+
     margin-bottom: 8px;
-    display: block; /* Garante que a margem funcione corretamente */
+    display: block;
+    /* Garante que a margem funcione corretamente */
 }
 
 .status-card {
@@ -482,16 +630,22 @@ body.modal-aberto {
 
 /* ÁREA LATERAL BEM ENCOLHIDA */
 .bonus-slim {
-    width: 60px; /* Largura mínima para o bônus */
+    width: 60px;
+    /* Largura mínima para o bônus */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.divisor-v { width: 1.5px; background: #000; align-self: stretch; }
+.divisor-v {
+    width: 1.5px;
+    background: #000;
+    align-self: stretch;
+}
 
-.dado-val, .bonus-val {
+.dado-val,
+.bonus-val {
     width: 100%;
     text-align: center;
     border: none;
@@ -499,82 +653,231 @@ body.modal-aberto {
     font-weight: bold;
     outline: none;
 }
-.dado-val { font-size: 15px; color: #333; }
-.bonus-val { font-size: 14px; margin-top: -3px; }
+
+.dado-val {
+    font-size: 15px;
+    color: #333;
+}
+
+.bonus-val {
+    font-size: 14px;
+    margin-top: -3px;
+}
 
 /* Barras e Inputs */
-.topo { display: flex; align-items: center; gap: 10px; }
-.sigla-status { font-weight: 900; font-size: 20px; width: 30px; }
-.barra-externa { flex-grow: 1; height: 10px; background: #ddd; border-radius: 5px; border: 1px solid #bbb; overflow: hidden; }
-.barra-interna { height: 100%; width: 0%; transition: width 0.4s ease-out; }
-
-.inputs-row { display: flex; justify-content: center; align-items: center; gap: 8px; }
-.input-unidade { display: flex; flex-direction: column; align-items: center; }
-.input-unidade input { width: 52px; height: 26px; text-align: center; font-weight: bold; border: 1px solid #ccc; border-radius: 4px; }
-.input-unidade label { font-size: 8px; font-weight: 900; color: #555; margin-top: 2px; }
-.bg-read { background: #fff5f5; color: #d00; border: none !important; }
-.barra-div { font-weight: bold; font-size: 16px; margin-top: -12px; }
-
-/* Cores dos Temas */
-.bg-pv { background: #2ecc71; } .cor-pv { color: #27ae60; } .borda-pv { border-left: 6px solid #27ae60; }
-.bg-ps { background: #9b59b6; } .cor-ps { color: #8e44ad; } .borda-ps { border-left: 6px solid #8e44ad; }
-.bg-pe { background: #f1c40f; } .cor-pe { color: #f39c12; } .borda-pe { border-left: 6px solid #f39c12; }
-
-.sorte-container {
+.topo {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    border: 2px solid #000;
-    margin-top: 10px;
-    height: 40px;
-    background-color: #fff;
-    border-radius: 4px;
-    padding: 0 15px;
+    gap: 10px;
 }
 
-.sorte-label {
+.sigla-status {
     font-weight: 900;
-    font-size: 1rem;
-    letter-spacing: 1px;
-    color: #000; /* Texto "SORTE" sempre preto */
+    font-size: 20px;
+    width: 30px;
 }
 
-.sorte-inputs {
+.barra-externa {
+    flex-grow: 1;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    overflow: hidden;
+}
+
+.barra-interna {
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease-out;
+}
+
+.inputs-row {
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
-.input-sorte {
-    width: 35px;
-    border: none;
-    background: transparent;
+.input-unidade {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-unidade input {
+    width: 52px;
+    height: 26px;
     text-align: center;
     font-weight: bold;
-    font-size: 1.1rem;
-    /* Cor do texto que o player digita */
-    color: #000; 
-    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-/* --- EFEITO DE TEXTO DE FUNDO (PLACEHOLDER) --- */
-.input-sorte::placeholder {
-    /* Cor do texto de exemplo (claro como o "Sr. Dogo") */
-    color: #aaaaaa; 
-    font-weight: 600;
-    opacity: 1;
+.input-unidade label {
+    font-size: 8px;
+    font-weight: 900;
+    color: #555;
+    margin-top: 2px;
 }
 
-/* Remove as setinhas do campo de número */
-.input-sorte::-webkit-inner-spin-button, 
-.input-sorte::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
+.bg-read {
+    background: #fff5f5;
+    color: #d00;
+    border: none !important;
 }
 
-.separador {
+.barra-div {
     font-weight: bold;
-    color: #000;
+    font-size: 16px;
+    margin-top: -12px;
+}
+
+/* Cores dos Temas */
+.bg-pv {
+    background: #2ecc71;
+}
+
+.cor-pv {
+    color: #27ae60;
+}
+
+.borda-pv {
+    border-left: 6px solid #27ae60;
+}
+
+.bg-ps {
+    background: #9b59b6;
+}
+
+.cor-ps {
+    color: #8e44ad;
+}
+
+.borda-ps {
+    border-left: 6px solid #8e44ad;
+}
+
+.bg-pe {
+    background: #f1c40f;
+}
+
+.cor-pe {
+    color: #f39c12;
+}
+
+.borda-pe {
+    border-left: 6px solid #f39c12;
+}
+
+/* Container principal estilizado como um card da ficha */
+.card-teste-morte {
+    width: 100%;
+    max-width: 100%; /* Encaixa perfeitamente na coluna abaixo das barras */
+    border: 2px solid #000000;
+    border-radius: 6px; /* Cantos suavemente arredondados para um ar moderno */
+    overflow: hidden;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra sutil de fundo */
+}
+
+/* O Header do Teste de Morte - Idêntico ao bloco STATUS */
+.morte-header {
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 900;
+    padding: 6px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Espaçamento interno do card */
+.morte-body {
+    padding: 10px;
+    background-color: #fafafa; /* Fundo cinza bem claro para destacar as caixas */
+}
+
+/* O grupo de caixas de seleção */
+.morte-grid-inputs {
+    display: flex;
+    gap: 20px; /* Espaçamento elegante entre os quadrados (estilo botões independentes) */
+    justify-content: center;
+    width: 100%;
+}
+
+/* 2. Removemos o 'flex: 1' para que os botões não preencham a tela toda */
+.item-checkbox-morte {
+    cursor: pointer;
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 55px;         /* LARGURA FIXA DOS QUADRADOS (Ajuste aqui se quiser menor/maior) */
+}
+
+.item-checkbox-morte input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* O quadrado visual (Estado Normal: Mostra o número preto) */
+.caixa-morte-design {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #000000; /* Cor do número original */
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+    text-align: center;
+    width: 100%;
+    position: relative; /* Necessário para posicionar a caveira perfeitamente */
+}
+/* Hover ao passar o mouse */
+.item-checkbox-morte:hover .caixa-morte-design {
+    border-color: #000000;
+    background-color: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+/* ESTADO ATIVADO (Quando toma a falha): Fundo vermelho neon com brilho */
+.item-checkbox-morte input:checked + .caixa-morte-design {
+    background-color: #ed1c24 !important; /* Vermelho padrão do projeto */
+    color: #ffffff !important;
+    border-color: #b31015;
+    box-shadow: 0 0 10px rgba(237, 28, 36, 0.4); /* Efeito de brilho de energia/perigo */
+    transform: scale(0.98); /* Efeito de clique físico pressionado */
+}
+
+/* ESTADO ATIVADO: Quando clicado, o quadrado fica vermelho com brilho */
+.item-checkbox-morte input:checked + .caixa-morte-design {
+    background-color: #ed1c24 !important; /* Vermelho padrão */
+    border-color: #b31015;
+    box-shadow: 0 0 10px rgba(237, 28, 36, 0.5);
+    transform: scale(0.95);
+    
+    /* MÁGICA AQUI: Deixa o número original (1, 2 ou 3) invisível */
+    color: transparent !important; 
+}
+
+/* INJEÇÃO DA CAVEIRA: Ela aparece exatamente por cima do número escondido */
+.item-checkbox-morte input:checked + .caixa-morte-design::after {
+    content: "☠️"; /* Pode trocar por "☠️" se preferir o estilo pirata */
+    position: absolute;
+    font-size: 16px; /* Tamanho da caveira ligeiramente maior para destacar */
+    color: #ffffff !important; /* Caveira fica branca contrastando com o fundo vermelho */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centraliza perfeitamente no meio do quadrado */
 }
 
 /*campo de atributos
@@ -583,19 +886,21 @@ body.modal-aberto {
 .lista-atributos {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Espaço entre as caixas */
+    gap: 10px;
+    /* Espaço entre as caixas */
     padding: 1px 0;
 }
 
 /* Atualização de Fonte para os Atributos */
 .attr-item {
-    font-family: 'Arial Black', sans-serif; /* A fonte robusta da Sorte */
+    font-family: 'Arial Black', sans-serif;
+    /* A fonte robusta da Sorte */
     color: #000;
     font-weight: 900;
     text-transform: uppercase;
     font-size: 14px;
     letter-spacing: 0.5px;
-    
+
     /* Mantendo as bordas fechadas que você pediu */
     display: flex;
     justify-content: space-between;
@@ -614,7 +919,8 @@ body.modal-aberto {
 }
 
 /* Nome do Atributo: Mais limpo e legível */
-.attr-item span, .attr-item {
+.attr-item span,
+.attr-item {
     color: #000000;
     font-family: 'Segoe UI', Roboto, sans-serif;
     font-size: 13px;
@@ -627,7 +933,8 @@ body.modal-aberto {
 .attr-item input {
     font-family: 'Arial Black', sans-serif;
     font-size: 18px;
-    color: #000000; /* Cor cinza para o número como no seu print */
+    color: #000000;
+    /* Cor cinza para o número como no seu print */
     background: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -657,88 +964,85 @@ body.modal-aberto {
     margin: 0;
 }
 
-/* Container do radar */
 .chart-container {
     width: 100% !important;
-    max-width: 350px; /* Ou o tamanho que você preferir */
-    height: 300px !important; /* ALTURA FIXA É ESSENCIAL */
-    margin: 0 auto 20px auto;
-    position: relative;
-    display: block;
-    overflow: hidden; /* Garante que nada saia do limite */
+    max-width: 320px !important;
+    height: 300px !important;
+    /* Altura física obrigatória */
+    margin: 15px auto;
+    position: relative !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
-/* Força o Canvas a obedecer o container */
 #radarChart {
     width: 100% !important;
     height: 100% !important;
+    display: block !important;
 }
 
-/* campo de dominio */
+/* campo de sorte e defesa */
 
 
-.status-secundario {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border: 2px solid #000; /* Borda mais grossa para combinar com o estilo */
-    border-radius: 10px;
-    margin-top: 15px;
-    background: #fff;
-    width: 100%;
-    box-sizing: border-box;
-    height: 75px !important; /* Aumentado levemente para melhor respiro */
-    overflow: hidden;
-}
-
-.status-box {
+/* Centraliza o quadrado perfeitamente dentro de cada card individual */
+.grid-atributo-separado {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+}
+
+/* O Quadrado Branco (Cópia visual exata dos botões do Teste de Morte) */
+.caixa-atributo-design {
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 0;
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px; /* Cantos suavizados idênticos ao original */
+    width: 59px;  /* Largura ideal para não esticar e manter o formato quadrado */
+    height: 27px; /* Altura proporcional aos botões do Teste de Morte */
+    transition: border-color 0.2s ease;
 }
 
-/* Divisória interna entre Defesa e Domínio */
-.status-box:first-child {
-    border-right: 2px solid #000;
+/* Realce sutil ao clicar ou passar o mouse na caixinha */
+.caixa-atributo-design:focus-within,
+.caixa-atributo-design:hover {
+    border-color: #000000;
 }
 
-.status-label {
-    font-family: 'Arial Black', sans-serif;
-    font-size: 13px;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
-}
-
-.status-valor {
-    font-family: 'Arial Black', sans-serif;
-    font-size: 22px;
-    font-weight: 900;
-    display: flex;
-    align-items: center;
-}
-
-/* Estilização do Input para parecer texto comum */
-.status-valor input {
-    width: 45px;
+/* Input invisível que centraliza o número grande dentro do quadrado */
+.input-atributo-morte {
     border: none;
     background: transparent;
     text-align: center;
-    font-family: 'Arial Black', sans-serif;
-    font-size: 22px;
-    font-weight: 900;
-    text-decoration: underline; /* Mantém o estilo sublinhado da imagem original */
-    text-underline-offset: 4px;
+    width: 100%;
+    height: 100%;
+    font-size: 18px; /* Tamanho numérico idêntico ao Teste de Morte */
+    font-weight: bold;
+    color: #000000;
     outline: none;
-    padding: 0;
 }
 
+/* Esconde as setinhas nativas do navegador no campo numérico de Defesa */
+.input-atributo-morte::-webkit-outer-spin-button,
+.input-atributo-morte::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*pericias */
+
 .footer-pericias {
-    width: 220% !important; /* Força ocupar a largura total da ficha */
+    width: 220% !important;
+    /* Força ocupar a largura total da ficha */
     margin-top: 5px;
     border: 2px solid #000;
     background: #fff;
-    box-sizing: border-box; /* Impede que a borda jogue o campo para fora */
+    box-sizing: border-box;
+    /* Impede que a borda jogue o campo para fora */
     display: block;
     clear: both;
 }
@@ -754,19 +1058,22 @@ body.modal-aberto {
 }
 
 .grid-pericias {
-    display: flex !important; /* Coloca os itens lado a lado */
+    display: flex !important;
+    /* Coloca os itens lado a lado */
     width: 100%;
 }
 
 .p-col {
-    flex: 1; /* Faz cada uma das 5 colunas ter exatamente o mesmo tamanho */
+    flex: 1;
+    /* Faz cada uma das 5 colunas ter exatamente o mesmo tamanho */
     text-align: center;
     border-right: 1px solid #000;
     padding: 3px 0;
 }
 
 .p-col:last-child {
-    border-right: none; /* Tira a linha preta da última coluna */
+    border-right: none;
+    /* Tira a linha preta da última coluna */
 }
 
 .p-col input {
@@ -779,22 +1086,388 @@ body.modal-aberto {
     outline: none;
 }
 
+/* Cor do placeholder para todos os inputs da ficha */
+::placeholder {
+    color: #ccc;
+    /* Cinza clarinho */
+    opacity: 1;
+    /* Garante que a cor apareça forte no Firefox */
+}
+
+/* Garante que o input de perícia siga o estilo */
+.p-col input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    outline: none;
+    color: #000;
+    /* Cor do texto quando digitado */
+}
+
 /* Container que segura Esquerda e Direita */
 .miolo-da-ficha {
     display: flex !important;
-    flex-direction: row !important; /* Força ficar um ao lado do outro sempre */
-    flex-wrap: nowrap !important;  /* Impede que a coluna da direita pule para baixo */
+    flex-direction: row !important;
+    /* Força ficar um ao lado do outro sempre */
+    flex-wrap: nowrap !important;
+    /* Impede que a coluna da direita pule para baixo */
     width: 100%;
-    gap: 10px; /* Espaço entre as colunas */
+    gap: 10px;
+    /* Espaço entre as colunas */
 }
 
 /* Garante que as colunas não fiquem espremidas demais */
 .col-esquerda {
-    flex: 1; 
-    min-width: 0; /* Evita que a coluna quebre o layout */
+    flex: 1;
+    min-width: 0;
+    /* Evita que a coluna quebre o layout */
 }
 
 .col-direita {
-    width: 320px; /* Ou a largura que você definiu */
+    width: 320px;
+    /* Ou a largura que você definiu */
     min-width: 320px;
+}
+
+/* CLASSES */
+
+
+/* Layout das Abas */
+.tabs-classes {
+    display: flex;
+    justify-content: space-around;
+    background: #222;
+    padding: 5px;
+    border-bottom: 2px solid #000;
+}
+
+.tab-btn-classe {
+    flex: 1;
+    padding: 12px 5px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-family: 'Arial Black', sans-serif;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: 0.3s;
+}
+
+.tab-btn-classe.active {
+    opacity: 1;
+}
+
+/* Cores das Abas Ativas */
+.tab-btn-classe[data-cor="vermelho"].active {
+    border-bottom: 4px solid #ff4d4d;
+}
+
+.tab-btn-classe[data-cor="verde"].active {
+    border-bottom: 4px solid #4CAF50;
+}
+
+.tab-btn-classe[data-cor="amarelo"].active {
+    border-bottom: 4px solid #FFC107;
+}
+
+.tab-btn-classe[data-cor="rosa"].active {
+    border-bottom: 4px solid #E91E63;
+}
+
+.tab-btn-classe[data-cor="azul"].active {
+    border-bottom: 4px solid #2196F3;
+}
+
+/* Grid de Seleção */
+.conteudo-classe {
+    display: none;
+    padding: 20px;
+}
+
+.conteudo-classe.active {
+    display: block;
+}
+
+.grid-classes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Duas colunas */
+    gap: 15px;
+}
+
+.card-classe {
+    border: 2px solid #000;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card-classe:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Selinhos dos Atributos Secundários */
+.sec-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid #000;
+}
+
+.b-for {
+    background: #eb2d2d;
+}
+
+.b-vig {
+    background: #4CAF50;
+}
+
+.b-des {
+    background: #FFC107;
+    color: #ffffff;
+}
+
+.b-car {
+    background: #db4eac;
+}
+
+.b-int {
+    background: #2196F3;
+}
+
+/* Se o seu modal principal usar outra classe (ex: .modal-content-classe), 
+   ajuste o nome abaixo. O importante é ter "position: relative" */
+.modal-content {
+    position: relative;
+    /* Dá o ponto de referência para o X se posicionar */
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 550px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilização exata do X no canto superior direito */
+.fechar-modal-custom {
+    position: absolute;
+    top: 15px;
+    /* Alinha perfeitamente no topo interno */
+    right: 20px;
+    /* Alinha perfeitamente na direita interna */
+    color: #000000;
+    /* Cor original: Preto */
+    font-size: 38px;
+    /* Tamanho de destaque idêntico ao print */
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    /* Efeito suave ao passar o mouse */
+    z-index: 100;
+    /* Garante que fique por cima das abas e textos */
+}
+
+/* Quando passar o mouse por cima do X */
+.fechar-modal-custom:hover {
+    color: #ff0000;
+    /* Muda para Vermelho absoluto */
+}
+
+/* Badges internas dinâmicas do topo do Split */
+.badge-principal-detalhe {
+    font-size: 11px;
+    padding: 3px 8px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.badge-principal-detalhe.for {
+    background: #eb2d2d;
+}
+
+.badge-principal-detalhe.vig {
+    background: #4CAF50;
+}
+
+.badge-principal-detalhe.des {
+    background: #FFC107;
+    color: #000;
+}
+
+.badge-principal-detalhe.car {
+    background: #db4eac;
+}
+
+.badge-principal-detalhe.int {
+    background: #2196F3;
+}
+
+/* Estilos de Textos de Conteúdo */
+.bloco-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 12px;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+.bloco-info p {
+    margin: 0;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    color: #555;
+    line-height: 1.4;
+    text-transform: none;
+    /* Mantém caixa mista para leitura confortável */
+}
+
+/*teste classe abas
+
+/* Organização interna do corpo do modal */
+.modal-body-layout {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    align-items: flex-start;
+}
+
+/* Espaço reservado escuro para a imagem */
+.placeholder-img-classe {
+    width: 170px;
+    height: 230px;
+    border: 2px solid #686868;
+    border-radius: 4px;
+    background: #1e1e24;
+    flex-shrink: 0;
+}
+
+.placeholder-img-classe img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Alinhamento dos blocos de texto */
+.modal-textos-classe h3 {
+    margin: 0 0 5px 0;
+    font-size: 13px;
+    color: #000;
+    font-weight: bold;
+}
+
+.modal-textos-classe p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+}
+
+/* Alinhamento dos botões inferiores */
+.modal-botoes-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn-voltar-classes {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-voltar-classes:hover {
+    background: #eee;
+}
+
+.btn-confirmar-classe {
+    flex-grow: 1;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-confirmar-classe:hover {
+    background: #5fac54;
+}
+
+/* Organiza o título e o badge na mesma linha de forma elegante */
+.modal-header-detalhe {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 15px !important;
+    padding-right: 5px;
+    /* Evita que cole na lateral */
+}
+
+/* O Badge corrigido: agora ele respeita as margens do modal */
+.badge-status-classe {
+    display: inline-block !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    padding: 6px 14px !important;
+    border-radius: 4px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Remove os absolute antigos para descer o elemento */
+    position: static !important;
+}
+
+/* Cores das Vertentes mantidas e reforçadas */
+.badge-status-classe.vig {
+    background-color: #4caf50 !important;
+}
+
+.badge-status-classe.des {
+    background-color: #ffc107 !important;
+}
+
+.badge-status-classe.car {
+    background-color: #e91e63 !important;
+}
+
+.badge-status-classe.int {
+    background-color: #2196f3 !important;
+}
+
+.badge-status-classe.for {
+    background-color: #ed1c24 !important;
+}
+
+/* Estilo do Input de classe para parecer clicável */
+#classe_input {
+    cursor: pointer;
+    color: #000000;
+    transition: background 0.3s;
+}
+
+#classe_input:hover {
+    background: #fff0f0;
 }
