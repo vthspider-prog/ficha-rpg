@@ -5,7 +5,7 @@ function initChart() {
     // Verifica se a classe Chart existe no escopo global antes de tentar instanciar
     if (typeof Chart === "undefined") {
         console.error("Erro crítico: A biblioteca Chart.js não foi carregada no HTML. O gráfico não será iniciado.");
-        return; 
+        return;
     }
 
     const ctx = document.getElementById('radarChart');
@@ -259,8 +259,8 @@ function confirmarEscolha() {
         atualizarTudo();
     }
 }
-function confirmarEscolha(){
-    if (especieTemporaria){
+function confirmarEscolha() {
+    if (especieTemporaria) {
         const input
     }
 }
@@ -491,7 +491,7 @@ const dadosDasClasses = {
         habNome: "???",
         habDesc: "???"
     },
-     /* ABAS DE DESTREZA (DES) */
+    /* ABAS DE DESTREZA (DES) */
     "Assassino": {
         tag: "FOR",
         proficiencias: "???",
@@ -516,7 +516,7 @@ const dadosDasClasses = {
         habNome: "???",
         habDesc: "???"
     },
-     /* ABAS DE CARISMA (CAR) */
+    /* ABAS DE CARISMA (CAR) */
     "Cozinheiro": {
         tag: "FOR",
         proficiencias: "???",
@@ -577,7 +577,7 @@ function selecionarClasse(nomeClasse) {
 
     // 1. Atualiza os textos
     document.getElementById('detalhe_classe_nome').innerText = nomeClasse.toUpperCase();
-    
+
     const badge = document.getElementById('detalhe_classe_tag');
     if (badge) {
         badge.innerText = info.tag;
@@ -590,7 +590,7 @@ function selecionarClasse(nomeClasse) {
     document.getElementById('detalhe_classe_hab_desc').innerText = info.habDesc;
 
     // 2. Alterna os modais
-    fecharModalClasse('modalClasse'); 
+    fecharModalClasse('modalClasse');
     document.getElementById('modal_detalhes_classe').style.display = 'block';
 }
 
@@ -607,10 +607,10 @@ function confirmarEscolhaClasseFinal() {
         if (inputClasse) {
             inputClasse.value = classeSelecionadaTemporaria;
         }
-        
+
         // Fecha o modal de detalhes
         document.getElementById('modal_detalhes_classe').style.display = 'none';
-        
+
         // Atualiza os gráficos/status se necessário
         if (typeof atualizarTudo === "function") {
             atualizarTudo();
