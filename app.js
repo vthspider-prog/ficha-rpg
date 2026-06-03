@@ -259,6 +259,11 @@ function confirmarEscolha() {
         atualizarTudo();
     }
 }
+function confirmarEscolha(){
+    if (especieTemporaria){
+        const input
+    }
+}
 
 function limparEspecie() {
     const inputEspecie = document.getElementById('especie_input');
