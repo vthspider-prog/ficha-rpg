@@ -17,25 +17,6 @@ body {
     margin: 0;
 }
 
-/* CONTAINER PRINCIPAL: Aumentamos a largura máxima para dar espaço aos atributos */
-.ficha-container {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    /* Damos um pouco mais de peso para a coluna da direita */
-    gap: 25px;
-    /* Aumentamos o espaço entre as colunas */
-    width: 100%;
-    max-width: 700px;
-    /* Aumentado de 950px para 1100px para caber tudo folgado */
-    margin: 0 auto;
-    background: #fff;
-    border: 2px solid #000;
-    border-left: 15px solid var(--vermelho);
-    padding: 25px;
-    /* Aumentamos o respiro interno */
-    box-sizing: border-box;
-    align-items: start;
-}
 
 .col-direita {
     width: 320px;
@@ -51,16 +32,6 @@ body {
 
 .col-direita>*:last-child {
     margin-bottom: 0;
-}
-
-
-/* Ajuste Mobile para a Ficha Principal */
-@media (max-width: 650px) {
-    .ficha-container {
-        grid-template-columns: 1fr;
-        /* Empilha as colunas no celular */
-        border-left-width: 8px;
-    }
 }
 
 .header-preto {
@@ -1033,105 +1004,6 @@ body.modal-aberto {
     margin: 0;
 }
 
-/*pericias */
-
-.footer-pericias {
-    width: 220% !important;
-    /* Força ocupar a largura total da ficha */
-    margin-top: 5px;
-    border: 2px solid #000;
-    background: #fff;
-    box-sizing: border-box;
-    /* Impede que a borda jogue o campo para fora */
-    display: block;
-    clear: both;
-}
-
-.titulo-pericias {
-    background: #000;
-    color: #fff;
-    text-align: center;
-    font-family: 'Arial Black', sans-serif;
-    font-size: 18px;
-    margin: 0;
-    padding: 1px 0;
-}
-
-.grid-pericias {
-    display: flex !important;
-    /* Coloca os itens lado a lado */
-    width: 100%;
-}
-
-.p-col {
-    flex: 1;
-    /* Faz cada uma das 5 colunas ter exatamente o mesmo tamanho */
-    text-align: center;
-    border-right: 1px solid #000;
-    padding: 3px 0;
-}
-
-.p-col:last-child {
-    border-right: none;
-    /* Tira a linha preta da última coluna */
-}
-
-.p-col input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-family: 'Arial Black', sans-serif;
-    font-size: 18px;
-    outline: none;
-}
-
-/* Cor do placeholder para todos os inputs da ficha */
-::placeholder {
-    color: #ccc;
-    /* Cinza clarinho */
-    opacity: 1;
-    /* Garante que a cor apareça forte no Firefox */
-}
-
-/* Garante que o input de perícia siga o estilo */
-.p-col input {
-    width: 100%;
-    border: none;
-    background: transparent;
-    text-align: center;
-    font-family: 'Arial Black', sans-serif;
-    font-size: 18px;
-    outline: none;
-    color: #000;
-    /* Cor do texto quando digitado */
-}
-
-/* Container que segura Esquerda e Direita */
-.miolo-da-ficha {
-    display: flex !important;
-    flex-direction: row !important;
-    /* Força ficar um ao lado do outro sempre */
-    flex-wrap: nowrap !important;
-    /* Impede que a coluna da direita pule para baixo */
-    width: 100%;
-    gap: 10px;
-    /* Espaço entre as colunas */
-}
-
-/* Garante que as colunas não fiquem espremidas demais */
-.col-esquerda {
-    flex: 1;
-    min-width: 0;
-    /* Evita que a coluna quebre o layout */
-}
-
-.col-direita {
-    width: 320px;
-    /* Ou a largura que você definiu */
-    min-width: 320px;
-}
-
 /* CLASSES */
 
 
@@ -1470,4 +1342,308 @@ body.modal-aberto {
 
 #classe_input:hover {
     background: #fff0f0;
+}
+
+/* CAMPO PERICIAS */
+
+/* ==========================================================================
+   1. MOLDURA DO LIVRO E ALINHAMENTO CENTRAL
+   ========================================================================== */
+/* Garante que o fundo da tela seja escuro e centralizado */
+body {
+    background-color: #1a1a1a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.ficha-container {
+    width: 100%;
+    max-width: 700px; /* Mantém o tamanho exato que você definiu */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.folha-branca-livro {
+    background: #fff;
+    border: 2px solid #000;
+    border-left: 15px solid var(--vermelho); /* A sua famosa listra vermelha */
+    padding: 25px; /* O respiro interno que você tinha colocado */
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 600px; /* Altura mínima para não encolher */
+    border-radius: 0 0 8px 8px;
+}
+/* ==========================================================================
+   2. DESIGN DAS ABAS DO TOPO (BASEADO NO SEU PRINT)
+   ========================================================================== */
+.abas-livro-container {
+    display: flex;
+    gap: 4px;
+    padding-left: 2px;
+}
+
+.aba-livro {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2a2a2a; /* Cor cinza escuro para abas desativadas */
+    border: 1px solid #000;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.aba-livro:hover {
+    background-color: #3a3a3a;
+}
+
+/* ==========================================================================
+   3. SISTEMA DE TROCA DE PÁGINAS (A MÁGICA DO LIVRO)
+   ========================================================================== */
+/* Esconde as páginas desativadas */
+.pagina-livro {
+    display: none; /* Esconde as páginas inativas */
+    width: 100%;
+    box-sizing: border-box;
+}
+/* Quando a Página Principal está ativa, ela usa Grid ou Flex para manter as duas colunas originais */
+#pagina_principal:checked ~ .abas-livro-container .btn-principal {
+    background-color: #ff4d4d;
+}
+#pagina_principal:checked ~ .folha-branca-livro #conteudo_principal {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide em duas colunas perfeitas idênticas ao início */
+    gap: 20px; /* Espaço entre a coluna da foto/status e a coluna dos atributos */
+}
+
+/* Configuração da Página de Perícias */
+#pagina_pericias:checked ~ .abas-livro-container .btn-pericias {
+    background-color: #ff4d4d;
+}
+#pagina_pericias:checked ~ .folha-branca-livro #conteudo_pericias {
+    display: block; /* Abre em bloco normal ocupando o espaço */
+}
+
+/* Configuração da Página de Perfil */
+#pagina_perfil:checked ~ .abas-livro-container .btn-perfil {
+    background-color: #ff4d4d;
+}
+#pagina_perfil:checked ~ .folha-branca-livro #conteudo_perfil {
+    display: block;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DA NOVA PÁGINA DE PERÍCIAS (DESIGN OTIMIZADO)
+   ========================================================================== */
+
+/* Header Preto - Ultra achatado, compacto e colado na esquerda */
+.header-pericias-fino {
+    background: #000000;
+    color: #ffffff;
+    /* Ativa o flexbox e força tudo para o centro */
+    display: flex !important;
+    justify-content: center !important; 
+    align-items: center !important;
+    gap: 8px !important;
+
+    /* Garante que a barra ocupe toda a largura disponível */
+    width: 100% !important; 
+    box-sizing: border-box !important;
+    /* Reseta alinhamentos de texto antigos que possam quebrar o flex */
+    text-align: center !important;
+
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Arial Black', sans-serif;
+    padding: 9px;
+    margin-bottom: 18px;
+    line-height: 1;
+}
+
+.header-pericias-fino span {
+    white-space: nowrap;
+}
+
+/* Quadrado branco de bônus do topo */
+.box-editavel-topo {
+    width: 40px;
+    height: 20px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-family: inherit;
+    padding: 0;
+}
+
+.box-editavel-topo:focus {
+    outline: none;
+    background: #f0f0f0;
+}
+
+/* Container que alinha as tabelas uma embaixo da outra e no centro */
+.grid-pericias-colunas {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;     /* MÁGICA: Centraliza as tabelas na página */
+    gap: 25px !important;              /* Espaço extra super elegante entre blocos */
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Tabelas com largura controlada - Nem gigantescas, nem espremidas */
+.caixa-categoria-nova {
+    width: 100% !important;
+    max-width: 520px !important;       /* LIMITE VISUAL: Perfeito para ler sem cansar os olhos */
+    border: 1px solid #000000;
+    border-radius: 6px;                /* Cantos ligeiramente mais arredondados */
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04); /* Sombra leve para dar profundidade e destaque */
+    box-sizing: border-box !important;
+}
+
+/* Títulos das Categorias com as Cores Oficiais */
+.topo-cat-pericia {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    padding: 5px 10px;
+    color: #000000;
+    border-bottom: 1px solid #000000;
+    text-transform: uppercase;
+}
+.topo-cat-pericia span {
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    text-transform: none;
+}
+
+/* Mapeamento exato de cores baseado nas suas tags de atributos */
+.topo-cat-pericia.c-for { background: #ffeded; color: #ed1c24; }
+.topo-cat-pericia.c-vig { background: #eef9f1; color: #2ecc71; }
+.topo-cat-pericia.c-des { background: #fffdf0; color: #f1c40f; }
+.topo-cat-pericia.c-car { background: #fdf2fa; color: #db4eac; }
+.topo-cat-pericia.c-int { background: #eef7fc; color: #2196f3; }
+
+/* Linha do cabeçalho interna da caixa */
+.tabela-cabecalho-p {
+    display: flex !important;
+    justify-content: flex-end !important; /* MÁGICA: Empurra os títulos todos para a direita */
+    background: #f8f9fa !important;
+    padding: 6px 16px !important; /* Mantém o mesmo recuo interno das linhas de baixo */
+    border-bottom: 1px solid #e0e0e0 !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    color: #777777 !important;
+    font-family: Arial, sans-serif;
+}
+/* Container dos três títulos */
+.tabela-cabecalho-p .grupo-titulos-colunas {
+    display: flex !important;
+    gap: 6px !important; /* EXATAMENTE o mesmo espaço entre os quadradinhos */
+}
+
+/* O nome da perícia empurra o resto para a direita */
+.col-nome {
+    flex: 4 !important;
+    text-align: left !important;
+}
+/* Cada palavra individual do topo */
+.col-cap {
+    width: 38px !important; /* EXATAMENTE a mesma largura dos inputs (ajuste se mudou o tamanho deles) */
+    text-align: center !important;
+    display: inline-block !important;
+}
+/* Bloco dos inputs na linha da perícia (Para conferência) */
+.inputs-tres {
+    display: flex !important;
+    gap: 6px !important; 
+}
+
+/* Os quadradinhos das perícias */
+.inputs-tres input {
+    width: 38px !important;     /* Tamanho casado com o topo */
+    height: 24px !important;
+    text-align: center !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+}
+
+/* Corpo da Tabela e Linhas de Perícias */
+.corpo-tabela-p {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Deixando os textos e linhas mais "grandinhos" e fáceis de ler */
+.linha-pericia-nova {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 16px !important;      /* Mais espaço interno (respiro para os olhos) */
+    border-bottom: 1px dashed #eaeaea !important;
+}
+
+.linha-pericia-nova:last-child {
+    border-bottom: none;
+}
+
+.linha-pericia-nova > span {
+    font-size: 13.5px !important;      /* Texto um pouco maior para leitura rápida */
+    font-weight: 500 !important;
+    color: #1a1a1a !important;
+}
+
+/* Bloco que junta as 3 caixinhas de inputs na direita */
+.inputs-tres {
+    display: flex;
+    gap: 4px;
+}
+
+.inputs-tres input {
+    width: 32px;
+    height: 20px;
+    text-align: center;
+    font-size: 11px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-weight: bold;
+    background: #ffffff;
+    outline: none;
+}
+
+/* Estilo do campo de Total (Cinza e travado para leitura) */
+.inputs-tres input.t-p {
+    background: #f0f0f0;
+    border-color: #bbbbbb;
+    color: #000000;
+}
+
+/* Remove as setinhas dos campos numéricos em navegadores Webkit (Chrome, Safari, Edge, Opera) */
+.inputs-tres input::-webkit-outer-spin-button,
+.inputs-tres input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove as setinhas no Firefox de forma moderna e sem avisos no editor */
+.inputs-tres input[type=number] {
+    appearance: textfield; /* Padrão moderno */
+    -moz-appearance: textfield !important; /* Compatibilidade com versões antigas */
 }
