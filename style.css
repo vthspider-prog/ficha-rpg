@@ -1,9 +1,53 @@
 :root {
-    --vermelho: #ed1c24;
+    --cor-tema: #ed1c24;
+    /* Padrão Inicial: Modo Escuro (conforme suas imagens) */
+    --fundo-folha: #424242;      /* A folha branca interna */
+    --fundo-externo: #2c2c2c;    /* O fundo escuro de trás */
+    --texto-padrao: #000000;     /* Texto das tabelas */
+    --fundo-tabela: #ffffff;     /* Fundo dos campos */
 }
 
 * {
     box-sizing: border-box;
+}
+
+/* Container que joga o lápis pro canto superior direito alinhado com o título */
+.container-lapis-tema {
+    position: absolute;
+    right: 20px;       /* Distância da borda direita do cabeçalho */
+    top: 22px;         /* Ajuste fino para alinhar verticalmente com o 'FICHA LV' */
+    z-index: 10;
+}
+
+/* Estilo do botão do lápis atualizado */
+.botao-lapis-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #474747; /* Seu cinza escuro irado */
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    
+    /* 3 linhas para limpar o comportamento padrão de tag button */
+    border: none;
+    outline: none;
+    padding: 0;
+}
+
+/* Efeito de hover - acende na cor do tema que o usuário escolheu */
+.botao-lapis-custom:hover {
+    transform: scale(1.1);
+    background-color: var(--cor-tema); 
+    box-shadow: 0 0 10px var(--cor-tema);
+}
+
+/* Evita que o ícone interno interfira no clique do botão */
+.botao-lapis-custom svg {
+    pointer-events: none;
 }
 
 /* Essencial para o cálculo de largura */
@@ -136,7 +180,7 @@ body {
 
 /* Estado Ativo: Quando a classe 'foto-postada' é adicionada via JS */
 .upload-area.foto-postada {
-    border: 1px solid #420101;
+    border: 1px solid #4e0101;
     /* Muda de tracejado para LINHA SÓLIDA */
     background-color: white;
 }
@@ -145,7 +189,7 @@ body {
 .upload-area.foto-postada:hover {
     border-color: var(--vermelho);
     /* Destaque sutil com a cor da ficha */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(20, 0, 0, 0.26);
     transform: scale(1.01);
 }
 
@@ -179,6 +223,7 @@ body {
     border: 1px solid black;
     padding: 5px;
     font-size: 11px;
+    font-weight: bold;
 }
 
 .tabela-dados input {
@@ -1369,14 +1414,18 @@ body {
 }
 
 .folha-branca-livro {
-    background: #fff;
+    background-color: var(--fundo-folha); /* Agora aceita dinamicamente a cor do menu! */
+    color: var(--texto-padrao);            /* Garante que os textos sigam a cor do tema */
     border: 2px solid #000;
-    border-left: 15px solid var(--vermelho); /* A sua famosa listra vermelha */
-    padding: 25px; /* O respiro interno que você tinha colocado */
+    border-left: 15px solid var(--cor-tema);
+    padding: 25px; 
     box-sizing: border-box;
     width: 100%;
-    min-height: 600px; /* Altura mínima para não encolher */
+    min-height: 600px; 
     border-radius: 0 0 8px 8px;
+    
+    /* 🌟 Transição suave de 0.3 segundos para as cores mudarem com elegância */
+    transition: background-color 0.3s ease, color 0.3s ease, border-left-color 0.3s ease;
 }
 /* ==========================================================================
    2. DESIGN DAS ABAS DO TOPO (BASEADO NO SEU PRINT)
@@ -1444,53 +1493,71 @@ body {
    ESTILIZAÇÃO DA NOVA PÁGINA DE PERÍCIAS (DESIGN OTIMIZADO)
    ========================================================================== */
 
-/* Header Preto - Ultra achatado, compacto e colado na esquerda */
+/* Container Principal do Título - Preto e Centralizado */
 .header-pericias-fino {
-    background: #000000;
+    background: #111111; /* Preto suave */
     color: #ffffff;
-    /* Ativa o flexbox e força tudo para o centro */
+    
+    /* Centraliza os elementos internos perfeitamente no meio */
     display: flex !important;
     justify-content: center !important; 
     align-items: center !important;
-    gap: 8px !important;
-
-    /* Garante que a barra ocupe toda a largura disponível */
+    gap: 12px !important; /* Espaço controlado entre a palavra PERÍCIAS e o quadradinho */
+    
     width: 100% !important; 
     box-sizing: border-box !important;
-    /* Reseta alinhamentos de texto antigos que possam quebrar o flex */
-    text-align: center !important;
-
-    font-weight: bold;
-    font-size: 20px;
-    font-family: 'Arial Black', sans-serif;
-    padding: 9px;
-    margin-bottom: 18px;
-    line-height: 1;
+    
+    padding: 12px 20px !important;
+    margin-bottom: 24px !important;
+    border-radius: 6px;
+    
+    /* Detalhe de linha vermelha na base combinando com a ficha */
+    /* ... todo o resto do código que já fizemos ... */
+    border-bottom: 3px solid var(--cor-tema) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Texto "PERÍCIAS" */
 .header-pericias-fino span {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     white-space: nowrap;
 }
 
-/* Quadrado branco de bônus do topo */
-.box-editavel-topo {
-    width: 40px;
-    height: 20px;
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-    color: #000000;
-    background: #ffffff;
-    border: 1px solid #ffffff;
-    border-radius: 4px;
-    box-sizing: border-box;
-    font-family: inherit;
-    padding: 0;
+/* O Quadrado de Bônus de Cima Totalmente Redesenhado */
+.header-pericias-fino .seu-estilo-aqui {
+    width: 46px !important;
+    height: 28px !important;
+    text-align: center !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    font-family: 'Arial', sans-serif;
+    
+    /* Cores combinando com os inputs de atributos da página principal */
+    color: #111111 !important;
+    background: #f5f5f5 !important;
+    
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    
+    /* Trava o tamanho no flexbox */
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    max-width: 46px !important;
+    
+    transition: all 0.2s ease;
 }
 
-.box-editavel-topo:focus {
-    outline: none;
-    background: #f0f0f0;
+/* Efeito de foco ao clicar no bônus adaptado ao tema dinâmico */
+.header-pericias-fino input:focus {
+    outline: none !important;
+    background: #ffffff !important;
+    border-color: var(--cor-tema) !important; /* Muda para a cor escolhida */
+    box-shadow: 0 0 8px var(--cor-tema) !important; /* Cria o brilho perfeito com a cor do tema */
 }
 
 /* Container que alinha as tabelas uma embaixo da outra e no centro */
@@ -1535,7 +1602,7 @@ body {
 /* Mapeamento exato de cores baseado nas suas tags de atributos */
 .topo-cat-pericia.c-for { background: #ffeded; color: #ed1c24; }
 .topo-cat-pericia.c-vig { background: #eef9f1; color: #2ecc71; }
-.topo-cat-pericia.c-des { background: #fffdf0; color: #f1c40f; }
+.topo-cat-pericia.c-des { background: #f8ebde; color: #e67e22; }
 .topo-cat-pericia.c-car { background: #fdf2fa; color: #db4eac; }
 .topo-cat-pericia.c-int { background: #eef7fc; color: #2196f3; }
 
@@ -1551,39 +1618,131 @@ body {
     color: #777777 !important;
     font-family: Arial, sans-serif;
 }
-/* Container dos três títulos */
+
+/* Container dos três títulos - Alinhamento Forçado por Tamanho Fixo */
 .tabela-cabecalho-p .grupo-titulos-colunas {
     display: flex !important;
-    gap: 6px !important; /* EXATAMENTE o mesmo espaço entre os quadradinhos */
+    gap: 0 !important;
+    
+    /* Força o bloco de textos a ter o tamanho idêntico ao bloco de inputs */
+    width: 116px !important;  /* (38px * 3 inputs) + 2px das linhas internas */
+    min-width: 116px !important;
+    
+    /* Cria o recuo da borda direita igual ao padding que a linha de baixo tem */
+    margin-right: 2px !important; 
 }
 
-/* O nome da perícia empurra o resto para a direita */
-.col-nome {
-    flex: 4 !important;
-    text-align: left !important;
-}
-/* Cada palavra individual do topo */
-.col-cap {
-    width: 38px !important; /* EXATAMENTE a mesma largura dos inputs (ajuste se mudou o tamanho deles) */
+.tabela-cabecalho-p .col-cap {
+    /* Mude para 39px. O input de baixo tem 38px, então 39px compensa 
+       a espessura da linha vertical de divisão perfeitamente! */
+    width: 39px !important; 
+    
     text-align: center !important;
     display: inline-block !important;
-}
-/* Bloco dos inputs na linha da perícia (Para conferência) */
-.inputs-tres {
-    display: flex !important;
-    gap: 6px !important; 
+    box-sizing: border-box !important;
+    border-left: 1px solid #dcdcdc !important; /* A linha divisória do topo */
 }
 
-/* Os quadradinhos das perícias */
+/* Garante que o primeiro título (Base) tenha a primeira linha divisória */
+.tabela-cabecalho-p .col-cap:first-child {
+    border-left: 1px solid #dcdcdc !important; 
+}
+
+
+/* Base de Força - Número Vermelho */
+.inputs-tres input.pericia-base-for {
+    color: #ed1c24 !important;
+}
+
+/* Base de Vigor - Número Verde */
+.inputs-tres input.pericia-base-vig {
+    color: #2ecc71 !important;
+}
+
+/* Base de Destreza - Número Laranja */
+.inputs-tres input.pericia-base-des {
+    color: #e67e22 !important;
+}
+
+/* Base de Carisma - Número Rosa */
+.inputs-tres input.pericia-base-car {
+    color: #e91e63 !important;
+}
+
+/* Base de Intelecto - Número Azul */
+.inputs-tres input.pericia-base-int {
+    color: #3498db !important;
+}
+
 .inputs-tres input {
-    width: 38px !important;     /* Tamanho casado com o topo */
+    width: 38px !important;
     height: 24px !important;
     text-align: center !important;
-    font-size: 12px !important;
-    font-weight: bold !important;
-    border: 1px solid #ccc !important;
-    border-radius: 4px !important;
+    font-size: 14px !important; /* Aumentei um tiquinho para destacar mais */
+    
+    /* MÁGICA DO NEGITO E SUBINHADO: */
+    font-weight: bold !important; /* Deixa em negrito */
+    border: none !important;      /* Remove todas as bordas antigas dos lados e de cima */
+    border-radius: 0 !important;
+    background: transparent !important;
+    
+    /* Cria uma linha padrão preta embaixo (caso queira uma base para todos) */
+    border-bottom: 2px solid #000000 !important; 
 }
+
+/* Opcional: Se quiser dar um fundo cinza de leve apenas no campo Total */
+.inputs-tres input.t-p {
+    background: #f4f4f4 !important;
+}
+
+/* Cria uma borda sutil ao redor de todo o bloco de números para fechar a "caixa" de dados */
+.inputs-tres {
+    border: 1px solid #dcdcdc !important;
+    border-radius: 4px !important; /* Deixa os cantos externos do conjunto arredondados */
+    overflow: hidden; /* Garante que os inputs internos sigam o arredondado das pontas */
+    background: #ffffff;
+}
+
+/* Base de Força - Número e Linha Vermelhos */
+.inputs-tres input.pericia-base-for {
+    color: #df0a11 !important;
+    border-bottom: 2px solid #cc1218  !important;
+}
+
+/* Base de Vigor - Número e Linha Verde */
+.inputs-tres input.pericia-base-vig {
+    color: #2ecc71 !important;
+    border-bottom: 2px solid #2ecc71 !important;
+}
+
+/* Base de Destreza - Número e Linha Laranja */
+.inputs-tres input.pericia-base-des {
+    color: #e67e22 !important;
+    border-bottom: 2px solid #e67e22 !important;
+}
+
+/* Base de Carisma - Número e Linha Rosa */
+.inputs-tres input.pericia-base-car {
+    color: #eb2dcb !important;
+    border-bottom: 2px solid #eb2dcb !important;
+}
+
+/* Base de Intelecto - Número e Linha Azul */
+.inputs-tres input.pericia-base-int {
+    color: #3498db !important;
+    border-bottom: 2px solid #3498db !important;
+}
+
+
+/* ==========================================================================
+   DICA: CASO QUEIRA COMPENSAR OS CAMPOS DE BUILD E TOTAL
+   ========================================================================== */
+/* Faz com que os campos de Build e Total também fiquem em negrito e com linha preta embaixo */
+.inputs-tres input:not([class*="pericia-base"]) {
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
 
 /* Corpo da Tabela e Linhas de Perícias */
 .corpo-tabela-p {
@@ -1646,4 +1805,78 @@ body {
 .inputs-tres input[type=number] {
     appearance: textfield; /* Padrão moderno */
     -moz-appearance: textfield !important; /* Compatibilidade com versões antigas */
+}
+
+/* Container do Dropdown */
+.menu-tema-dropdown {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    right: 0;
+    top: 34px;
+    background: #222226;
+    border: 1px solid #3b3353;
+    border-radius: 8px;
+    padding: 12px;
+    width: 160px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Classe utilitária para exibir o menu via JS */
+.menu-tema-dropdown.ativo {
+    display: flex;
+}
+
+.menu-tema-secao {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menu-tema-secao label {
+    color: #bbb;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Estilizando o input de cor dentro do menu */
+.menu-tema-secao input[type="color"] {
+    width: 100%;
+    height: 28px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+}
+
+.menu-tema-divisor {
+    height: 1px;
+    background: #333;
+    margin: 4px 0;
+}
+
+/* Botões de Alternar Claro/Escuro */
+.grupo-botoes-modo {
+    display: flex;
+    gap: 4px;
+}
+
+.grupo-botoes-modo button {
+    flex: 1;
+    background: #333;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 6px 0;
+    font-size: 11px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.grupo-botoes-modo button:hover {
+    background: var(--cor-tema);
+    border-color: var(--cor-tema);
 }
