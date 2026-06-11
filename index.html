@@ -27,7 +27,35 @@
             <div class="pagina-livro" id="conteudo_principal">
 
                 <div class="col-esquerda">
-                    <header class="header-preto">
+                    <header class="header-preto" style="position: relative; padding-top: 15px;">
+                        <div class="container-lapis-tema"
+                            style="position: absolute; right: 20px; top: 20px; z-index: 100;">
+                            <button type="button" class="botao-lapis-custom" id="btn-menu-tema"
+                                onclick="toggleMenuTema(event)" title="Configurações de Aparência">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffffff"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+
+                            <div class="menu-tema-dropdown" id="menu-tema-dropdown">
+                                <div class="menu-tema-secao">
+                                    <label>Cor do Tema</label>
+                                    <input type="color" id="seletor-cor" value="#ed1c24"
+                                        oninput="atualizarTemaFicha(this.value)">
+                                </div>
+                                <div class="menu-tema-divisor"></div>
+                                <div class="menu-tema-secao">
+                                    <label>Modo de Exibição</label>
+                                    <div class="grupo-botoes-modo">
+                                        <button type="button" onclick="mudarModoBrilho('claro')">☀️ Claro</button>
+                                        <button type="button" onclick="mudarModoBrilho('escuro')">🌙 Escuro</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="cabecalho-topo">
                             <h1>FICHA LV
                                 <select id="campo_lv">
@@ -86,8 +114,7 @@
                                         onclick="abrirModalExclusivo('modalClasse')">
 
                                     <button id="btn_limpar_classe" class="btn-lixeira-sutil"
-                                        onclick="removerClasseSelecionada()" title="Limpar"
-                                        style="display: none;">✕</button>
+                                        onclick="event.stopPropagation(); limparClasse();" title="Limpar">✕</button>
                                 </div>
                             </td>
                     </table>
@@ -355,7 +382,7 @@
                             <div class="grid-classes">
                                 <div class="card-classe" onclick="selecionarClasse('Bárbaro')">Bárbaro <span
                                         class="sec-badge b-vig">VIG</span></div>
-                                <div class="card-classe" onclick="selecionarClasse('Carrasco')">Carrasco <span
+                                <div class="card-classe" onclick="selecionarClasse('Ceifador')">Ceifador <span
                                         class="sec-badge b-des">DES</span></div>
                                 <div class="card-classe" onclick="selecionarClasse('Performático')">Performático <span
                                         class="sec-badge b-car">CAR</span></div>
@@ -458,7 +485,7 @@
 
                 <div class="header-pericias-fino">
                     <span>PERÍCIAS</span>
-                    <input type="text" class="box-editavel-topo" placeholder="+0" value="+0" spellcheck="false">
+                    <input type="text" class="seu-estilo-aqui" placeholder="+0" oninput="autoMais(this)">
                 </div>
 
                 <div class="grid-pericias-colunas">
@@ -466,57 +493,106 @@
                     <div class="caixa-categoria-nova">
                         <div class="topo-cat-pericia c-for">FOR: <span>Força</span></div>
                         <div class="tabela-cabecalho-p">
-                            <span class="col-cap">Base</span>
-                            <span class="col-cap">Build</span>
-                            <span class="col-cap">Total</span>
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
                         </div>
                         <div class="corpo-tabela-p">
-                            <div class="linha-pericia-nova"><span>Arremesso</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                            <div class="linha-pericia-nova">
+                                <span>Arremesso</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Arrombamento</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Arrombamento</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Atletismo</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Atletismo</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Combate</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Combate</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Levantamento</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Levantamento</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="caixa-categoria-nova">
                         <div class="topo-cat-pericia c-vig">VIG: <span>Vigor</span></div>
+
                         <div class="tabela-cabecalho-p">
-                            <span class="col-cap">Base</span>
-                            <span class="col-cap">Build</span>
-                            <span class="col-cap">Total</span>
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
                         </div>
+
                         <div class="corpo-tabela-p">
-                            <div class="linha-pericia-nova"><span>Consciência</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                            <div class="linha-pericia-nova">
+                                <span>Consciência</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Resistência</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Resistência</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Tolerância</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Tolerância</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
                             </div>
-                            <div class="linha-pericia-nova"><span>Fôlego</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Fôlego</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -524,34 +600,61 @@
                     <div class="caixa-categoria-nova">
                         <div class="topo-cat-pericia c-des">DES: <span>Destreza</span></div>
                         <div class="tabela-cabecalho-p">
-                            <span class="col-cap">Base</span>
-                            <span class="col-cap">Build</span>
-                            <span class="col-cap">Total</span>
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
                         </div>
                         <div class="corpo-tabela-p">
                             <div class="linha-pericia-nova"><span>Acrobacia</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Condução</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Furtividade</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Percepção</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Pontaria</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Prestidigitação</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Reflexo</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -559,42 +662,68 @@
                     <div class="caixa-categoria-nova">
                         <div class="topo-cat-pericia c-car">CAR: <span>Carisma</span></div>
                         <div class="tabela-cabecalho-p">
-                            <span class="col-cap">Base</span>
-                            <span class="col-cap">Build</span>
-                            <span class="col-cap">Total</span>
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
                         </div>
                         <div class="corpo-tabela-p">
                             <div class="linha-pericia-nova"><span>Adestramento</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Atuação</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Diplomacia</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Enganação</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Gastronomia</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Intimidação</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Intuição</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Sedução</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -602,56 +731,82 @@
                     <div class="caixa-categoria-nova">
                         <div class="topo-cat-pericia c-int">INT: <span>Intelecto</span></div>
                         <div class="tabela-cabecalho-p">
-                            <span class="col-cap">Base</span>
-                            <span class="col-cap">Build</span>
-                            <span class="col-cap">Total</span>
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
                         </div>
                         <div class="corpo-tabela-p">
                             <div class="linha-pericia-nova"><span>Alquimia</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Arcanismo</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Biologia</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>História</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Investigação</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Linguística</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Medicina</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Ocultismo</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                             <div class="linha-pericia-nova"><span>Tecnologia</span>
-                                <div class="inputs-tres"><input type="number" value="0"><input type="number"
-                                        placeholder="+0"><input type="number" readonly value="0" class="t-p"></div>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                </div>
-            </div>
 
 
-
-            <script src="app.js"></script>
+                    <script src="app.js"></script>
 </body>
 
 </html>
