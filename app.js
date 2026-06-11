@@ -53,6 +53,30 @@ function initChart() {
     }
 }
 
+// ==========================================================================
+// SISTEMA DE COR DINÂMICA (ALTERAR TEMA DA FICHA)
+// ==========================================================================
+function atualizarTemaFicha(novaCor) {
+    // 1. Altera a variável do CSS (muda a listra lateral e topo de perícias)
+    document.documentElement.style.setProperty('--cor-tema', novaCor);
+    
+    // 2. Altera a cor do gráfico Radar se ele já estiver criado
+    if (typeof radarChart !== "undefined" && radarChart && radarChart.data && radarChart.data.datasets[0]) {
+        // Altera a linha do gráfico
+        radarChart.data.datasets[0].borderColor = novaCor;
+        
+        // Altera o preenchimento de dentro do gráfico (adicionando opacidade de 30%)
+        // O "4d" no final converte a cor para transparente (equivalente ao seu antigo rgba 0.3)
+        radarChart.data.datasets[0].backgroundColor = novaCor + "4d"; 
+        
+        // Renderiza o gráfico com a cor nova na tela
+        radarChart.update();
+    }
+    
+    // 3. Salva a cor no navegador para o jogador não perder ao atualizar a página
+    localStorage.setItem('temaFichaRPG', novaCor);
+}
+
 // 2. FUNÇÃO ÚNICA: Atualiza o Gráfico, Perícias e Status Secundários
 function atualizarTudo() {
     try {
@@ -92,29 +116,18 @@ function atualizarTudo() {
 // 3. Atualização de Defesa e Domínio (Tratando Inputs e Tags de texto)
 function atualizarStatusSecundariosSeguro(valoresAtributos) {
     try {
-        const destreza = valoresAtributos[2] || 0;
-        const defesaTotal = 0 + destreza;
-        const dominioTotal = 0;
-
-        const campoDefesa = document.getElementById('valor_defesa');
-        const campoDominio = document.getElementById('valor_dominio');
-
+        const campoDefesa = document.getElementById('defesa_input');
+        
         if (campoDefesa) {
-            if (campoDefesa.tagName === "INPUT") {
-                campoDefesa.value = defesaTotal;
-            } else {
-                campoDefesa.innerText = defesaTotal;
+            // Se o campo estiver completamente vazio (primeiro carregamento), define o padrão 10
+            if (campoDefesa.value.trim() === "") {
+                campoDefesa.value = 10;
             }
+            
+            // Aqui você pode somar bônus automáticos vindos de 'valoresAtributos' se quiser,
+            // mas como ele é totalmente editável, o usuário pode alterar o valor direto na ficha.
         }
-
-        if (campoDominio) {
-            const sinal = dominioTotal >= 0 ? "+" : "";
-            if (campoDominio.tagName === "INPUT") {
-                campoDominio.value = sinal + dominioTotal;
-            } else {
-                campoDominio.innerText = sinal + dominioTotal;
-            }
-        }
+    
     } catch (e) {
         console.error("Erro ao atualizar status secundários:", e);
     }
@@ -259,11 +272,6 @@ function confirmarEscolha() {
         atualizarTudo();
     }
 }
-function confirmarEscolha() {
-    if (especieTemporaria) {
-        const input
-    }
-}
 
 function limparEspecie() {
     const inputEspecie = document.getElementById('especie_input');
@@ -294,22 +302,19 @@ function calcularStatus(tipo) {
 }
 
 function formatarSinal(input) {
-    // 1. Pega o valor atual e remove tudo o que não for número ou sinal de menos
     let valor = input.value.replace(/[^\d-]/g, "");
 
-    // 2. Se o campo ficar vazio, limpa e deixa o placeholder agir
     if (valor === "") {
         input.value = "";
         return;
     }
 
-    // 3. Se for um número negativo (começa com -), mantém o sinal de menos normal
     if (valor.startsWith("-")) {
-        // Evita que o usuário digite mais de um sinal de menos
-        input.value = "-" + valor.replace(/-/g, "");
+        let numeros = valor.replace(/-/g, "");
+        input.value = numeros === "" ? "-" : "-" + parseInt(numeros);
     } else {
-        // 4. Se for positivo ou zero, força o sinal de "+" na frente do número
-        input.value = "+" + valor;
+        let numeroPuro = parseInt(valor);
+        input.value = isNaN(numeroPuro) ? "" : "+" + numeroPuro;
     }
 }
 
@@ -322,12 +327,12 @@ function autoMais(input) {
         return;
     }
 
-    // Se for um número negativo, mantém o sinal de menos normal
     if (valor.startsWith("-")) {
-        input.value = "-" + valor.replace(/-/g, "");
+        let numeros = valor.replace(/-/g, "");
+        input.value = numeros === "" ? "-" : "-" + parseInt(numeros);
     } else {
-        // Se for positivo ou zero, crava o "+" na frente
-        input.value = "+" + valor;
+        let numeroPuro = parseInt(valor);
+        input.value = isNaN(numeroPuro) ? "" : "+" + numeroPuro;
     }
 }
 /*função pra adicionar o d automatico*/
@@ -430,10 +435,24 @@ function fecharDetalhesClasse() {
 
 // Substitua o bloco de inicialização do final do arquivo por este:
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initChart);
+    document.addEventListener("DOMContentLoaded", () => {
+        initChart();
+        // Carrega a cor salva se ela existir
+        const corSalva = localStorage.getItem('temaFichaRPG');
+        if (corSalva) {
+            atualizarTemaFicha(corSalva);
+            const inputCor = document.getElementById('seletor-cor');
+            if (inputCor) inputCor.value = corSalva;
+        }
+    });
 } else {
-    // Se o DOM já estiver pronto, executa imediatamente sem re-escutar eventos
     initChart();
+    const corSalva = localStorage.getItem('temaFichaRPG');
+    if (corSalva) {
+        atualizarTemaFicha(corSalva);
+        const inputCor = document.getElementById('seletor-cor');
+        if (inputCor) inputCor.value = corSalva;
+    }
 }
 
 /*teste classe detelahes*/
@@ -448,7 +467,7 @@ const dadosDasClasses = {
         habNome: "Fúria Incontrolável",
         habDesc: "Você pode entrar em fúria como uma ação bônus. Recebe +2 em testes de Força e resistência a danos físicos por 1 minuto."
     },
-    "Carrasco": {
+    "Ceifador": {
         tag: "DES",
         proficiencias: "Armas: Cortantes, Pesadas e de Duas Mãos.<br>Armaduras: Médias.",
         habNome: "Golpe Executor",
@@ -600,32 +619,10 @@ function voltarParaListaClasses() {
     abrirModalExclusivo('modalClasse'); // Reabre o modal da imagem que você enviou
 }
 
-// 3. Botão CONFIRMAR: Salva a escolha no input principal e limpa a tela
 function confirmarEscolhaClasseFinal() {
     if (classeSelecionadaTemporaria) {
-        const inputClasse = document.getElementById('input-classe'); // Certifique-se de que o ID do seu input de classe é este
-        if (inputClasse) {
-            inputClasse.value = classeSelecionadaTemporaria;
-        }
-
-        // Fecha o modal de detalhes
-        document.getElementById('modal_detalhes_classe').style.display = 'none';
-
-        // Atualiza os gráficos/status se necessário
-        if (typeof atualizarTudo === "function") {
-            atualizarTudo();
-        }
-    }
-}
-
-/*LIMPAR CLASSE */
-
-// Substitua essas duas funções no seu arquivo script.js para casar com o seu HTML de tabela:
-
-function confirmarEscolhaClasseFinal() {
-    if (classeSelecionadaTemporaria) {
-        // Coloca o nome da classe no input da tabela
-        const inputClasse = document.getElementById('classe_input');
+        // CORREÇÃO: Mudado de 'input-classe' para 'classe_input' para bater com seu HTML
+        const inputClasse = document.getElementById('classe_input'); 
         if (inputClasse) {
             inputClasse.value = classeSelecionadaTemporaria;
         }
@@ -636,12 +633,37 @@ function confirmarEscolhaClasseFinal() {
             btnLimpar.style.display = 'inline-block';
         }
 
-        // Fecha a tela de detalhes
-        document.getElementById('modal_detalhes_classe').style.display = 'none';
+        // Fecha o modal de detalhes
+        const modalDetalhes = document.getElementById('modal_detalhes_classe');
+        if (modalDetalhes) {
+            modalDetalhes.style.display = 'none';
+        }
 
-        if (typeof atualizarTudo === "function") atualizarTudo();
+        // Atualiza a ficha e o gráfico
+        if (typeof atualizarTudo === "function") {
+            atualizarTudo();
+        }
     }
 }
+
+/*LIMPAR CLASSE */
+
+// Substitua essas duas funções no seu arquivo script.js para casar com o seu HTML de tabela:
+
+function limparClasse() {
+    const inputClasse = document.getElementById('classe_input');
+    if (inputClasse) {
+        inputClasse.value = "";
+    }
+
+    const btnLimpar = document.getElementById('btn_limpar_classe');
+    if (btnLimpar) {
+        btnLimpar.style.display = 'none'; // Esconde o X depois de limpar
+    }
+
+    if (typeof atualizarTudo === "function") atualizarTudo();
+}
+
 
 function atualizarTesteMorte() {
     const m1 = document.getElementById('morte_1').checked;
@@ -653,3 +675,131 @@ function atualizarTesteMorte() {
         console.log("O personagem acumulou 3 falhas no Teste de Morte.");
     }
 }
+
+
+/* PERICIAS */
+
+document.addEventListener("DOMContentLoaded", function () {
+    
+    // 1. FUNÇÃO PARA CALCULAR OS TOTAIS EM TEMPO REAL
+    function calcularTotalLinha(inputsTresContainer) {
+        const inputs = inputsTresContainer.querySelectorAll('input');
+        if (inputs.length >= 3) {
+            const inputBase = inputs[0];  // Base
+            const inputBuild = inputs[1]; // Build
+            const inputTotal = inputs[2]; // Total
+
+            // Remove tudo o que não for número ou sinal de menos para não quebrar o cálculo
+            let valorBase = parseInt(inputBase.value.replace(/[^\d-]/g, '')) || 0;
+            let valorBuild = parseInt(inputBuild.value.replace(/[^\d-]/g, '')) || 0;
+
+            // Soma e joga no campo Total
+            inputTotal.value = valorBase + valorBuild;
+        }
+    }
+
+    // 2. FUNÇÃO PARA VINCULAR O ATRIBUTO PRINCIPAL À BASE
+    function vincularAtributoPericia(idAtributo, classePericias) {
+        const inputAtributo = document.getElementById(idAtributo);
+        const inputsBasePericias = document.querySelectorAll('.' + classePericias);
+        
+        if (inputAtributo) {
+            // Toda vez que o atributo mudar, atualiza as bases ligadas a ele
+            inputAtributo.addEventListener("input", function () {
+                let valor = inputAtributo.value;
+                let valorLimpo = valor.replace(/[^\d-]/g, '') || "0";
+
+                inputsBasePericias.forEach(function (inputBase) {
+                    inputBase.value = valorLimpo;
+                    
+                    // Como a base mudou, força o recálculo do Total daquela linha
+                    const container = inputBase.closest('.inputs-tres');
+                    calcularTotalLinha(container);
+                });
+            });
+        }
+    }
+
+    // 3. MONITORAR, SOMAR E FORMATAR O CAMPO "BUILD" (COM O SINAL DE "+")
+    document.querySelectorAll('.inputs-tres').forEach(function (container) {
+        const inputs = container.querySelectorAll('input');
+        if (inputs.length >= 2) {
+            const inputBuild = inputs[1]; // O campo do meio (Build)
+
+            // Enquanto o jogador digita, o Total atualiza instantaneamente
+            inputBuild.addEventListener("input", function () {
+                calcularTotalLinha(container);
+            });
+
+            // Quando o jogador clica fora do campo (blur): Formata colocando o "+"
+            inputBuild.addEventListener("blur", function () {
+                let valorPuro = parseInt(inputBuild.value.replace(/[^\d-]/g, ''));
+                
+                if (!isNaN(valorPuro) && valorPuro > 0) {
+                    inputBuild.value = "+" + valorPuro; // Ex: vira +2
+                } else if (!isNaN(valorPuro) && valorPuro === 0) {
+                    inputBuild.value = "+0";
+                }
+            });
+
+            // Quando o jogador clica para editar (focus): Remove temporariamente o "+" para facilitar a digitação
+            inputBuild.addEventListener("focus", function () {
+                if (inputBuild.value.startsWith("+")) {
+                    inputBuild.value = inputBuild.value.replace("+", "");
+                }
+            });
+        }
+    });
+
+    // 4. ATIVAR OS VÍNCULOS DOS ATRIBUTOS COM AS SUAS RESPECTIVAS BASES
+    vincularAtributoPericia("base_for", "pericia-base-for"); // Força
+    vincularAtributoPericia("base_vig", "pericia-base-vig"); // Vigor
+    vincularAtributoPericia("base_des", "pericia-base-des"); // Destreza
+    vincularAtributoPericia("base_car", "pericia-base-car"); // Carisma
+    vincularAtributoPericia("base_int", "pericia-base-int"); // Intelecto
+
+});
+
+// Abre e fecha o menu dropdown ao clicar no lápis
+function toggleMenuTema(event) {
+    event.stopPropagation();
+    const dropdown = document.getElementById('menu-tema-dropdown');
+    dropdown.classList.toggle('ativo');
+}
+
+// Fecha o menu se o jogador clicar em qualquer outro lugar da tela
+document.addEventListener('click', () => {
+    const dropdown = document.getElementById('menu-tema-dropdown');
+    if (dropdown) dropdown.classList.remove('ativo');
+});
+
+// Evita fechar o menu se clicar dentro dele
+const dropdownMenu = document.getElementById('menu-tema-dropdown');
+if (dropdownMenu) {
+    dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
+}
+
+// Função para mudar entre modo Claro e Escuro
+function mudarModoBrilho(modo) {
+    if (modo === 'escuro') {
+        // Altera o fundo da folha para escuro e os textos para branco
+        document.documentElement.style.setProperty('--fundo-folha', '#3f3f3f');
+        document.documentElement.style.setProperty('--texto-padrao', '#ffffff');
+        // Se quiser mudar o fundo de fora da ficha também:
+        document.body.style.backgroundColor = '#2c2c2c'; 
+    } else {
+        // Modo Escuro invertido (Folha branca tradicional)
+        document.documentElement.style.setProperty('--fundo-folha', '#ffffff');
+        document.documentElement.style.setProperty('--texto-padrao', '#000000');
+        document.body.style.backgroundColor = '#1a191f';
+    }
+    localStorage.setItem('modoBrilhoFicha', modo);
+}
+
+// Carregar as configurações salvas assim que a página abrir
+document.addEventListener("DOMContentLoaded", () => {
+    const modoSalvo = localStorage.getItem('modoBrilhoFicha');
+    if (modoSalvo) {
+        mudarModoBrilho(modoSalvo);
+    }
+});
