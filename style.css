@@ -1880,3 +1880,479 @@ body {
     background: var(--cor-tema);
     border-color: var(--cor-tema);
 }
+
+/* ==========================================================================
+   LAYOUT PERFIL - RPG MODERNO INTERATIVO (ADAPTÁVEL)
+   ========================================================================== */
+
+#conteudo_perfil {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f8f9fa; /* Fundo claro, limpo e moderno */
+    color: #1a1a1a;
+}
+
+/* ==========================================================================
+   BOTÕES DE SUB-ABAS (ESTILO SELEÇÃO DE MENU GAMER)
+   ========================================================================== */
+.menu-sub-abas-rpg {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    padding-bottom: 5px;
+}
+
+.btn-sub-aba {
+    background: #ffffff;
+    color: #2d3748;
+    border: 2px solid #2d3748;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 0px #2d3748; /* Efeito de profundidade 3D */
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Efeito Hover Sutil */
+.btn-sub-aba:hover {
+    background: #f7fafc;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 0px #2d3748;
+}
+
+/* SUB-ABA ATIVA: Adapta-se dinamicamente à cor principal da sua ficha */
+.btn-sub-aba.active {
+    background-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3)) !important;
+    color: #ffffff !important;
+    border-color: #2d3748;
+    transform: translateY(4px); /* Botão "afunda" ao ser clicado/ativo */
+    box-shadow: 0px 0px 0px #2d3748;
+}
+
+/* ==========================================================================
+   CARDS E CAIXAS DE STATUS (NEO-MINIMALISTA)
+   ========================================================================== */
+.card-perfil-status {
+    background: #ffffff;
+    border: 2px solid #2d3748;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(45, 55, 72, 0.08);
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Títulos Limpos com Detalhe da Cor da Ficha */
+.card-perfil-status h3 {
+    margin: 0 0 20px 0;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Pequeno marcador quadrado antes do título que puxa a cor da ficha */
+.card-perfil-status h3::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   INPUTS INTERATIVOS
+   ========================================================================== */
+.grid-inputs-perfil input, 
+.item-relacao .nome-npc,
+.textarea-itens,
+.textarea-notas,
+.moeda-item input {
+    background-color: #ffffff !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    color: #2d3748 !important;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none !important;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Focus: Borda muda dinamicamente para a cor da sua ficha */
+.grid-inputs-perfil input:focus, 
+.item-relacao .nome-npc:focus,
+.textarea-itens:focus,
+.textarea-notas:focus {
+    border-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3)) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(145, 39, 179, 0.15) !important;
+}
+
+/* Grid de Características */
+.grid-inputs-perfil {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.grid-inputs-perfil label {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #718096;
+}
+
+/* ==========================================================================
+   RELAÇÕES E SLIDERS
+   ========================================================================== */
+.item-relacao {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   SISTEMA DE AFINIDADE POR CORAÇÕES (ESTILO STARDEW VALLEY)
+   ========================================================================= */
+.container-coracoes {
+    display: flex;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #edf2f7;
+    border-radius: 20px;
+    border: 2px solid #2d3748;
+    user-select: none;
+    align-items: center;
+    height: 28px;
+}
+
+.coracao-rpg {
+    font-size: 20px;
+    color: #cbd5e0;
+    cursor: pointer;
+    transition: transform 0.1s ease, color 0.15s ease;
+    line-height: 1;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.15);
+}
+
+.coracao-rpg:hover {
+    transform: scale(1.3);
+}
+
+.coracao-rpg.active {
+    color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão Adicionar Relação */
+.btn-adicionar-sutil {
+    background: #ecc94b !important;
+    border: 2px solid #2d3748;
+    color: #2d3748;
+    width: 100%;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 3px 0px #2d3748;
+    transition: all 0.1s;
+    margin-top: 8px;
+}
+
+.btn-adicionar-sutil:hover {
+    transform: translateY(-1px);
+    box-shadow: 0px 4px 0px #2d3748;
+}
+
+.btn-adicionar-sutil:active {
+    transform: translateY(3px);
+    box-shadow: 0px 0px 0px #2d3748;
+}
+
+/* ==========================================================================
+   DIÁRIO DE CAMPANHA (TEXTAREA LIMPO)
+   ========================================================================== */
+.container-topicos-dinamicos {
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.textarea-notas {
+    width: 100%;
+    height: 280px;
+    border: 2px solid #e2e8f0 !important;
+    resize: none;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.abas-anotacoes-botoes {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    background: #edf2f7;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.aba-nota {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #4a5568;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.aba-nota.active {
+    background: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   NOVO LAYOUT DE INVENTÁRIO (ESTILO GAMER / REFORMULADO)
+   ========================================================================== */
+.secao-inventario-moderno {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Barra de Progresso de Carga */
+.wrapper-barra-carga {
+    background: #edf2f7;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #2d3748;
+    margin-bottom: 20px;
+}
+
+.info-texto-carga {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.barra-carga-bg {
+    width: 100%;
+    height: 12px;
+    background: #cbd5e0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #2d3748;
+}
+
+.barra-carga-progresso {
+    height: 100%;
+    background: var(--cor-tema, #9127b3);
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.2s ease;
+}
+
+/* Grid Interno da Mochila */
+.mochila-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 16px;
+}
+
+.mochila-grid-layout h4 {
+    margin: 0 0 8px 0;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #718096;
+}
+
+.textarea-itens {
+    width: 100%;
+    height: 160px;
+    resize: none;
+}
+
+/* Novo Controle Numérico de Peso (+ e -) */
+.controle-carga-novo {
+    display: flex;
+    align-items: center;
+    border: 2px solid #2d3748;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.btn-peso-ajuste {
+    background: #edf2f7;
+    border: none;
+    width: 35px;
+    height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    color: #2d3748;
+    transition: background 0.2s;
+}
+
+.btn-peso-ajuste:hover {
+    background: #cbd5e0;
+}
+
+.input-carga-nova {
+    width: 100%;
+    height: 40px;
+    border: none !important;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #2d3748;
+    background: #ffffff;
+    outline: none;
+}
+
+/* Remover setas nativas do input de carga */
+.input-carga-nova::-webkit-outer-spin-button,
+.input-carga-nova::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.slot-controle-direto small {
+    display: block;
+    text-align: center;
+    margin-top: 6px;
+    font-size: 10px;
+    color: #a0aec0;
+    font-weight: bold;
+}
+
+/* Moedas com Ícones e Cores Temáticas Laterais */
+.calculadora-moedas-nova {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.moeda-item-novo {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #2d3748;
+    border-radius: 8px;
+    padding: 8px 12px;
+    gap: 12px;
+}
+
+.moeda-icone {
+    font-size: 20px;
+    user-select: none;
+}
+
+.moeda-corpo {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.moeda-corpo label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #718096;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.input-moeda-nova {
+    border: none !important;
+    padding: 2px 0 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #2d3748 !important;
+    width: 100%;
+    background: transparent !important;
+    outline: none;
+}
+
+.moeda-item-novo.platina { border-left: 6px solid #4fd1c5; } /* Azul Diamante/Platina */
+.moeda-item-novo.ouro { border-left: 6px solid #d69e2e; }    /* Dourado */
+.moeda-item-novo.prata { border-left: 6px solid #a0aec0; }   /* Prata */
+.moeda-item-novo.bronze { border-left: 6px solid #cd7f32; }  /* Bronze */
+
+/* Caixa de Totalizadores de Dinheiro */
+.total-dinheiro-box-novo {
+    background: #1a202c;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    border: 2px solid #2d3748;
+}
+
+.patrimonio-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.total-dinheiro-box-novo span {
+    color: #48bb78; /* Verde clássico de dinheiro */
+    font-size: 22px;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   SISTEMA DE EXIBIÇÃO DE SUB-ABAS (OCULTAÇÃO)
+   ========================================================================== */
+.bloco-sub-aba-conteudo {
+    display: none !important; 
+    width: 100%;
+}
+
+.bloco-sub-aba-conteudo.active {
+    display: block !important; 
+}
+
+/* Responsividade Geral */
+@media (max-width: 768px) {
+    .secao-inventario-moderno, 
+    .mochila-grid-layout, 
+    .grid-inputs-perfil {
+        grid-template-columns: 1fr;
+    }
+}
