@@ -803,10 +803,161 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="pagina-livro" id="conteudo_perfil">
+
+                <div class="menu-sub-abas-rpg">
+                    <button type="button" class="btn-sub-aba active"
+                        onclick="alternarSubAba(this, 'sub_caracteristicas')">👤 Personagem</button>
+                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_diario')">📜 Diário de
+                        Campanha</button>
+                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_inventario')">🎒
+                        Inventário</button>
+                </div>
+
+                <div id="sub_caracteristicas" class="bloco-sub-aba-conteudo active">
+                    <div class="pagina-perfil-container">
+                        <div class="card-perfil-status">
+                            <h3>Características</h3>
+                            <div class="grid-inputs-perfil">
+                                <label>Idade <input type="text" placeholder="Ex: 22 anos"></label>
+                                <label>Altura <input type="text" placeholder="Ex: 1,75m"></label>
+                                <label>Gênero <input type="text" placeholder="Ex: Masculino"></label>
+                                <label>Cabelo <input type="text" placeholder="Ex: Preto"></label>
+                                <label>Olhos <input type="text" placeholder="Ex: Castanhos"></label>
+                                <label>Outros <input type="text" placeholder="Cicatrizes..."></label>
+                            </div>
+                        </div>
+
+                        <div class="card-perfil-status">
+                            <h3>Relações & Afinidade</h3>
+                            <div id="lista-relacoes">
+                                <div class="item-relacao">
+                                    <input type="text" class="nome-npc" placeholder="Nome do Aliado / NPC">
+                                    <div class="container-coracoes" data-valor="3">
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 1)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 2)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 3)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 4)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 5)">♥</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-adicionar-sutil" onclick="adicionarNovaRelacao()">+
+                                Adicionar Relação</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub_diario" class="bloco-sub-aba-conteudo">
+                    <div class="pagina-perfil-container">
+                        <div class="card-perfil-status anotacoes-wrapper">
+                            <h3>Anotações do Personagem</h3>
+                            <div class="abas-anotacoes-botoes">
+                                <button type="button" class="aba-nota active"
+                                    onclick="mudarNotaInterna(this, 'historia')">História</button>
+                                <button type="button" class="aba-nota"
+                                    onclick="mudarNotaInterna(this, 'objetivos')">Objetivos</button>
+                                <button type="button" class="aba-nota"
+                                    onclick="mudarNotaInterna(this, 'geral')">Gerais</button>
+                            </div>
+                            <div class="container-topicos-dinamicos">
+                                <textarea id="texto_notas_perfil" class="textarea-notas"
+                                    placeholder="Escreva o passado e as origens do seu personagem aqui..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub_inventario" class="bloco-sub-aba-conteudo">
+                    <div class="pagina-perfil-container secao-inventario-moderno">
+
+                        <div class="card-perfil-status container-itens-slots">
+                            <h3>🎒 Mochila & Equipamentos</h3>
+
+                            <div class="wrapper-barra-carga">
+                                <div class="info-texto-carga">
+                                    <span>Peso Carregado</span>
+                                    <strong id="peso_atual_texto">0 / 20 KG</strong>
+                                </div>
+                                <div class="barra-carga-bg">
+                                    <div class="barra-carga-progresso" id="barra_peso_visual" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="mochila-grid-layout">
+                                <div class="slot-descricao">
+                                    <h4>Descrição Detalhada dos Itens</h4>
+                                    <textarea class="textarea-itens" id="input_inventario_texto"
+                                        placeholder="Ex: &#10;• 1x Canivete Tático (0.5 KG)&#10;• 1x Lanterna de Mão (0.2 KG)&#10;• 1x Colete Kevlar (4.0 KG)"
+                                        oninput="atualizarCargaPeloTexto()"></textarea>
+                                </div>
+
+                                <div class="slot-controle-direto">
+                                    <h4>Ajuste Rápido de Peso</h4>
+                                    <div class="controle-carga-novo">
+                                        <button type="button" class="btn-peso-ajuste"
+                                            onclick="ajustarPesoRapido(-1)">-</button>
+                                        <input type="number" class="input-carga-nova" id="input_carga_num" value="0"
+                                            oninput="atualizarBarraCarga()">
+                                        <button type="button" class="btn-peso-ajuste"
+                                            onclick="ajustarPesoRapido(1)">+</button>
+                                    </div>
+                                    <small>Limite Máximo: 20 KG</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-perfil-status container-carteira-moderna">
+                            <h3>💰 Compartimento de Valores</h3>
+                            <div class="calculadora-moedas-nova">
+
+                                <div class="moeda-item-novo platina">
+                                    <div class="moeda-icone">💎</div>
+                                    <div class="moeda-corpo">
+                                        <label>Platina (+$1000)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="moeda-item-novo ouro">
+                                    <div class="moeda-icone">🪙</div>
+                                    <div class="moeda-corpo">
+                                        <label>Ouro (+$100)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="moeda-item-novo prata">
+                                    <div class="moeda-icone">🪙</div>
+                                    <div class="moeda-corpo">
+                                        <label>Prata (+$10)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="moeda-item-novo bronze">
+                                    <div class="moeda-icone">🪙</div>
+                                    <div class="moeda-corpo">
+                                        <label>Bronze (+$1)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="total-dinheiro-box-novo">
+                                    <div class="patrimonio-label">Valor do Dinheiro</div>
+                                    <span id="total_carteira">$0</span>
+                                </div>
+                            </div>
+                        </div>
 
 
-
-                    <script src="app.js"></script>
+                        <script src="app.js"></script>
 </body>
 
 </html>
