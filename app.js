@@ -803,3 +803,201 @@ document.addEventListener("DOMContentLoaded", () => {
         mudarModoBrilho(modoSalvo);
     }
 });
+
+
+/**
+ * Alterna dinamicamente entre as sub-abas principais do Perfil (Personagem, Diário, Inventário)
+ */
+function alternarSubAba(botao, idSubAba) {
+    // 1. Remove o estado ativo de todos os botões do menu superior de sub-abas
+    const containerMenu = botao.closest('.menu-sub-abas-rpg');
+    if (containerMenu) {
+        containerMenu.querySelectorAll('.btn-sub-aba').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+    
+    // 2. Ativa o botão que foi clicado
+    botao.classList.add('active');
+    
+    // 3. Esconde todos os blocos de conteúdo das sub-abas do perfil
+    document.querySelectorAll('.bloco-sub-aba-conteudo').forEach(bloco => {
+        bloco.classList.remove('active');
+    });
+    
+    // 4. Mostra apenas o bloco correspondente ao ID clicado
+    const blocoAlvo = document.getElementById(idSubAba);
+    if (blocoAlvo) {
+        blocoAlvo.classList.add('active');
+    }
+}
+
+/**
+ * Controla os sub-botões internos do Diário de Campanha alterando o placeholder do único textarea
+ */
+function mudarNotaInterna(botao, tipoNota) {
+    // 1. Limpa o active dos botões internos do diário
+    const containerBotoes = botao.closest('.abas-anotacoes-botoes');
+    if (containerBotoes) {
+        containerBotoes.querySelectorAll('.aba-nota').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+    
+    // 2. Ativa o botão clicado
+    botao.classList.add('active');
+    
+    // 3. Modifica o placeholder do textarea conforme a nota selecionada
+    const textarea = document.getElementById('texto_notas_perfil');
+    if (textarea) {
+        if (tipoNota === 'historia') {
+            textarea.placeholder = "Escreva o passado e as origens do seu personagem aqui...";
+        } else if (tipoNota === 'objetivos') {
+            textarea.placeholder = "Metas atuais: Missões em andamento, ambições e desejos...";
+        } else if (tipoNota === 'geral') {
+            textarea.placeholder = "Rumores, pistas, nomes de locais importantes e anotações soltas...";
+        }
+    }
+}
+
+/**
+ * NOVO: Atualiza visualmente a barra de progresso e a cor do peso carregado
+ */
+function atualizarBarraCarga() {
+    const inputCarga = document.getElementById('input_carga_num');
+    const barraVisual = document.getElementById('barra_peso_visual');
+    const textoCarga = document.getElementById('peso_atual_texto');
+    
+    if (!inputCarga || !barraVisual || !textoCarga) return;
+
+    let pesoAtual = parseFloat(inputCarga.value) || 0;
+    const limiteMaximo = 20;
+
+    // Impede pesos menores que zero
+    if (pesoAtual < 0) {
+        pesoAtual = 0;
+        inputCarga.value = 0;
+    }
+
+    // Calcula a porcentagem de preenchimento da barra
+    let porcentagem = (pesoAtual / limiteMaximo) * 100;
+    if (porcentagem > 100) porcentagem = 100; 
+
+    barraVisual.style.width = porcentagem + "%";
+    textoCarga.innerText = pesoAtual.toFixed(1) + " / " + limiteMaximo + " KG";
+
+    // Mudança dinâmica de cor com base no limite
+    if (pesoAtual > limiteMaximo) {
+        barraVisual.style.backgroundColor = "#e53e3e"; // Vermelho se ultrapassar o limite
+    } else if (pesoAtual > limiteMaximo * 0.8) {
+        barraVisual.style.backgroundColor = "#dd6b20"; // Laranja para aviso de sobrecarga (80%+)
+    } else {
+        barraVisual.style.backgroundColor = "var(--cor-tema, #9127b3)"; // Roxo padrão da ficha
+    }
+}
+
+/**
+ * NOVO: Ajuste rápido via botões de + e - na seção de carga
+ */
+function ajustarPesoRapido(valor) {
+    const inputCarga = document.getElementById('input_carga_num');
+    if (!inputCarga) return;
+
+    let valorAtual = parseFloat(inputCarga.value) || 0;
+    inputCarga.value = Math.max(0, valorAtual + valor);
+    
+    atualizarBarraCarga();
+}
+
+/**
+ * Calcula o patrimônio total dinamicamente com base no sistema decimal ($1, $10, $100, $1000)
+ */
+function calcularPatrimonioTotal() {
+    const inputsMoedas = document.querySelectorAll('.input-moeda-nova');
+    if (inputsMoedas.length < 4) return; // Agora espera os 4 inputs do novo HTML
+    
+    // Captura os valores na ordem exata de exibição do HTML
+    const platina = parseFloat(inputsMoedas[0].value) || 0;
+    const ouro    = parseFloat(inputsMoedas[1].value) || 0;
+    const prata   = parseFloat(inputsMoedas[2].value) || 0;
+    const bronze  = parseFloat(inputsMoedas[3].value) || 0;
+    
+    // Aplica a multiplicação direta do seu sistema de RPG
+    const totalSoma = (platina * 1000) + (ouro * 100) + (prata * 10) + (bronze * 1);
+    
+    // Atualiza o visor principal formatando como número inteiro com o caractere "$" na frente
+    const painelTotal = document.getElementById('total_carteira');
+    if (painelTotal) {
+        painelTotal.innerText = "$" + totalSoma.toLocaleString('pt-BR');
+    }
+}
+
+/**
+ * Ativa os corações até o nível selecionado e atualiza visualmente (Estilo Stardew Valley)
+ */
+function definirAfinidadeCoracao(elementoCoracao, nivelSelecionado) {
+    const container = elementoCoracao.parentElement;
+    if (!container) return;
+
+    // Salva o valor escolhido no atributo do container
+    container.setAttribute("data-valor", nivelSelecionado);
+
+    // Pega todos os corações dentro deste bloco específico
+    const coracoes = container.querySelectorAll(".coracao-rpg");
+
+    coracoes.forEach((coracao, indice) => {
+        if (indice < nivelSelecionado) {
+            coracao.classList.add("active");
+        } else {
+            coracao.classList.remove("active");
+        }
+    });
+}
+
+/**
+ * Adiciona dinamicamente uma nova linha de NPC com o sistema de 5 corações clicáveis
+ */
+function adicionarNovaRelacao() {
+    const lista = document.getElementById("lista-relacoes");
+    if (!lista) return;
+
+    const novoItem = document.createElement("div");
+    novoItem.className = "item-relacao";
+
+    novoItem.innerHTML = `
+        <input type="text" class="nome-npc" placeholder="Nome do Aliado / NPC">
+        <div class="container-coracoes" data-valor="0">
+            <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 1)">♥</span>
+            <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 2)">♥</span>
+            <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 3)">♥</span>
+            <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 4)">♥</span>
+            <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 5)">♥</span>
+        </div>
+    `;
+
+    novoItem.style.opacity = "0";
+    novoItem.style.transition = "opacity 0.2s ease-in-out";
+    
+    lista.appendChild(novoItem);
+
+    setTimeout(() => {
+        novoItem.style.opacity = "1";
+    }, 10);
+}
+
+// Inicializador executado assim que a página carrega completamente
+document.addEventListener("DOMContentLoaded", () => {
+    // Renderiza e acende os corações das relações já salvas/fixadas no HTML
+    const containersExistentes = document.querySelectorAll(".container-coracoes");
+    containersExistentes.forEach(container => {
+        const valorInicial = parseInt(container.getAttribute("data-valor")) || 0;
+        const primeiroCoracao = container.querySelector(".coracao-rpg");
+        if (primeiroCoracao && valorInicial > 0) {
+            definirAfinidadeCoracao(primeiroCoracao, valorInicial);
+        }
+    });
+    
+    // Roda os cálculos e renderizações visuais do novo inventário
+    atualizarBarraCarga();
+    calcularPatrimonioTotal();
+});
