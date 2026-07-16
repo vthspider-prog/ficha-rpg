@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=900">
     <title>Ficha - LUVES</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -858,159 +863,210 @@
 
                 <div class="menu-sub-abas-rpg">
                     <button type="button" class="btn-sub-aba active"
-                        onclick="alternarSubAba(this, 'sub_caracteristicas')">👤
-                        Personagem</button>
-                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_diario')">📜 Diário
-                        de
-                        Campanha</button>
-                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_inventario')">🎒
-                        Inventário</button>
+                        onclick="alternarSubAba(this, 'sub_caracteristicas')">
+                        <i class="fa-solid fa-user-shield"></i> PERSONAGEM
+                    </button>
+                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_habilidades')">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> HABILIDADES
+                    </button>
+                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_bag-shopping')">
+                        <i class="fa-solid fa-backpack"></i> INVENTÁRIO
+                    </button>
                 </div>
 
                 <div id="sub_caracteristicas" class="bloco-sub-aba-conteudo active">
                     <div class="pagina-perfil-container">
-                        <div class="card-perfil-status">
-                            <h3>Características</h3>
-                            <div class="grid-inputs-perfil">
-                                <label>Idade <input type="text" placeholder="Ex: 22 anos"></label>
-                                <label>Altura <input type="text" placeholder="Ex: 1,75m"></label>
-                                <label>Gênero <input type="text" placeholder="Ex: Masculino"></label>
-                                <label>Cabelo <input type="text" placeholder="Ex: Preto"></label>
-                                <label>Olhos <input type="text" placeholder="Ex: Castanhos"></label>
-                                <label>Outros <input type="text" placeholder="Cicatrizes..."></label>
-                            </div>
-                        </div>
 
-                        <div class="card-perfil-status">
-                            <h3>Relações & Afinidade</h3>
-                            <div id="lista-relacoes">
-                                <div class="item-relacao">
-                                    <input type="text" class="nome-npc" placeholder="Nome do Aliado / NPC">
-                                    <div class="container-coracoes" data-valor="3">
-                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 1)">♥</span>
-                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 2)">♥</span>
-                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 3)">♥</span>
-                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 4)">♥</span>
-                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 5)">♥</span>
+                        <div class="card-perfil-rpg">
+                            <div class="titulo-secao-rpg">
+                                <i class="fa-solid fa-address-card icone-secao"></i>
+                                <h3>CARACTERÍSTICAS</h3>
+                            </div>
+
+                            <div class="grid-caracteristicas-rpg">
+                                <div class="coluna-inputs-rpg">
+                                    <div class="campo-rpg-container">
+                                        <label>ESPÉCIE</label>
+                                        <input type="text" placeholder="Ex: Humano" id="perf_especie">
+                                    </div>
+                                    <div class="campo-rpg-container">
+                                        <label>IDADE</label>
+                                        <input type="text" placeholder="Ex: 18 anos" id="perf_idade">
+                                    </div>
+                                    <div class="campo-rpg-container">
+                                        <label>GÊNERO</label>
+                                        <input type="text" placeholder="Ex: Masculino" id="perf_genero">
+                                    </div>
+                                    <div class="campo-rpg-container">
+                                        <label>ALTURA</label>
+                                        <input type="text" placeholder="Ex: 1,60m" id="perf_altura">
+                                    </div>
+                                </div>
+
+                                <div class="coluna-textareas-rpg">
+                                    <div class="campo-rpg-container expandido">
+                                        <label>CORPO</label>
+                                        <textarea placeholder="Ex: Cor dos Olhos, Cabelo, Pele e etc."
+                                            id="perf_corpo"></textarea>
+                                    </div>
+                                    <div class="campo-rpg-container expandido">
+                                        <label>VESTES</label>
+                                        <textarea placeholder="Ex: Camisa, Calça, Sapatos e etc."
+                                            id="perf_vestes"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn-adicionar-sutil" onclick="adicionarNovaRelacao()">+
-                                Adicionar Relação</button>
                         </div>
+
+                        <div class="card-perfil-rpg">
+                            <div class="titulo-secao-rpg">
+                                <i class="fa-solid fa-users icone-secao"></i>
+                                <h3>RELAÇÕES & AFINIDADES</h3>
+                            </div>
+
+                            <div id="lista-relacoes" class="lista-relacoes-container">
+                                <div class="item-relacao-rpg">
+                                    <input type="text" class="input-relacao-nome" placeholder="Nome do Aliado / NPC">
+
+                                    <div class="container-coracoes-wrapper">
+                                        <div class="coracoes-afinidade" data-valor="1">
+                                            <span class="coracao-rpg active"
+                                                onclick="definirAfinidadeCoracao(this, 1)">♥</span>
+                                            <span class="coracao-rpg"
+                                                onclick="definirAfinidadeCoracao(this, 2)">♥</span>
+                                            <span class="coracao-rpg"
+                                                onclick="definirAfinidadeCoracao(this, 3)">♥</span>
+                                            <span class="coracao-rpg"
+                                                onclick="definirAfinidadeCoracao(this, 4)">♥</span>
+                                            <span class="coracao-rpg"
+                                                onclick="definirAfinidadeCoracao(this, 5)">♥</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="container-select-relacao">
+                                        <div class="select-wrapper-rpg">
+                                            <select class="select-relacao-tipo" onchange="verificarOpcaoRelacao(this)">
+                                                <option value="" disabled selected>Escolha a relação...</option>
+                                                <option value="amigo">Amigo(a)</option>
+                                                <option value="rival">Rival</option>
+                                                <option value="aliado">Aliado(a)</option>
+                                                <option value="lider">Líder / Mentor</option>
+                                                <option value="esposa_marido">Esposa / Marido</option>
+                                                <option value="namorado">Namorado(a)</option>
+                                                <option value="pai_mae">Pai / Mãe</option>
+                                                <option value="filho_filha">Filho / Filha</option>
+                                                <option value="outro">Outro...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="custom-input-wrapper" style="display: none;">
+                                            <input type="text" class="input-relacao-personalizado"
+                                                placeholder="Escreva a relação...">
+                                            <button type="button" class="btn-cancelar-custom"
+                                                onclick="cancelarOpcaoPersonalizada(this)"
+                                                title="Voltar para opções prontas">
+                                                <i class="fa-solid fa-rotate-left"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn-remover-relacao" onclick="removerRelacao(this)"
+                                        title="Excluir Relação">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn-adicionar-rpg" onclick="adicionarNovaRelacao()">
+                                <i class="fa-solid fa-plus"></i> ADICIONAR RELAÇÃO
+                            </button>
+                        </div>
+
+                        <div class="card-perfil-rpg">
+                            <div class="titulo-secao-rpg">
+                                <i class="fa-solid fa-book-open icone-secao"></i>
+                                <h3>ANOTAÇÕES DO PERSONAGEM</h3>
+                            </div>
+
+                            <div class="abas-internas-anotacoes">
+                                <button type="button" class="btn-aba-interna active"
+                                    onclick="mudarNotaInterna(this, 'historia')">
+                                    <i class="fa-solid fa-scroll"></i> HISTÓRIA
+                                </button>
+                                <button type="button" class="btn-aba-interna"
+                                    onclick="mudarNotaInterna(this, 'outros')">
+                                    <i class="fa-solid fa-feather"></i> OUTROS
+                                </button>
+                            </div>
+
+                            <div class="container-texto-anotacao">
+                                <textarea id="texto_notas_perfil" class="textarea-anotacao-grande"
+                                    placeholder="Escreva o passado, origens ou observações adicionais aqui..."></textarea>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-
-                <div id="sub_diario" class="bloco-sub-aba-conteudo">
+                <div id="sub_habilidades" class="bloco-sub-aba-conteudo" style="display: none;">
                     <div class="pagina-perfil-container">
-                        <div class="card-perfil-status anotacoes-wrapper">
-                            <h3>Anotações do Personagem</h3>
-                            <div class="abas-anotacoes-botoes">
-                                <button type="button" class="aba-nota active"
-                                    onclick="mudarNotaInterna(this, 'historia')">História</button>
-                                <button type="button" class="aba-nota"
-                                    onclick="mudarNotaInterna(this, 'objetivos')">Objetivos</button>
-                                <button type="button" class="aba-nota"
-                                    onclick="mudarNotaInterna(this, 'geral')">Gerais</button>
+                        <div class="card-perfil-rpg">
+
+                            <div class="titulo-secao-rpg">
+                                <i class="fa-solid fa-wand-magic-sparkles icone-secao"></i>
+                                <h3>HABILIDADES DO PERSONAGEM</h3>
                             </div>
-                            <div class="container-topicos-dinamicos">
-                                <textarea id="texto_notas_perfil" class="textarea-notas"
-                                    placeholder="Escreva o passado e as origens do seu personagem aqui..."></textarea>
+
+                            <div class="abas-internas-anotacoes">
+                                <button type="button" class="btn-aba-interna active"
+                                    onclick="mudarAbaHabilidades(this, 'especie')">
+                                    <i class="fa-solid fa-dna"></i> ESPÉCIE
+                                </button>
+                                <button type="button" class="btn-aba-interna"
+                                    onclick="mudarAbaHabilidades(this, 'classe')">
+                                    <i class="fa-solid fa-hat-wizard"></i> CLASSE
+                                </button>
+                                <button type="button" class="btn-aba-interna"
+                                    onclick="mudarAbaHabilidades(this, 'outros')">
+                                    <i class="fa-solid fa-star"></i> OUTROS
+                                </button>
+                            </div>
+
+                            <div class="container-conteudo-habilidades">
+
+                                <div id="hab-especie" class="secao-habilidade-conteudo active">
+                                    <div class="lista-cards-habilidades" id="lista-hab-especie">
+                                    </div>
+                                    <button type="button" class="btn-adicionar-rpg"
+                                        onclick="adicionarNovoCardHabilidade('especie')">
+                                        <i class="fa-solid fa-plus"></i> Adicionar Habilidade de Espécie
+                                    </button>
+                                </div>
+
+                                <div id="hab-classe" class="secao-habilidade-conteudo" style="display: none;">
+                                    <div class="lista-cards-habilidades" id="lista-hab-classe">
+                                    </div>
+                                    <button type="button" class="btn-adicionar-rpg"
+                                        onclick="adicionarNovoCardHabilidade('classe')">
+                                        <i class="fa-solid fa-plus"></i> Adicionar Habilidade de Classe
+                                    </button>
+                                </div>
+
+                                <div id="hab-outros" class="secao-habilidade-conteudo" style="display: none;">
+                                    <div class="lista-cards-habilidades" id="lista-hab-outros">
+                                    </div>
+                                    <button type="button" class="btn-adicionar-rpg"
+                                        onclick="adicionarNovoCardHabilidade('outros')">
+                                        <i class="fa-solid fa-plus"></i> Adicionar Outra Habilidade/Ritual
+                                    </button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div id="sub_inventario" class="bloco-sub-aba-conteudo">
-                    <div class="pagina-perfil-container secao-inventario-moderno">
-
-                        <div class="card-perfil-status container-itens-slots">
-                            <h3>🎒 Mochila & Equipamentos</h3>
-
-                            <div class="wrapper-barra-carga">
-                                <div class="info-texto-carga">
-                                    <span>Peso Carregado</span>
-                                    <strong id="peso_atual_texto">0 / 20 KG</strong>
-                                </div>
-                                <div class="barra-carga-bg">
-                                    <div class="barra-carga-progresso" id="barra_peso_visual" style="width: 0%;">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mochila-grid-layout">
-                                <div class="slot-descricao">
-                                    <h4>Descrição Detalhada dos Itens</h4>
-                                    <textarea class="textarea-itens" id="input_inventario_texto"
-                                        placeholder="Ex: &#10;• 1x Canivete Tático (0.5 KG)&#10;• 1x Lanterna de Mão (0.2 KG)&#10;• 1x Colete Kevlar (4.0 KG)"
-                                        oninput="atualizarCargaPeloTexto()"></textarea>
-                                </div>
-
-                                <div class="slot-controle-direto">
-                                    <h4>Ajuste Rápido de Peso</h4>
-                                    <div class="controle-carga-novo">
-                                        <button type="button" class="btn-peso-ajuste"
-                                            onclick="ajustarPesoRapido(-1)">-</button>
-                                        <input type="number" class="input-carga-nova" id="input_carga_num" value="0"
-                                            oninput="atualizarBarraCarga()">
-                                        <button type="button" class="btn-peso-ajuste"
-                                            onclick="ajustarPesoRapido(1)">+</button>
-                                    </div>
-                                    <small>Limite Máximo: 20 KG</small>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card-perfil-status container-carteira-moderna">
-                            <h3>💰 Compartimento de Valores</h3>
-                            <div class="calculadora-moedas-nova">
-
-                                <div class="moeda-item-novo platina">
-                                    <div class="moeda-icone">💎</div>
-                                    <div class="moeda-corpo">
-                                        <label>Platina (+$1000)</label>
-                                        <input type="number" class="input-moeda-nova" value="0"
-                                            oninput="calcularPatrimonioTotal()">
-                                    </div>
-                                </div>
-
-                                <div class="moeda-item-novo ouro">
-                                    <div class="moeda-icone">🪙</div>
-                                    <div class="moeda-corpo">
-                                        <label>Ouro (+$100)</label>
-                                        <input type="number" class="input-moeda-nova" value="0"
-                                            oninput="calcularPatrimonioTotal()">
-                                    </div>
-                                </div>
-
-                                <div class="moeda-item-novo prata">
-                                    <div class="moeda-icone">🪙</div>
-                                    <div class="moeda-corpo">
-                                        <label>Prata (+$10)</label>
-                                        <input type="number" class="input-moeda-nova" value="0"
-                                            oninput="calcularPatrimonioTotal()">
-                                    </div>
-                                </div>
-
-                                <div class="moeda-item-novo bronze">
-                                    <div class="moeda-icone">🪙</div>
-                                    <div class="moeda-corpo">
-                                        <label>Bronze (+$1)</label>
-                                        <input type="number" class="input-moeda-nova" value="0"
-                                            oninput="calcularPatrimonioTotal()">
-                                    </div>
-                                </div>
-
-                                <div class="total-dinheiro-box-novo">
-                                    <div class="patrimonio-label">Valor do Dinheiro</div>
-                                    <span id="total_carteira">$0</span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <script type="module" src="config.js"></script>
-                        <script type="module" src="app.js"></script>
+                <script type="module" src="config.js"></script>
+                <script type="module" src="app.js"></script>
 </body>
 
 </html>

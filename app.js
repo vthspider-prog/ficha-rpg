@@ -644,76 +644,429 @@ function inicializarFicha() {
         atualizarTudo();
     };
 
-    window.atualizarBarraCarga = function () {
-        const inputCarga = document.getElementById('input_carga_num');
-        const barraVisual = document.getElementById('barra_peso_visual');
-        const textoCarga = document.getElementById('peso_atual_texto');
-        if (!inputCarga || !barraVisual || !textoCarga) return;
+    // CAMPO "PERSONAGEM" DA FICHA
 
-        let pesoAtual = parseFloat(inputCarga.value) || 0;
-        const limiteMaximo = 20;
-        if (pesoAtual < 0) { pesoAtual = 0; inputCarga.value = 0; }
+    // Função que gerencia a troca entre Dropdown e Texto Personalizado
+window.verificarOpcaoRelacao = function (selectElement) {
+    if (selectElement.value === "outro") {
+        const container = selectElement.closest(".container-select-relacao");
+        const selectWrapper = container.querySelector(".select-wrapper-rpg");
+        const customWrapper = container.querySelector(".custom-input-wrapper");
+        const inputPersonalizado = customWrapper.querySelector(".input-relacao-personalizado");
+        
+        selectWrapper.style.display = "none";
+        customWrapper.style.display = "flex";
+        
+        inputPersonalizado.focus();
 
-        let porcentagem = Math.min(100, (pesoAtual / limiteMaximo) * 100);
-        barraVisual.style.width = porcentagem + "%";
-        textoCarga.innerText = pesoAtual.toFixed(1) + " / " + limiteMaximo + " KG";
+        if (!inputPersonalizado.dataset.ouvinteAtivo) {
+            inputPersonalizado.addEventListener("input", function() {
+                this.value = this.value.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase());
+            });
+            inputPersonalizado.dataset.ouvinteAtivo = "true";
+        }
+    }
+};
 
-        if (pesoAtual > limiteMaximo) barraVisual.style.backgroundColor = "#e53e3e";
-        else if (pesoAtual > limiteMaximo * 0.8) barraVisual.style.backgroundColor = "#dd6b20";
-        else barraVisual.style.backgroundColor = "var(--cor-tema, #9127b3)";
-    };
+// Função para cancelar a digitação personalizada e voltar para o Dropdown
+window.cancelarOpcaoPersonalizada = function (botaoVoltar) {
+    const container = botaoVoltar.closest(".container-select-relacao");
+    const selectWrapper = container.querySelector(".select-wrapper-rpg");
+    const customWrapper = container.querySelector(".custom-input-wrapper");
+    const selectElement = selectWrapper.querySelector(".select-relacao-tipo");
+    const inputElement = customWrapper.querySelector(".input-relacao-personalizado");
 
-    window.ajustarPesoRapido = function (valor) {
-        const inputCarga = document.getElementById('input_carga_num');
-        if (!inputCarga) return;
-        let valorAtual = parseFloat(inputCarga.value) || 0;
-        inputCarga.value = Math.max(0, valorAtual + valor);
-        window.atualizarBarraCarga();
-    };
+    inputElement.value = "";
+    selectElement.value = "";
 
-    window.calcularPatrimonioTotal = function () {
-        const inputsMoedas = document.querySelectorAll('.input-moeda-nova');
-        if (inputsMoedas.length < 4) return;
-        const platina = parseFloat(inputsMoedas[0].value) || 0;
-        const ouro = parseFloat(inputsMoedas[1].value) || 0;
-        const prata = parseFloat(inputsMoedas[2].value) || 0;
-        const bronze = parseFloat(inputsMoedas[3].value) || 0;
-        const totalSoma = (platina * 1000) + (ouro * 100) + (prata * 10) + (bronze * 1);
-        const painelTotal = document.getElementById('total_carteira');
-        if (painelTotal) painelTotal.innerText = "$" + totalSoma.toLocaleString('pt-BR');
-    };
+    customWrapper.style.display = "none";
+    selectWrapper.style.display = "block";
+};
 
-    window.definirAfinidadeCoracao = function (elementoCoracao, nivelSelecionado) {
-        const container = elementoCoracao.parentElement;
-        if (!container) return;
-        container.setAttribute("data-valor", nivelSelecionado);
-        const coracoes = container.querySelectorAll(".coracao-rpg");
-        coracoes.forEach((coracao, indice) => {
-            if (indice < nivelSelecionado) coracao.classList.add("active");
-            else coracao.classList.remove("active");
-        });
-    };
+// Altere o nome da função para fazer sentido com corações
+window.definirAfinidadeCoracao = function (elementoCoracao, nivelSelecionado) {
+    const container = elementoCoracao.parentElement;
+    if (!container) return;
+    
+    container.setAttribute("data-valor", nivelSelecionado);
+    const coracoes = container.querySelectorAll(".coracao-rpg");
+    
+    coracoes.forEach((coracao, indice) => {
+        if (indice < nivelSelecionado) {
+            coracao.classList.add("active");
+        } else {
+            coracao.classList.remove("active");
+        }
+    });
+};
 
-    window.adicionarNovaRelacao = function () {
-        const lista = document.getElementById("lista-relacoes");
-        if (!lista) return;
-        const novoItem = document.createElement("div");
-        novoItem.className = "item-relacao";
-        novoItem.innerHTML = `
-            <input type="text" class="nome-npc" placeholder="Nome do Aliado / NPC">
-            <div class="container-coracoes" data-valor="0">
-                <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 1)">♥</span>
+window.removerRelacao = function (botaoRemover) {
+    const item = botaoRemover.closest(".item-relacao-rpg");
+    if (!item) return;
+
+    item.style.opacity = "0";
+    item.style.transform = "scale(0.9) translateY(-10px)";
+    
+    setTimeout(() => {
+        item.remove();
+    }, 200);
+};
+
+// Função de adicionar atualizada com Corações ♥
+window.adicionarNovaRelacao = function () {
+    const lista = document.getElementById("lista-relacoes");
+    if (!lista) return;
+
+    const novoItem = document.createElement("div");
+    novoItem.className = "item-relacao-rpg"; 
+    
+    novoItem.innerHTML = `
+        <input type="text" class="input-relacao-nome" placeholder="Nome do Aliado / NPC">
+        
+        <div class="container-coracoes-wrapper">
+            <div class="coracoes-afinidade" data-valor="1">
+                <span class="coracao-rpg active" onclick="definirAfinidadeCoracao(this, 1)">♥</span>
                 <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 2)">♥</span>
                 <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 3)">♥</span>
                 <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 4)">♥</span>
                 <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 5)">♥</span>
             </div>
+        </div>
+        
+        <div class="container-select-relacao">
+            <div class="select-wrapper-rpg">
+                <select class="select-relacao-tipo" onchange="verificarOpcaoRelacao(this)">
+                    <option value="" disabled selected>Escolha a relação...</option>
+                    <option value="amigo">Amigo(a)</option>
+                    <option value="rival">Rival</option>
+                    <option value="aliado">Aliado(a)</option>
+                    <option value="lider">Líder / Mentor</option>
+                    <option value="esposa_marido">Esposa / Marido</option>
+                    <option value="namorado">Namorado(a)</option>
+                    <option value="pai_mae">Pai / Mãe</option>
+                    <option value="filho_filha">Filho / Filha</option>
+                    <option value="outro">Outro...</option>
+                </select>
+            </div>
+
+            <div class="custom-input-wrapper" style="display: none;">
+                <input type="text" class="input-relacao-personalizado" placeholder="Escreva a relação...">
+                <button type="button" class="btn-cancelar-custom" onclick="cancelarOpcaoPersonalizada(this)" title="Voltar para opções prontas">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="button" class="btn-remover-relacao" onclick="removerRelacao(this)" title="Excluir Relação">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+    `;
+
+    novoItem.style.opacity = "0";
+    novoItem.style.transition = "all 0.2s ease-in-out";
+    novoItem.style.transform = "translateY(10px)";
+    
+    lista.appendChild(novoItem);
+    
+    setTimeout(() => { 
+        novoItem.style.opacity = "1"; 
+        novoItem.style.transform = "translateY(0)";
+        lista.scrollTop = lista.scrollHeight;
+    }, 10);
+};
+
+// CAMPO HABILIDADES - PERFIL
+// ==========================================================================
+// CONTROLE DE ABAS E CARDS DE HABILIDADES EDITÁVEIS
+// ==========================================================================
+
+// Dados iniciais genéricos para quando a ficha for aberta pela primeira vez
+const habilidadesPadrao = {
+    especie: [
+        { subtitulo: "Subtítulo", nome: "Nome da Habilidade", descricao: "Escreva aqui os detalhes e efeitos desta habilidade...", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+    ],
+    classe: [
+        { subtitulo: "Subtítulo", nome: "Nome da Habilidade", descricao: "Escreva aqui os detalhes e efeitos desta habilidade...", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+    ],
+    outros: [
+        { subtitulo: "Subtítulo", nome: "Nome da Habilidade", descricao: "Escreva aqui os detalhes e efeitos desta habilidade...", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+    ]
+};
+
+// Garante o carregamento inicial das habilidades na tela ao carregar o DOM
+document.addEventListener("DOMContentLoaded", () => {
+    carregarHabilidades();
+});
+
+// Forçando as funções principais a entrarem no escopo global (window) do navegador
+window.mudarAbaHabilidades = function(botao, categoria) {
+    const containerAbas = botao.closest('.card-perfil-rpg');
+    if (!containerAbas) return;
+    
+    containerAbas.querySelectorAll('.btn-aba-interna').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    botao.classList.add('active');
+
+    document.querySelectorAll('.secao-habilidade-conteudo').forEach(secao => {
+        secao.style.display = 'none';
+        secao.classList.remove('active');
+    });
+
+    const secaoAlvo = document.getElementById(`hab-${categoria}`);
+    if (secaoAlvo) {
+        secaoAlvo.style.display = 'block';
+        secaoAlvo.classList.add('active');
+    }
+};
+
+window.adicionarNovoCardHabilidade = function(categoria) {
+    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+    let dados = dadosSalvos ? JSON.parse(dadosSalvos) : JSON.parse(JSON.stringify(habilidadesPadrao));
+
+    // Adiciona um card totalmente genérico e limpo
+    dados[categoria].push({
+        subtitulo: "Subtítulo",
+        nome: "Nome da Habilidade",
+        descricao: "Escreva aqui os detalhes e efeitos desta habilidade...",
+        atual: 1,
+        maximo: 1,
+        tipoRecurso: "usos",
+        custo: "1 PE"
+    });
+
+    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+    carregarHabilidades();
+};
+
+window.excluirHabilidade = function(categoria, index) {
+    if (!confirm("Deseja mesmo apagar esta habilidade de sua ficha?")) return;
+    
+    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+    if (!dadosSalvos) return;
+    
+    let dados = JSON.parse(dadosSalvos);
+    dados[categoria].splice(index, 1);
+    
+    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+    carregarHabilidades();
+};
+
+window.alterarTipoRecurso = function(selectElement, categoria, index) {
+    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+    if (!dadosSalvos) return;
+
+    let dados = JSON.parse(dadosSalvos);
+    const novoTipo = selectElement.value;
+    
+    dados[categoria][index].tipoRecurso = novoTipo;
+
+    if (novoTipo === 'usos') {
+        dados[categoria][index].atual = 1;
+        dados[categoria][index].maximo = 1;
+    } else {
+        dados[categoria][index].custo = novoTipo === 'pe' ? '1 PE' : '1 PS';
+    }
+
+    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+    carregarHabilidades();
+};
+
+window.alterarUsoLocal = function(botao, valor) {
+    const card = botao.closest('.card-habilidade');
+    const index = parseInt(card.dataset.index, 10);
+    const categoria = card.dataset.categoria;
+
+    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+    if (!dadosSalvos) return;
+
+    let dados = JSON.parse(dadosSalvos);
+    let atual = dados[categoria][index].atual || 0;
+    const maximo = dados[categoria][index].maximo || 0;
+
+    atual += valor;
+    if (atual < 0) atual = 0;
+    if (atual > maximo) atual = maximo;
+
+    dados[categoria][index].atual = atual;
+    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+
+    card.querySelector('.atual').textContent = atual;
+};
+
+window.atualizarMaximoLocal = function(input) {
+    const card = input.closest('.card-habilidade');
+    const index = parseInt(card.dataset.index, 10);
+    const categoria = card.dataset.categoria;
+
+    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+    if (!dadosSalvos) return;
+
+    let dados = JSON.parse(dadosSalvos);
+    let novoMax = parseInt(input.value, 10) || 1;
+    if (novoMax < 1) novoMax = 1;
+
+    dados[categoria][index].maximo = novoMax;
+    
+    if (dados[categoria][index].atual > novoMax) {
+        dados[categoria][index].atual = novoMax;
+        card.querySelector('.atual').textContent = novoMax;
+    }
+
+    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+};
+
+window.salvarProgressoHabilidades = function() {
+    let dados = { especie: [], classe: [], outros: [] };
+
+    document.querySelectorAll('.card-habilidade-editavel').forEach(card => {
+        const categoria = card.dataset.categoria;
+        
+        const subtitulo = card.querySelector('.input-hab-subtitulo').value;
+        const nome = card.querySelector('.input-hab-nome').value;
+        const descricao = card.querySelector('.textarea-hab-sobre').value;
+        const tipoRecurso = card.querySelector('.select-tipo-recurso').value;
+
+        let recursoDados = { subtitulo, nome, descricao, tipoRecurso, atual: 0, maximo: 0, custo: "" };
+
+        if (tipoRecurso === 'usos') {
+            recursoDados.atual = parseInt(card.querySelector('.atual').textContent, 10) || 0;
+            recursoDados.maximo = parseInt(card.querySelector('.input-limite-maximo').value, 10) || 1;
+        } else {
+            recursoDados.custo = card.querySelector('.input-custo-badge').value;
+        }
+
+        dados[categoria].push(recursoDados);
+    });
+
+    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+};
+
+// Carrega os dados salvos e os renderiza na tela
+function carregarHabilidades() {
+    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+    let dados = dadosSalvos ? JSON.parse(dadosSalvos) : habilidadesPadrao;
+
+    renderizarAbaHabilidades('especie', dados.especie);
+    renderizarAbaHabilidades('classe', dados.classe);
+    renderizarAbaHabilidades('outros', dados.outros);
+}
+
+function renderizarAbaHabilidades(categoria, lista) {
+    const container = document.getElementById(`lista-hab-${categoria}`);
+    if (!container) return;
+    container.innerHTML = "";
+
+    lista.forEach((hab, index) => {
+        const card = document.createElement("div");
+        card.className = "card-habilidade card-habilidade-editavel";
+        card.dataset.index = index;
+        card.dataset.categoria = categoria;
+
+        card.innerHTML = `
+            <button type="button" class="btn-excluir-habilidade" title="Excluir habilidade" onclick="excluirHabilidade('${categoria}', ${index})">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+            <div class="cabecalho-habilidade">
+                <input type="text" class="input-hab-subtitulo" value="${hab.subtitulo}" placeholder="SUBTÍTULO (EX: RITUAIS, MAGIAS)" oninput="salvarProgressoHabilidades()">
+                <input type="text" class="input-hab-nome" value="${hab.nome}" placeholder="Nome da Habilidade" oninput="salvarProgressoHabilidades()">
+            </div>
+            <div class="descricao-habilidade">
+                <textarea class="textarea-hab-sobre" placeholder="Escreva os detalhes e efeitos desta habilidade..." oninput="salvarProgressoHabilidades()">${hab.descricao}</textarea>
+            </div>
+            <div class="rodape-habilidade">
+                <div class="recurso-habilidade">
+                    <select class="select-tipo-recurso" onchange="alterarTipoRecurso(this, '${categoria}', ${index})">
+                        <option value="usos" ${hab.tipoRecurso === 'usos' ? 'selected' : ''}>Contador de Usos</option>
+                        <option value="pe" ${hab.tipoRecurso === 'pe' ? 'selected' : ''}>Custo de PE</option>
+                        <option value="ps" ${hab.tipoRecurso === 'ps' ? 'selected' : ''}>Custo de PS</option>
+                    </select>
+
+                    <div class="container-valores-recurso">
+                        ${gerarCamposRecursoHTML(hab)}
+                    </div>
+                </div>
+            </div>
         `;
-        novoItem.style.opacity = "0";
-        novoItem.style.transition = "opacity 0.2s ease-in-out";
-        lista.appendChild(novoItem);
-        setTimeout(() => { novoItem.style.opacity = "1"; }, 10);
-    };
+        container.appendChild(card);
+    });
+}
+
+function gerarCamposRecursoHTML(hab) {
+    if (hab.tipoRecurso === 'usos') {
+        return `
+            <div class="contador-usos">
+                <button type="button" onclick="alterarUsoLocal(this, -1)">-</button>
+                <span class="valor-uso">
+                    <strong class="atual">${hab.atual}</strong>/<input type="number" class="input-limite-maximo" value="${hab.maximo}" min="1" onchange="atualizarMaximoLocal(this)"> Usos
+                </span>
+                <button type="button" onclick="alterarUsoLocal(this, 1)">+</button>
+            </div>
+        `;
+    } else {
+        const classeBadge = hab.tipoRecurso === 'pe' ? 'pe' : 'ps';
+        return `
+            <input type="text" class="input-custo-badge ${classeBadge}" value="${hab.custo}" placeholder="Ex: 6 ${hab.tipoRecurso.toUpperCase()}" oninput="salvarProgressoHabilidades()">
+        `;
+    }
+}
+
+// Objeto na memória para guardar os textos de cada aba
+const textosAnotacoes = {
+    historia: "",
+    outros: ""
+};
+
+// Mapeamento de placeholders informativos para ajudar o jogador
+const placeholdersAnotacoes = {
+    historia: "Escreva o passado do seu personagem, origens, motivações ou observações do histórico aqui...",
+    outros: "Use este espaço livre para anotar teorias sobre a história, segredos ou metas do seu personagem!"
+};
+
+// Variável para acompanhar qual aba está ativa no momento
+let abaNotaAtiva = "historia";
+
+window.mudarNotaInterna = function (botaoElemento, tipoAba) {
+    const textarea = document.getElementById("texto_notas_perfil");
+    if (!textarea) return;
+
+    // 1. Salva o texto que está escrito atualmente antes de mudar
+    textosAnotacoes[abaNotaAtiva] = textarea.value;
+
+    // 2. Atualiza qual é a nova aba ativa
+    abaNotaAtiva = tipoAba;
+
+    // 3. Remove a classe active de todos os botões e adiciona no clicado
+    const containerAbas = botaoElemento.parentElement;
+    containerAbas.querySelectorAll(".btn-aba-interna").forEach(btn => {
+        btn.classList.remove("active");
+    });
+    botaoElemento.classList.add("active");
+
+    // 4. Aplica um efeito suave de "fade" no textarea ao carregar o novo conteúdo
+    textarea.style.opacity = "0";
+    textarea.style.transform = "translateY(5px)";
+    
+    setTimeout(() => {
+        // Recupera o texto salvo da nova aba ativa
+        textarea.value = textosAnotacoes[tipoAba];
+        // Atualiza o placeholder conforme a aba
+        textarea.placeholder = placeholdersAnotacoes[tipoAba];
+        
+        textarea.style.opacity = "1";
+        textarea.style.transform = "translateY(0)";
+    }, 120);
+};
+
+// Salva o progresso dinamicamente enquanto o jogador digita
+document.addEventListener("DOMContentLoaded", () => {
+    const textarea = document.getElementById("texto_notas_perfil");
+    if (textarea) {
+        textarea.addEventListener("input", () => {
+            textosAnotacoes[abaNotaAtiva] = textarea.value;
+        });
+    }
+});
 
     window.mudarFiltroAtributo = function (botaoClicado) {
         const containerBotoes = botaoClicado.parentElement;
@@ -809,15 +1162,6 @@ function inicializarFicha() {
         }
     }
 
-    // Inicializa os corações de afinidade do RPG
-    document.querySelectorAll(".container-coracoes").forEach(container => {
-        const valorInicial = parseInt(container.getAttribute("data-valor")) || 0;
-        const primeiroCoracao = container.querySelector(".coracao-rpg");
-        if (primeiroCoracao && valorInicial > 0 && typeof window.definirAfinidadeCoracao === "function") {
-            window.definirAfinidadeCoracao(primeiroCoracao, valorInicial);
-        }
-    });
-
     // Funções de atualização e cálculo iniciais
     if (typeof window.atualizarBarraCarga === "function") window.atualizarBarraCarga();
     if (typeof window.calcularPatrimonioTotal === "function") window.calcularPatrimonioTotal();
@@ -891,10 +1235,9 @@ function inicializarFicha() {
         }
     };
 
-    /**
-     * VERSÃO INTEGRADA AO FIREBASE:
-     * Limpa o banco de dados online, o cache local e reseta a tela de forma limpa.
-     */
+    // VERSÃO INTEGRADA AO FIREBASE:
+    // Limpa o banco de dados online, o cache local e reseta a tela de forma limpa.
+     
     async function resetarCamposFicha() {
         // 1. Bloqueia o salvamento automático para não salvar campos vazios por engano
         window.onbeforeunload = null;

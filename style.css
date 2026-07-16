@@ -1,8 +1,11 @@
 :root {
     --cor-tema: #ed1c24;
-    --fundo-folha: #ffffff;      /* Certifique-se de que está #ffffff */
-    --texto-padrao: #000000;     /* Certifique-se de que está #000000 */
-    --fundo-externo: #1a1a1a;    /* O fundo escuro de trás do livro */
+    --fundo-folha: #ffffff;
+    /* Certifique-se de que está #ffffff */
+    --texto-padrao: #000000;
+    /* Certifique-se de que está #000000 */
+    --fundo-externo: #1a1a1a;
+    /* O fundo escuro de trás do livro */
 }
 
 * {
@@ -12,8 +15,10 @@
 /* Container que joga o lápis pro canto superior direito alinhado com o título */
 .container-lapis-tema {
     position: absolute;
-    right: 20px;       /* Distância da borda direita do cabeçalho */
-    top: 22px;         /* Ajuste fino para alinhar verticalmente com o 'FICHA LV' */
+    right: 20px;
+    /* Distância da borda direita do cabeçalho */
+    top: 22px;
+    /* Ajuste fino para alinhar verticalmente com o 'FICHA LV' */
     z-index: 10;
 }
 
@@ -24,12 +29,13 @@
     justify-content: center;
     width: 28px;
     height: 28px;
-    background-color: #474747; /* Seu cinza escuro irado */
+    background-color: #474747;
+    /* Seu cinza escuro irado */
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-    
+
     /* 3 linhas para limpar o comportamento padrão de tag button */
     border: none;
     outline: none;
@@ -39,7 +45,7 @@
 /* Efeito de hover - acende na cor do tema que o usuário escolheu */
 .botao-lapis-custom:hover {
     transform: scale(1.1);
-    background-color: var(--cor-tema); 
+    background-color: var(--cor-tema);
     box-shadow: 0 0 10px var(--cor-tema);
 }
 
@@ -787,13 +793,16 @@ body.modal-aberto {
 /* Container principal estilizado como um card da ficha */
 .card-teste-morte {
     width: 100%;
-    max-width: 100%; /* Encaixa perfeitamente na coluna abaixo das barras */
+    max-width: 100%;
+    /* Encaixa perfeitamente na coluna abaixo das barras */
     border: 2px solid #000000;
-    border-radius: 6px; /* Cantos suavemente arredondados para um ar moderno */
+    border-radius: 6px;
+    /* Cantos suavemente arredondados para um ar moderno */
     overflow: hidden;
     margin-top: 20px;
     background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra sutil de fundo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    /* Sombra sutil de fundo */
 }
 
 /* O Header do Teste de Morte - Idêntico ao bloco STATUS */
@@ -811,13 +820,15 @@ body.modal-aberto {
 /* Espaçamento interno do card */
 .morte-body {
     padding: 10px;
-    background-color: #fafafa; /* Fundo cinza bem claro para destacar as caixas */
+    background-color: #fafafa;
+    /* Fundo cinza bem claro para destacar as caixas */
 }
 
 /* O grupo de caixas de seleção */
 .morte-grid-inputs {
     display: flex;
-    gap: 20px; /* Espaçamento elegante entre os quadrados (estilo botões independentes) */
+    gap: 20px;
+    /* Espaçamento elegante entre os quadrados (estilo botões independentes) */
     justify-content: center;
     width: 100%;
 }
@@ -828,7 +839,8 @@ body.modal-aberto {
     position: relative;
     margin: 0 !important;
     padding: 0 !important;
-    width: 55px;         /* LARGURA FIXA DOS QUADRADOS (Ajuste aqui se quiser menor/maior) */
+    width: 55px;
+    /* LARGURA FIXA DOS QUADRADOS (Ajuste aqui se quiser menor/maior) */
 }
 
 .item-checkbox-morte input {
@@ -844,7 +856,8 @@ body.modal-aberto {
     align-items: center;
     justify-content: center;
     background-color: #ffffff;
-    color: #000000; /* Cor do número original */
+    color: #000000;
+    /* Cor do número original */
     font-weight: bold;
     font-size: 14px;
     padding: 8px 0;
@@ -854,8 +867,10 @@ body.modal-aberto {
     user-select: none;
     text-align: center;
     width: 100%;
-    position: relative; /* Necessário para posicionar a caveira perfeitamente */
+    position: relative;
+    /* Necessário para posicionar a caveira perfeitamente */
 }
+
 /* Hover ao passar o mouse */
 .item-checkbox-morte:hover .caixa-morte-design {
     border-color: #000000;
@@ -864,34 +879,42 @@ body.modal-aberto {
 }
 
 /* ESTADO ATIVADO (Quando toma a falha): Fundo vermelho neon com brilho */
-.item-checkbox-morte input:checked + .caixa-morte-design {
-    background-color: #ed1c24 !important; /* Vermelho padrão do projeto */
+.item-checkbox-morte input:checked+.caixa-morte-design {
+    background-color: #ed1c24 !important;
+    /* Vermelho padrão do projeto */
     color: #ffffff !important;
     border-color: #b31015;
-    box-shadow: 0 0 10px rgba(237, 28, 36, 0.4); /* Efeito de brilho de energia/perigo */
-    transform: scale(0.98); /* Efeito de clique físico pressionado */
+    box-shadow: 0 0 10px rgba(237, 28, 36, 0.4);
+    /* Efeito de brilho de energia/perigo */
+    transform: scale(0.98);
+    /* Efeito de clique físico pressionado */
 }
 
 /* ESTADO ATIVADO: Quando clicado, o quadrado fica vermelho com brilho */
-.item-checkbox-morte input:checked + .caixa-morte-design {
-    background-color: #ed1c24 !important; /* Vermelho padrão */
+.item-checkbox-morte input:checked+.caixa-morte-design {
+    background-color: #ed1c24 !important;
+    /* Vermelho padrão */
     border-color: #b31015;
     box-shadow: 0 0 10px rgba(237, 28, 36, 0.5);
     transform: scale(0.95);
-    
+
     /* MÁGICA AQUI: Deixa o número original (1, 2 ou 3) invisível */
-    color: transparent !important; 
+    color: transparent !important;
 }
 
 /* INJEÇÃO DA CAVEIRA: Ela aparece exatamente por cima do número escondido */
-.item-checkbox-morte input:checked + .caixa-morte-design::after {
-    content: "☠️"; /* Pode trocar por "☠️" se preferir o estilo pirata */
+.item-checkbox-morte input:checked+.caixa-morte-design::after {
+    content: "☠️";
+    /* Pode trocar por "☠️" se preferir o estilo pirata */
     position: absolute;
-    font-size: 16px; /* Tamanho da caveira ligeiramente maior para destacar */
-    color: #ffffff !important; /* Caveira fica branca contrastando com o fundo vermelho */
+    font-size: 16px;
+    /* Tamanho da caveira ligeiramente maior para destacar */
+    color: #ffffff !important;
+    /* Caveira fica branca contrastando com o fundo vermelho */
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%); /* Centraliza perfeitamente no meio do quadrado */
+    transform: translate(-50%, -50%);
+    /* Centraliza perfeitamente no meio do quadrado */
 }
 
 /*campo de atributos
@@ -1015,9 +1038,12 @@ body.modal-aberto {
     justify-content: center;
     background-color: #ffffff;
     border: 2px solid #e0e0e0;
-    border-radius: 4px; /* Cantos suavizados idênticos ao original */
-    width: 59px;  /* Largura ideal para não esticar e manter o formato quadrado */
-    height: 27px; /* Altura proporcional aos botões do Teste de Morte */
+    border-radius: 4px;
+    /* Cantos suavizados idênticos ao original */
+    width: 59px;
+    /* Largura ideal para não esticar e manter o formato quadrado */
+    height: 27px;
+    /* Altura proporcional aos botões do Teste de Morte */
     transition: border-color 0.2s ease;
 }
 
@@ -1034,7 +1060,8 @@ body.modal-aberto {
     text-align: center;
     width: 100%;
     height: 100%;
-    font-size: 18px; /* Tamanho numérico idêntico ao Teste de Morte */
+    font-size: 18px;
+    /* Tamanho numérico idêntico ao Teste de Morte */
     font-weight: bold;
     color: #000000;
     outline: none;
@@ -1397,9 +1424,12 @@ body.modal-aberto {
 /* 1. O Container Pai: Junta os dois no centro horizontal */
 .linha-titulo-bonus-p {
     display: flex !important;
-    align-items: center !important;     /* Alinhamento vertical perfeito */
-    justify-content: center !important;  /* Centraliza o combo no meio da tela */
-    gap: 12px !important;               /* Espaço entre o título e a caixinha */
+    align-items: center !important;
+    /* Alinhamento vertical perfeito */
+    justify-content: center !important;
+    /* Centraliza o combo no meio da tela */
+    gap: 12px !important;
+    /* Espaço entre o título e a caixinha */
     width: 100% !important;
     min-height: 40px !important;
     margin-bottom: 15px !important;
@@ -1424,9 +1454,10 @@ body.modal-aberto {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background-color: #d9dee3 !important; 
+    background-color: #d9dee3 !important;
     border: 1px solid #bdc3c7 !important;
-    padding: 6px 8px !important;         /* Ajustado para equilibrar o espaço interno */
+    padding: 6px 8px !important;
+    /* Ajustado para equilibrar o espaço interno */
     border-radius: 8px !important;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
     position: static !important;
@@ -1435,13 +1466,15 @@ body.modal-aberto {
 
 /* 4. O Campo numérico editável */
 .linha-titulo-bonus-p .caixa-bonus-pericia-wrapper input {
-    width: 42px !important;              /* Aumentado de 22px para 42px para caber "+10", "+15", etc. */
+    width: 42px !important;
+    /* Aumentado de 22px para 42px para caber "+10", "+15", etc. */
     background: transparent !important;
     border: none !important;
     color: #2d3748 !important;
     font-size: 14px !important;
     font-weight: 800 !important;
-    text-align: center !important;        /* Mudado para center para o número não ficar colado na esquerda */
+    text-align: center !important;
+    /* Mudado para center para o número não ficar colado na esquerda */
     outline: none !important;
     padding: 0 !important;
     cursor: text !important;
@@ -1469,7 +1502,8 @@ body {
 
 .ficha-container {
     width: 100%;
-    max-width: 700px; /* Mantém o tamanho exato que você definiu */
+    max-width: 700px;
+    /* Mantém o tamanho exato que você definiu */
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -1477,19 +1511,22 @@ body {
 }
 
 .folha-branca-livro {
-    background-color: #ffffff; /* 🌟 Fixado em branco puro de forma definitiva */
-    color: #000000;            /* 🌟 Garante que o texto fique sempre preto no papel branco */
+    background-color: #ffffff;
+    /* 🌟 Fixado em branco puro de forma definitiva */
+    color: #000000;
+    /* 🌟 Garante que o texto fique sempre preto no papel branco */
     border: 2px solid #000;
     border-left: 15px solid var(--cor-tema);
-    padding: 25px; 
+    padding: 25px;
     box-sizing: border-box;
     width: 100%;
-    min-height: 600px; 
+    min-height: 600px;
     border-radius: 0 0 8px 8px;
-    
+
     /* Transição suave apenas para a cor de destaque da borda lateral */
     transition: border-left-color 0.3s ease;
 }
+
 /* ==========================================================================
    2. DESIGN DAS ABAS DO TOPO (BASEADO NO SEU PRINT)
    ========================================================================== */
@@ -1504,7 +1541,8 @@ body {
     font-size: 13px;
     font-weight: bold;
     color: #fff;
-    background-color: #2a2a2a; /* Cor cinza escuro para abas desativadas */
+    background-color: #2a2a2a;
+    /* Cor cinza escuro para abas desativadas */
     border: 1px solid #000;
     border-bottom: none;
     border-radius: 6px 6px 0 0;
@@ -1521,7 +1559,7 @@ body {
    PAINEL DE CONTROLE DAS PERÍCIAS (BUSCA E FILTROS)
    ========================================================================== */
 
-   /* Container para posicionar o SVG corretamente dentro do input */
+/* Container para posicionar o SVG corretamente dentro do input */
 .icone-lupa-svg {
     position: absolute;
     right: 16px;
@@ -1529,7 +1567,8 @@ body {
     transform: translateY(-50%);
     width: 16px;
     height: 16px;
-    color: #a0aec0; /* Cor cinza padrão antes do clique */
+    color: #a0aec0;
+    /* Cor cinza padrão antes do clique */
     pointer-events: none;
     display: flex;
     align-items: center;
@@ -1538,7 +1577,7 @@ body {
 }
 
 /* Quando você clicar para digitar, a lupa ganha a cor ativa da ficha automaticamente */
-.wrapper-busca-input input:focus + .icone-lupa-svg {
+.wrapper-busca-input input:focus+.icone-lupa-svg {
     color: var(--cor-tema, #e53e3e);
 }
 
@@ -1552,7 +1591,8 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
-    gap: 16px; /* Espaço uniforme entre as linhas */
+    gap: 16px;
+    /* Espaço uniforme entre as linhas */
 }
 
 /* Camada 1: Título "PERÍCIAS" */
@@ -1576,7 +1616,8 @@ body {
 .wrapper-busca-input {
     position: relative;
     width: 100%;
-    max-width: 500px; /* Garante que ela não fique gigante em telas enormes, nem cortada */
+    max-width: 500px;
+    /* Garante que ela não fique gigante em telas enormes, nem cortada */
 }
 
 .wrapper-busca-input input {
@@ -1614,7 +1655,8 @@ body {
 .botoes-filtro-container {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap; /* Se a tela for pequena, eles quebram linha sem esmagar */
+    flex-wrap: wrap;
+    /* Se a tela for pequena, eles quebram linha sem esmagar */
     justify-content: center;
 }
 
@@ -1635,9 +1677,11 @@ body {
 /* Efeito de passar o mouse nos botões (Usa a cor da sua ficha bem clarinha) */
 .btn-filtro-rpg:hover {
     background-color: var(--cor-tema, #9127b3);
-    filter: brightness(1.2); /* Dá uma leve clareada na cor ao passar o mouse */
-    opacity: 0.2; /* Deixa o fundo bem suave/translúcido */
-    color: #ffffff; 
+    filter: brightness(1.2);
+    /* Dá uma leve clareada na cor ao passar o mouse */
+    opacity: 0.2;
+    /* Deixa o fundo bem suave/translúcido */
+    color: #ffffff;
     border-color: var(--cor-tema, #4a5568);
 }
 
@@ -1645,9 +1689,9 @@ body {
     background-color: var(--cor-tema, #e53e3e);
     color: #ffffff;
     border-color: transparent;
-    
+
     /* Brilho bem reduzido e suave */
-    box-shadow: 0 0 6px rgba(155, 155, 155, 0.459); 
+    box-shadow: 0 0 6px rgba(155, 155, 155, 0.459);
 }
 
 /* DESTAQUE DE PERICIA*/
@@ -1655,21 +1699,21 @@ body {
 /* Regra principal para a linha quando destacada na busca */
 .linha-pericia-nova.pericia-destacada {
     /* Fundo escuro translúcido para dar profundidade e leveza */
-    background-color: rgba(192, 158, 7, 0.541) !important; 
-    
+    background-color: rgba(192, 158, 7, 0.541) !important;
+
     /* Borda lateral grossa com a cor dinâmica da sua ficha */
-    border-left: 5px solid var(--cor-tema, #e53e3e) !important; 
-    
+    border-left: 5px solid var(--cor-tema, #e53e3e) !important;
+
     /* Brilho neon sutil focado apenas na borda esquerda */
-    box-shadow: 2px 0 8px var(--cor-tema, rgba(229, 62, 62, 0.4)) !important; 
-    
+    box-shadow: 2px 0 8px var(--cor-tema, rgba(229, 62, 62, 0.4)) !important;
+
     /* Dá um leve espaço para o texto não colar na borda colorida */
     padding-left: 20px !important;
-    
+
     /* Transição e animação ao acender na tela */
     transition: all 0.2s ease-in-out;
     animation: acenderSuave 0.25s ease-in-out;
-    
+
     position: relative;
     z-index: 1;
 }
@@ -1688,6 +1732,7 @@ body {
         opacity: 0.7;
         border-left-width: 0px;
     }
+
     100% {
         opacity: 1;
         border-left-width: 5px;
@@ -1699,33 +1744,41 @@ body {
    ========================================================================== */
 /* Esconde as páginas desativadas */
 .pagina-livro {
-    display: none; /* Esconde as páginas inativas */
+    display: none;
+    /* Esconde as páginas inativas */
     width: 100%;
     box-sizing: border-box;
 }
+
 /* Quando a Página Principal está ativa, ela usa Grid ou Flex para manter as duas colunas originais */
-#pagina_principal:checked ~ .abas-livro-container .btn-principal {
+#pagina_principal:checked~.abas-livro-container .btn-principal {
     background-color: #ff4d4d;
 }
-#pagina_principal:checked ~ .folha-branca-livro #conteudo_principal {
+
+#pagina_principal:checked~.folha-branca-livro #conteudo_principal {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Divide em duas colunas perfeitas idênticas ao início */
-    gap: 20px; /* Espaço entre a coluna da foto/status e a coluna dos atributos */
+    grid-template-columns: 1fr 1fr;
+    /* Divide em duas colunas perfeitas idênticas ao início */
+    gap: 20px;
+    /* Espaço entre a coluna da foto/status e a coluna dos atributos */
 }
 
 /* Configuração da Página de Perícias */
-#pagina_pericias:checked ~ .abas-livro-container .btn-pericias {
+#pagina_pericias:checked~.abas-livro-container .btn-pericias {
     background-color: #ff4d4d;
 }
-#pagina_pericias:checked ~ .folha-branca-livro #conteudo_pericias {
-    display: block; /* Abre em bloco normal ocupando o espaço */
+
+#pagina_pericias:checked~.folha-branca-livro #conteudo_pericias {
+    display: block;
+    /* Abre em bloco normal ocupando o espaço */
 }
 
 /* Configuração da Página de Perfil */
-#pagina_perfil:checked ~ .abas-livro-container .btn-perfil {
+#pagina_perfil:checked~.abas-livro-container .btn-perfil {
     background-color: #ff4d4d;
 }
-#pagina_perfil:checked ~ .folha-branca-livro #conteudo_perfil {
+
+#pagina_perfil:checked~.folha-branca-livro #conteudo_perfil {
     display: block;
 }
 
@@ -1735,22 +1788,24 @@ body {
 
 /* Container Principal do Título - Preto e Centralizado */
 .header-pericias-fino {
-    background: #111111; /* Preto suave */
+    background: #111111;
+    /* Preto suave */
     color: #ffffff;
-    
+
     /* Centraliza os elementos internos perfeitamente no meio */
     display: flex !important;
-    justify-content: center !important; 
+    justify-content: center !important;
     align-items: center !important;
-    gap: 12px !important; /* Espaço controlado entre a palavra PERÍCIAS e o quadradinho */
-    
-    width: 100% !important; 
+    gap: 12px !important;
+    /* Espaço controlado entre a palavra PERÍCIAS e o quadradinho */
+
+    width: 100% !important;
     box-sizing: border-box !important;
-    
+
     padding: 12px 20px !important;
     margin-bottom: 24px !important;
     border-radius: 6px;
-    
+
     /* Detalhe de linha vermelha na base combinando com a ficha */
     /* ... todo o resto do código que já fizemos ... */
     border-bottom: 3px solid var(--cor-tema) !important;
@@ -1774,21 +1829,21 @@ body {
     font-size: 16px !important;
     font-weight: bold !important;
     font-family: 'Arial', sans-serif;
-    
+
     /* Cores combinando com os inputs de atributos da página principal */
     color: #111111 !important;
     background: #f5f5f5 !important;
-    
+
     border: 2px solid #e0e0e0 !important;
     border-radius: 4px !important;
     box-sizing: border-box !important;
     padding: 0 !important;
-    
+
     /* Trava o tamanho no flexbox */
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
     max-width: 46px !important;
-    
+
     transition: all 0.2s ease;
 }
 
@@ -1796,16 +1851,20 @@ body {
 .header-pericias-fino input:focus {
     outline: none !important;
     background: #ffffff !important;
-    border-color: var(--cor-tema) !important; /* Muda para a cor escolhida */
-    box-shadow: 0 0 8px var(--cor-tema) !important; /* Cria o brilho perfeito com a cor do tema */
+    border-color: var(--cor-tema) !important;
+    /* Muda para a cor escolhida */
+    box-shadow: 0 0 8px var(--cor-tema) !important;
+    /* Cria o brilho perfeito com a cor do tema */
 }
 
 /* Container que alinha as tabelas uma embaixo da outra e no centro */
 .grid-pericias-colunas {
     display: flex !important;
     flex-direction: column !important;
-    align-items: center !important;     /* MÁGICA: Centraliza as tabelas na página */
-    gap: 25px !important;              /* Espaço extra super elegante entre blocos */
+    align-items: center !important;
+    /* MÁGICA: Centraliza as tabelas na página */
+    gap: 25px !important;
+    /* Espaço extra super elegante entre blocos */
     width: 100% !important;
     box-sizing: border-box !important;
 }
@@ -1813,12 +1872,15 @@ body {
 /* Tabelas com largura controlada - Nem gigantescas, nem espremidas */
 .caixa-categoria-nova {
     width: 100% !important;
-    max-width: 520px !important;       /* LIMITE VISUAL: Perfeito para ler sem cansar os olhos */
+    max-width: 520px !important;
+    /* LIMITE VISUAL: Perfeito para ler sem cansar os olhos */
     border: 1px solid #000000;
-    border-radius: 6px;                /* Cantos ligeiramente mais arredondados */
+    border-radius: 6px;
+    /* Cantos ligeiramente mais arredondados */
     background: #ffffff;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04); /* Sombra leve para dar profundidade e destaque */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    /* Sombra leve para dar profundidade e destaque */
     box-sizing: border-box !important;
 }
 
@@ -1832,6 +1894,7 @@ body {
     border-bottom: 1px solid #000000;
     text-transform: uppercase;
 }
+
 .topo-cat-pericia span {
     font-family: Arial, sans-serif;
     font-weight: normal;
@@ -1840,18 +1903,39 @@ body {
 }
 
 /* Mapeamento exato de cores baseado nas suas tags de atributos */
-.topo-cat-pericia.c-for { background: #ffeded; color: #ed1c24; }
-.topo-cat-pericia.c-vig { background: #eef9f1; color: #2ecc71; }
-.topo-cat-pericia.c-des { background: #f8ebde; color: #e67e22; }
-.topo-cat-pericia.c-car { background: #fdf2fa; color: #db4eac; }
-.topo-cat-pericia.c-int { background: #eef7fc; color: #2196f3; }
+.topo-cat-pericia.c-for {
+    background: #ffeded;
+    color: #ed1c24;
+}
+
+.topo-cat-pericia.c-vig {
+    background: #eef9f1;
+    color: #2ecc71;
+}
+
+.topo-cat-pericia.c-des {
+    background: #f8ebde;
+    color: #e67e22;
+}
+
+.topo-cat-pericia.c-car {
+    background: #fdf2fa;
+    color: #db4eac;
+}
+
+.topo-cat-pericia.c-int {
+    background: #eef7fc;
+    color: #2196f3;
+}
 
 /* Linha do cabeçalho interna da caixa */
 .tabela-cabecalho-p {
     display: flex !important;
-    justify-content: flex-end !important; /* MÁGICA: Empurra os títulos todos para a direita */
+    justify-content: flex-end !important;
+    /* MÁGICA: Empurra os títulos todos para a direita */
     background: #f8f9fa !important;
-    padding: 6px 16px !important; /* Mantém o mesmo recuo interno das linhas de baixo */
+    padding: 6px 16px !important;
+    /* Mantém o mesmo recuo interno das linhas de baixo */
     border-bottom: 1px solid #e0e0e0 !important;
     font-size: 11px !important;
     font-weight: bold !important;
@@ -1863,29 +1947,31 @@ body {
 .tabela-cabecalho-p .grupo-titulos-colunas {
     display: flex !important;
     gap: 0 !important;
-    
+
     /* Força o bloco de textos a ter o tamanho idêntico ao bloco de inputs */
-    width: 116px !important;  /* (38px * 3 inputs) + 2px das linhas internas */
+    width: 116px !important;
+    /* (38px * 3 inputs) + 2px das linhas internas */
     min-width: 116px !important;
-    
+
     /* Cria o recuo da borda direita igual ao padding que a linha de baixo tem */
-    margin-right: 2px !important; 
+    margin-right: 2px !important;
 }
 
 .tabela-cabecalho-p .col-cap {
     /* Mude para 39px. O input de baixo tem 38px, então 39px compensa 
        a espessura da linha vertical de divisão perfeitamente! */
-    width: 39px !important; 
-    
+    width: 39px !important;
+
     text-align: center !important;
     display: inline-block !important;
     box-sizing: border-box !important;
-    border-left: 1px solid #dcdcdc !important; /* A linha divisória do topo */
+    border-left: 1px solid #dcdcdc !important;
+    /* A linha divisória do topo */
 }
 
 /* Garante que o primeiro título (Base) tenha a primeira linha divisória */
 .tabela-cabecalho-p .col-cap:first-child {
-    border-left: 1px solid #dcdcdc !important; 
+    border-left: 1px solid #dcdcdc !important;
 }
 
 
@@ -1918,16 +2004,19 @@ body {
     width: 38px !important;
     height: 24px !important;
     text-align: center !important;
-    font-size: 14px !important; /* Aumentei um tiquinho para destacar mais */
-    
+    font-size: 14px !important;
+    /* Aumentei um tiquinho para destacar mais */
+
     /* MÁGICA DO NEGITO E SUBINHADO: */
-    font-weight: bold !important; /* Deixa em negrito */
-    border: none !important;      /* Remove todas as bordas antigas dos lados e de cima */
+    font-weight: bold !important;
+    /* Deixa em negrito */
+    border: none !important;
+    /* Remove todas as bordas antigas dos lados e de cima */
     border-radius: 0 !important;
     background: transparent !important;
-    
+
     /* Cria uma linha padrão preta embaixo (caso queira uma base para todos) */
-    border-bottom: 2px solid #000000 !important; 
+    border-bottom: 2px solid #000000 !important;
 }
 
 /* Opcional: Se quiser dar um fundo cinza de leve apenas no campo Total */
@@ -1938,15 +2027,17 @@ body {
 /* Cria uma borda sutil ao redor de todo o bloco de números para fechar a "caixa" de dados */
 .inputs-tres {
     border: 1px solid #dcdcdc !important;
-    border-radius: 4px !important; /* Deixa os cantos externos do conjunto arredondados */
-    overflow: hidden; /* Garante que os inputs internos sigam o arredondado das pontas */
+    border-radius: 4px !important;
+    /* Deixa os cantos externos do conjunto arredondados */
+    overflow: hidden;
+    /* Garante que os inputs internos sigam o arredondado das pontas */
     background: #ffffff;
 }
 
 /* Base de Força - Número e Linha Vermelhos */
 .inputs-tres input.pericia-base-for {
     color: #df0a11 !important;
-    border-bottom: 2px solid #cc1218  !important;
+    border-bottom: 2px solid #cc1218 !important;
 }
 
 /* Base de Vigor - Número e Linha Verde */
@@ -1995,7 +2086,8 @@ body {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 8px 16px !important;      /* Mais espaço interno (respiro para os olhos) */
+    padding: 8px 16px !important;
+    /* Mais espaço interno (respiro para os olhos) */
     border-bottom: 1px dashed #eaeaea !important;
 }
 
@@ -2003,8 +2095,9 @@ body {
     border-bottom: none;
 }
 
-.linha-pericia-nova > span {
-    font-size: 13.5px !important;      /* Texto um pouco maior para leitura rápida */
+.linha-pericia-nova>span {
+    font-size: 13.5px !important;
+    /* Texto um pouco maior para leitura rápida */
     font-weight: 500 !important;
     color: #1a1a1a !important;
 }
@@ -2043,8 +2136,10 @@ body {
 
 /* Remove as setinhas no Firefox de forma moderna e sem avisos no editor */
 .inputs-tres input[type=number] {
-    appearance: textfield; /* Padrão moderno */
-    -moz-appearance: textfield !important; /* Compatibilidade com versões antigas */
+    appearance: textfield;
+    /* Padrão moderno */
+    -moz-appearance: textfield !important;
+    /* Compatibilidade com versões antigas */
 }
 
 /* ==========================================================================
@@ -2053,19 +2148,22 @@ body {
 
 /* Container do Dropdown */
 .menu-tema-dropdown {
-    display: none; /* Escondido por padrão, controlado via JS */
+    display: none;
+    /* Escondido por padrão, controlado via JS */
     position: absolute;
     right: 0;
     top: 38px;
-    background-color: #1a1a1b; /* Tom escuro profundo imersivo */
+    background-color: #1a1a1b;
+    /* Tom escuro profundo imersivo */
     border: 1.5px solid #2d2b38;
     border-radius: 8px;
     padding: 14px;
-    width: 200px; /* Largura levemente maior para melhor leitura no mobile */
+    width: 200px;
+    /* Largura levemente maior para melhor leitura no mobile */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     z-index: 110;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    
+
     /* Prepara transições suaves caso queira usar */
     animation: surgimentoSuave 0.2s ease-out;
 }
@@ -2074,7 +2172,8 @@ body {
 .menu-tema-dropdown.ativo {
     display: flex !important;
     flex-direction: column;
-    gap: 12px; /* Espaçamento ideal para telas de toque */
+    gap: 12px;
+    /* Espaçamento ideal para telas de toque */
 }
 
 /* Seções Internas do Menu */
@@ -2086,7 +2185,8 @@ body {
 }
 
 .menu-tema-secao label {
-    color: #a8a8a8; /* Cinza azulado elegante */
+    color: #a8a8a8;
+    /* Cinza azulado elegante */
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
@@ -2100,7 +2200,8 @@ body {
     -moz-appearance: none;
     appearance: none;
     width: 100%;
-    height: 36px; /* Altura confortável para clicar no celular */
+    height: 36px;
+    /* Altura confortável para clicar no celular */
     background: #1e1d26;
     border: 1px solid #2d2b38;
     border-radius: 6px;
@@ -2114,6 +2215,7 @@ body {
     border: 1px solid #374151;
     border-radius: 4px;
 }
+
 .menu-tema-secao input[type="color"]::-moz-color-swatch {
     border: 1px solid #374151;
     border-radius: 4px;
@@ -2124,7 +2226,8 @@ body {
 }
 
 .menu-tema-secao input[type="color"]:active {
-    transform: scale(0.98); /* Feedback tátil rápido ao clicar no celular */
+    transform: scale(0.98);
+    /* Feedback tátil rápido ao clicar no celular */
 }
 
 /* Linha Divisória */
@@ -2141,6 +2244,7 @@ body {
         opacity: 0;
         transform: translateY(-8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -2148,489 +2252,818 @@ body {
 }
 
 /* ==========================================================================
-   Ajuste de Media Query (Segurança para telas muito pequenas)
+   CUSTOMIZAÇÃO ABA PERFIL, ANOTAÇÕES E HABILIDADES (UNIFICADO)
    ========================================================================== */
-@media (max-width: 480px) {
-    .menu-tema-dropdown {
-        right: -10px; /* Ajusta o alinhamento caso a tela do celular seja muito estreita */
-        width: 180px;
-    }
+
+/* ==========================================
+   VARIÁVEIS DE COR E CONFIGURAÇÕES GERAIS
+   ========================================== */
+:root {
+    --cor-tema: #2d7fa8; /* Cor dinâmica principal */
+    --cor-borda-padrao: #1e1e1e; /* Borda preta grossa */
+    --cor-borda-suave: #7e7e7e; /* Borda cinza dos campos internos */
+    --cor-fundo-input: #ffffff;
 }
 
-
-
-/* ==========================================================================
-   LAYOUT PERFIL - RPG MODERNO INTERATIVO (ADAPTÁVEL)
-   ========================================================================== */
-
-#conteudo_perfil {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 24px;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: #f8f9fa; /* Fundo claro, limpo e moderno */
-    color: #1a1a1a;
-}
-
-/* ==========================================================================
-   BOTÕES DE SUB-ABAS (ESTILO SELEÇÃO DE MENU GAMER)
-   ========================================================================== */
+/* ==========================================
+   MENU DE SUB-ABAS SUPERIOR (ESTILO NEOBRUTALISTA)
+   ========================================== */
 .menu-sub-abas-rpg {
     display: flex;
     gap: 12px;
-    margin-bottom: 30px;
-    padding-bottom: 5px;
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 .btn-sub-aba {
-    background: #ffffff;
-    color: #2d3748;
-    border: 2px solid #2d3748;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0px 4px 0px #2d3748; /* Efeito de profundidade 3D */
-    transition: all 0.1s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Efeito Hover Sutil */
-.btn-sub-aba:hover {
-    background: #f7fafc;
-    transform: translateY(-2px);
-    box-shadow: 0px 6px 0px #2d3748;
-}
-
-/* SUB-ABA ATIVA: Adapta-se dinamicamente à cor principal da sua ficha */
-.btn-sub-aba.active {
-    background-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3)) !important;
-    color: #ffffff !important;
-    border-color: #2d3748;
-    transform: translateY(4px); /* Botão "afunda" ao ser clicado/ativo */
-    box-shadow: 0px 0px 0px #2d3748;
-}
-
-/* ==========================================================================
-   CARDS E CAIXAS DE STATUS (NEO-MINIMALISTA)
-   ========================================================================== */
-.card-perfil-status {
-    background: #ffffff;
-    border: 2px solid #2d3748;
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 4px 12px rgba(45, 55, 72, 0.08);
-    margin-bottom: 24px;
-    box-sizing: border-box;
-    position: relative;
-}
-
-/* Títulos Limpos com Detalhe da Cor da Ficha */
-.card-perfil-status h3 {
-    margin: 0 0 20px 0;
-    font-size: 14px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #2d3748;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Pequeno marcador quadrado antes do título que puxa a cor da ficha */
-.card-perfil-status h3::before {
-    content: '';
-    display: inline-block;
-    width: 8px;
-    height: 14px;
-    background-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
-    border-radius: 2px;
-}
-
-/* ==========================================================================
-   INPUTS INTERATIVOS
-   ========================================================================== */
-.grid-inputs-perfil input, 
-.item-relacao .nome-npc,
-.textarea-itens,
-.textarea-notas,
-.moeda-item input {
-    background-color: #ffffff !important;
-    border: 2px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    padding: 10px 14px !important;
-    color: #2d3748 !important;
-    font-size: 14px;
-    font-weight: 600;
-    outline: none !important;
-    box-sizing: border-box;
-    transition: all 0.2s ease;
-}
-
-/* Focus: Borda muda dinamicamente para a cor da sua ficha */
-.grid-inputs-perfil input:focus, 
-.item-relacao .nome-npc:focus,
-.textarea-itens:focus,
-.textarea-notas:focus {
-    border-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3)) !important;
-    background-color: #ffffff !important;
-    box-shadow: 0 0 0 3px rgba(145, 39, 179, 0.15) !important;
-}
-
-/* Grid de Características */
-.grid-inputs-perfil {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.grid-inputs-perfil label {
-    display: flex;
-    flex-direction: column;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #718096;
-}
-
-/* ==========================================================================
-   RELAÇÕES E SLIDERS
-   ========================================================================== */
-.item-relacao {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-/* ==========================================================================
-   SISTEMA DE AFINIDADE POR CORAÇÕES (ESTILO STARDEW VALLEY)
-   ========================================================================= */
-.container-coracoes {
-    display: flex;
-    gap: 4px;
-    padding: 4px 8px;
-    background: #edf2f7;
-    border-radius: 20px;
-    border: 2px solid #2d3748;
-    user-select: none;
-    align-items: center;
-    height: 28px;
-}
-
-.coracao-rpg {
-    font-size: 20px;
-    color: #cbd5e0;
-    cursor: pointer;
-    transition: transform 0.1s ease, color 0.15s ease;
-    line-height: 1;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.15);
-}
-
-.coracao-rpg:hover {
-    transform: scale(1.3);
-}
-
-.coracao-rpg.active {
-    color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
-    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
-}
-
-/* Botão Adicionar Relação */
-.btn-adicionar-sutil {
-    background: #ecc94b !important;
-    border: 2px solid #2d3748;
-    color: #2d3748;
-    width: 100%;
-    padding: 12px;
-    font-weight: 700;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0px 3px 0px #2d3748;
-    transition: all 0.1s;
-    margin-top: 8px;
-}
-
-.btn-adicionar-sutil:hover {
-    transform: translateY(-1px);
-    box-shadow: 0px 4px 0px #2d3748;
-}
-
-.btn-adicionar-sutil:active {
-    transform: translateY(3px);
-    box-shadow: 0px 0px 0px #2d3748;
-}
-
-/* ==========================================================================
-   DIÁRIO DE CAMPANHA (TEXTAREA LIMPO)
-   ========================================================================== */
-.container-topicos-dinamicos {
-    background: #ffffff;
-    border-radius: 8px;
-}
-
-.textarea-notas {
-    width: 100%;
-    height: 280px;
-    border: 2px solid #e2e8f0 !important;
-    resize: none;
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-.abas-anotacoes-botoes {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    background: #edf2f7;
-    padding: 6px;
-    border-radius: 8px;
-}
-
-.aba-nota {
     flex: 1;
-    background: none;
-    border: none;
-    color: #4a5568;
-    padding: 8px;
-    font-weight: 700;
-    font-size: 11px;
-    text-transform: uppercase;
+    height: 42px;
+    border: 2px solid var(--cor-borda-padrao);
+    border-radius: 10px;
+    background-color: #ffffff;
+    color: #111111;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.8px;
     cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 0 var(--cor-borda-padrao);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
-.aba-nota.active {
-    background: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+.btn-sub-aba:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--cor-borda-padrao);
+}
+
+.btn-sub-aba.active {
+    background-color: var(--cor-tema);
     color: #ffffff;
 }
 
-/* ==========================================================================
-   NOVO LAYOUT DE INVENTÁRIO (ESTILO GAMER / REFORMULADO)
-   ========================================================================== */
-.secao-inventario-moderno {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 20px;
-    align-items: start;
-}
-
-/* Barra de Progresso de Carga */
-.wrapper-barra-carga {
-    background: #edf2f7;
-    padding: 12px;
-    border-radius: 8px;
-    border: 2px solid #2d3748;
-    margin-bottom: 20px;
-}
-
-.info-texto-carga {
+/* ==========================================
+   CARDS DE CONTEÚDO (ESTILO ENVELOPE ROBUSTO)
+   ========================================== */
+.pagina-perfil-container {
     display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    color: #4a5568;
-    margin-bottom: 6px;
-}
-
-.barra-carga-bg {
+    flex-direction: column;
+    gap: 18px;
     width: 100%;
-    height: 12px;
-    background: #cbd5e0;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 1px solid #2d3748;
+    box-sizing: border-box;
 }
 
-.barra-carga-progresso {
-    height: 100%;
-    background: var(--cor-tema, #9127b3);
-    width: 0%;
-    transition: width 0.3s ease, background-color 0.2s ease;
+.card-perfil-rpg {
+    border: 2px solid var(--cor-borda-padrao);
+    border-radius: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    width: 100%;
 }
 
-/* Grid Interno da Mochila */
-.mochila-grid-layout {
+.titulo-secao-rpg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.titulo-secao-rpg h3 {
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: #111111;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.marcador-cor {
+    width: 6px;
+    height: 18px;
+    background-color: var(--cor-tema);
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.icone-secao {
+    font-size: 1.1rem;
+    color: var(--cor-tema);
+}
+
+/* ==========================================
+   SEÇÃO CARACTERÍSTICAS (GRID DINÂMICO SIMÉTRICO)
+   ========================================== */
+.grid-caracteristicas-rpg {
     display: grid;
-    grid-template-columns: 1fr 150px;
-    gap: 16px;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
 }
 
-.mochila-grid-layout h4 {
-    margin: 0 0 8px 0;
-    font-size: 11px;
+.coluna-inputs-rpg {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.coluna-textareas-rpg {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+}
+
+.coluna-textareas-rpg .campo-rpg-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.campo-rpg-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.campo-rpg-container label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #777777;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    color: #718096;
 }
 
-.textarea-itens {
+.campo-rpg-container input {
+    height: 38px;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
     width: 100%;
-    height: 160px;
+    background-color: var(--cor-fundo-input);
+}
+
+.coluna-textareas-rpg textarea {
+    flex: 1;
+    min-height: 85px;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: none;
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 1.4;
+    background-color: var(--cor-fundo-input);
+    overflow-y: auto;
+}
+
+/* ==========================================
+   SEÇÃO RELAÇÕES & AFINIDADES
+   ========================================== */
+.lista-relacoes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 6px 8px;
+    box-sizing: border-box;
+}
+
+.item-relacao-rpg {
+    display: grid;
+    grid-template-columns: 1.2fr auto 1.8fr 38px;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.2s ease-in-out;
+}
+
+.item-relacao-rpg:not(:has(.btn-remover-relacao)) {
+    grid-template-columns: 1.2fr auto 1.8fr;
+    padding-right: 0;
+}
+
+.input-relacao-nome,
+.input-relacao-desc {
+    height: 42px;
+    min-height: 42px;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+
+.input-relacao-desc {
     resize: none;
 }
 
-/* Novo Controle Numérico de Peso (+ e -) */
-.controle-carga-novo {
+.container-coracoes-wrapper {
     display: flex;
     align-items: center;
-    border: 2px solid #2d3748;
-    border-radius: 8px;
-    overflow: hidden;
-    background: #ffffff;
+    justify-content: center;
 }
 
-.btn-peso-ajuste {
-    background: #edf2f7;
-    border: none;
-    width: 35px;
-    height: 40px;
-    font-weight: bold;
-    font-size: 16px;
+.coracoes-afinidade {
+    display: flex;
+    gap: 6px;
+    font-size: 1.4rem;
     cursor: pointer;
-    color: #2d3748;
-    transition: background 0.2s;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    padding: 0 14px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    user-select: none;
+    transition: all 0.15s ease-in-out;
 }
 
-.btn-peso-ajuste:hover {
-    background: #cbd5e0;
+.coracao-rpg {
+    color: #dddddd;
+    transition: color 0.15s, transform 0.1s ease-in-out;
 }
 
-.input-carga-nova {
+.coracao-rpg:hover {
+    transform: scale(1.25);
+    color: var(--cor-tema);
+    opacity: 0.7;
+}
+
+.coracao-rpg.active {
+    color: var(--cor-tema);
+    text-shadow: 0 0 4px rgba(45, 127, 168, 0.2);
+    opacity: 1;
+}
+
+/* ==========================================
+   DROPDOWN E INPUTS DE RELAÇÃO
+   ========================================== */
+.container-select-relacao {
+    position: relative;
     width: 100%;
+    height: 42px;
+}
+
+.select-wrapper-rpg {
+    width: 100%;
+    height: 100%;
+}
+
+.select-relacao-tipo {
+    height: 100%;
+    width: 100%;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    padding: 0 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.select-relacao-tipo:invalid,
+.select-relacao-tipo option[value=""] {
+    color: #888888;
+}
+
+.custom-input-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.input-relacao-personalizado {
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    padding: 0 35px 0 12px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    text-transform: capitalize;
+}
+
+.btn-cancelar-custom {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #888888;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 4px;
+    transition: color 0.15s ease-in-out, transform 0.1s ease;
+    z-index: 10;
+}
+
+.btn-cancelar-custom:hover {
+    color: var(--cor-tema);
+}
+
+.btn-cancelar-custom:active {
+    transform: translateY(-50%) scale(0.85);
+}
+
+/* ==========================================
+   BOTÕES DE AÇÃO (REMOVER E ADICIONAR)
+   ========================================== */
+.btn-remover-relacao {
+    height: 42px;
+    width: 38px;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    background-color: #fff0f0;
+    color: #dc3545;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: all 0.15s ease-in-out;
+}
+
+.btn-remover-relacao:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+    border-color: var(--cor-borda-padrao);
+}
+
+.btn-remover-relacao:active {
+    transform: scale(0.9);
+}
+
+.btn-adicionar-rpg {
+    background-color: var(--cor-tema);
+    color: #ffffff;
+    border: 2px solid var(--cor-borda-padrao);
+    border-radius: 10px;
+    height: 42px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 0 var(--cor-borda-padrao);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.btn-adicionar-rpg:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 var(--cor-borda-padrao);
+}
+
+/* ==========================================
+   SEÇÃO DE ANOTAÇÕES / ABAS INTERNAS (UNIFICADO)
+   ========================================== */
+.abas-internas-anotacoes {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.btn-aba-interna {
+    flex: 1;
     height: 40px;
-    border: none !important;
-    text-align: center;
-    font-weight: 700;
-    font-size: 14px;
-    color: #2d3748;
-    background: #ffffff;
+    background-color: #ffffff;
+    color: #2b2b2b;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-aba-interna:hover:not(.active) {
+    background-color: #f9f9f9;
+    border-color: #888888;
+}
+
+.btn-aba-interna.active {
+    background-color: var(--cor-tema);
+    color: #ffffff;
+    border-color: var(--cor-borda-padrao);
+    box-shadow: 0 4px 0 var(--cor-borda-padrao);
+    transform: translateY(-2px);
+}
+
+.btn-aba-interna.active:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 var(--cor-borda-padrao);
+}
+
+.container-texto-anotacao {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.textarea-anotacao-grande {
+    width: 100%;
+    min-height: 180px;
+    max-height: 280px;
+    height: 180px;
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-family: inherit;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    resize: vertical;
     outline: none;
 }
 
-/* Remover setas nativas do input de carga */
-.input-carga-nova::-webkit-outer-spin-button,
-.input-carga-nova::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+/* ==========================================================================
+   CSS DAS ABAS INTERNAS E CARDS DE HABILIDADES (ESTILO NEOBRUTALISTA EDITÁVEL)
+   ========================================================================== */
+
+/* Container geral de habilidades */
+.container-conteudo-habilidades {
+    margin-top: 15px;
+    width: 100%;
 }
 
-.slot-controle-direto small {
+/* Esconde as seções que não estão ativas */
+.secao-habilidade-conteudo {
+    display: none;
+}
+
+.secao-habilidade-conteudo.active {
     display: block;
-    text-align: center;
-    margin-top: 6px;
-    font-size: 10px;
-    color: #a0aec0;
-    font-weight: bold;
+    animation: fadeInHabilidade 0.3s ease-in-out;
 }
 
-/* Moedas com Ícones e Cores Temáticas Laterais */
-.calculadora-moedas-nova {
+/* Lista que envelopa os cards */
+.lista-cards-habilidades {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
+    margin-bottom: 15px;
 }
 
-.moeda-item-novo {
+/* Card Individual de Habilidade (Editável e Adaptado para o Tema Claro) */
+.card-habilidade {
+    position: relative;
+    background-color: #fcfcfc; 
+    border: 2px solid var(--cor-borda-padrao);
+    border-radius: 15px;
+    padding: 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 0 var(--cor-borda-padrao);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-habilidade:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--cor-borda-padrao);
+}
+
+/* Botão de Excluir Habilidade (Discreto no canto superior direito) */
+.btn-excluir-habilidade {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    transition: transform 0.15s, color 0.15s;
+    z-index: 10;
+}
+
+.btn-excluir-habilidade:hover {
+    transform: scale(1.2);
+    color: #a71d2a;
+}
+
+/* Cabeçalho do Card */
+.cabecalho-habilidade {
+    border-bottom: 2px solid var(--cor-borda-padrao);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
+/* Inputs integrados que parecem textos normais do cabeçalho */
+.input-hab-subtitulo {
+    display: block;
+    width: calc(100% - 30px);
+    border: none;
+    background: transparent;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cor-tema);
+    font-weight: 900;
+    padding: 2px 0;
+    margin-bottom: 2px;
+    outline: none;
+}
+
+.input-hab-nome {
+    display: block;
+    width: calc(100% - 30px);
+    border: none;
+    background: transparent;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #111111;
+    padding: 2px 0;
+    outline: none;
+}
+
+.input-hab-subtitulo:focus,
+.input-hab-nome:focus {
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    padding-left: 6px;
+}
+
+/* Descrição da Habilidade (Textarea expansível integrada) */
+.textarea-hab-sobre {
+    width: 100%;
+    min-height: 80px;
+    border: none;
+    background: transparent;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #2b2b2b;
+    resize: vertical;
+    font-family: inherit;
+    padding: 6px 0;
+    outline: none;
+}
+
+.textarea-hab-sobre:focus {
+    background-color: #f1f1f1;
+    border-left: 3px solid var(--cor-tema);
+    padding-left: 8px;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Rodapé do Card (Custos e Usos) */
+.rodape-habilidade {
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 2px dashed var(--cor-borda-suave);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.recurso-habilidade {
     display: flex;
     align-items: center;
-    background: #ffffff;
-    border: 2px solid #2d3748;
-    border-radius: 8px;
-    padding: 8px 12px;
     gap: 12px;
+    font-size: 0.9rem;
+    color: #111111;
+    font-weight: 700;
 }
 
-.moeda-icone {
-    font-size: 20px;
+/* Menu de seleção do tipo de recurso */
+.select-tipo-recurso {
+    border: 2px solid var(--cor-borda-suave);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #444;
+    background-color: #ffffff;
+    cursor: pointer;
+    outline: none;
+}
+
+.select-tipo-recurso:focus {
+    border-color: var(--cor-tema);
+}
+
+.container-valores-recurso {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Badges de Custo Dinâmicos (PE e PS em formato de Input) */
+.input-custo-badge {
+    width: 85px;
+    border: 2px solid var(--cor-borda-padrao);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 2px 0 var(--cor-borda-padrao);
+    outline: none;
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.input-custo-badge.pe {
+    background-color: #e0f2fe; /* Azul claro */
+    color: #0369a1;
+}
+
+.input-custo-badge.ps {
+    background-color: #fee2e2; /* Vermelho claro */
+    color: #b91c1c;
+}
+
+.input-custo-badge:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--cor-borda-padrao);
+}
+
+/* Contador de Usos Interativo Neobrutalista */
+.contador-usos {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffffff;
+    border: 2px solid var(--cor-borda-padrao);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 0 var(--cor-borda-padrao);
+}
+
+.contador-usos button {
+    background: none;
+    border: none;
+    color: #111111;
+    font-size: 1.1rem;
+    font-weight: 800;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.contador-usos button:hover {
+    background-color: #f1f1f1;
+}
+
+.contador-usos button:first-child {
+    border-right: 2px solid var(--cor-borda-padrao);
+}
+
+.contador-usos button:last-child {
+    border-left: 2px solid var(--cor-borda-padrao);
+}
+
+.contador-usos .valor-uso {
+    padding: 0 12px;
+    font-size: 0.85rem;
+    color: #111111;
+    font-weight: 800;
     user-select: none;
 }
 
-.moeda-corpo {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+.contador-usos .valor-uso .atual {
+    color: var(--cor-tema); /* Usa a cor dinâmica no contador */
 }
 
-.moeda-corpo label {
-    font-size: 10px;
+/* Input do limite máximo do contador */
+.input-limite-maximo {
+    width: 35px;
+    border: 1px solid var(--cor-borda-suave);
+    border-radius: 4px;
+    text-align: center;
+    font-family: inherit;
     font-weight: 800;
-    color: #718096;
-    text-transform: uppercase;
-    margin-bottom: 2px;
+    font-size: 0.85rem;
+    background: #f1f1f1;
+    padding: 2px;
 }
 
-.input-moeda-nova {
-    border: none !important;
-    padding: 2px 0 !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    color: #2d3748 !important;
-    width: 100%;
-    background: transparent !important;
+.input-limite-maximo:focus {
+    background: #ffffff;
+    border-color: var(--cor-tema);
     outline: none;
 }
 
-.moeda-item-novo.platina { border-left: 6px solid #4fd1c5; } /* Azul Diamante/Platina */
-.moeda-item-novo.ouro { border-left: 6px solid #d69e2e; }    /* Dourado */
-.moeda-item-novo.prata { border-left: 6px solid #a0aec0; }   /* Prata */
-.moeda-item-novo.bronze { border-left: 6px solid #cd7f32; }  /* Bronze */
-
-/* Caixa de Totalizadores de Dinheiro */
-.total-dinheiro-box-novo {
-    background: #1a202c;
-    border-radius: 8px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 8px;
-    border: 2px solid #2d3748;
+/* Animação suave ao trocar de aba */
+@keyframes fadeInHabilidade {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.patrimonio-label {
-    font-size: 10px;
-    font-weight: 700;
-    color: #a0aec0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
+/* ==========================================
+   EFEITO DE DESTAQUE SATISFATÓRIO AO CLICAR (ATUALIZADO)
+   ========================================== */
+.campo-rpg-container input,
+.coluna-textareas-rpg textarea,
+.input-relacao-nome,
+.input-relacao-desc,
+.textarea-anotacao-grande,
+.select-relacao-tipo,
+.input-relacao-personalizado,
+.input-hab-subtitulo,
+.input-hab-nome,
+.textarea-hab-sobre,
+.select-tipo-recurso,
+.input-custo-badge,
+.input-limite-maximo {
+    transition: all 0.15s ease-in-out;
+    position: relative;
+    z-index: 1;
 }
 
-.total-dinheiro-box-novo span {
-    color: #48bb78; /* Verde clássico de dinheiro */
-    font-size: 22px;
-    font-weight: 800;
+.campo-rpg-container input:hover,
+.coluna-textareas-rpg textarea:hover,
+.input-relacao-nome:hover,
+.input-relacao-desc:hover,
+.textarea-anotacao-grande:hover,
+.select-relacao-tipo:hover,
+.input-relacao-personalizado:hover,
+.input-hab-subtitulo:hover,
+.input-hab-nome:hover,
+.textarea-hab-sobre:hover,
+.select-tipo-recurso:hover,
+.input-custo-badge:hover,
+.input-limite-maximo:hover {
+    border-color: #444444;
 }
 
+/* Focus ativo com o brilho na cor dinâmica do tema (--cor-tema) */
+.campo-rpg-container input:focus,
+.coluna-textareas-rpg textarea:focus,
+.input-relacao-nome:focus,
+.input-relacao-desc:focus,
+.textarea-anotacao-grande:focus,
+.select-relacao-tipo:focus,
+.input-relacao-personalizado:focus,
+.input-hab-subtitulo:focus,
+.input-hab-nome:focus,
+.textarea-hab-sobre:focus,
+.select-tipo-recurso:focus,
+.input-custo-badge:focus,
+.input-limite-maximo:focus {
+    border-color: var(--cor-tema) !important;
+    background-color: #ffffff !important;
+    outline: none;
+    /* Mistura 30% da cor do seu tema com transparente para criar o brilho perfeito */
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cor-tema) 30%, transparent) !important; 
+    position: relative;
+    z-index: 10;
+    transform: translateY(-1px);
+}
 /* ==========================================================================
    SISTEMA DE EXIBIÇÃO DE SUB-ABAS (OCULTAÇÃO)
    ========================================================================== */
 .bloco-sub-aba-conteudo {
-    display: none !important; 
+    display: none !important;
     width: 100%;
 }
 
 .bloco-sub-aba-conteudo.active {
-    display: block !important; 
+    display: block !important;
 }
 
 /* Responsividade Geral */
 @media (max-width: 768px) {
-    .secao-inventario-moderno, 
-    .mochila-grid-layout, 
-    .grid-inputs-perfil {
+    .grid-caracteristicas-rpg {
         grid-template-columns: 1fr;
     }
 }
