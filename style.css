@@ -1,0 +1,2636 @@
+:root {
+    --cor-tema: #ed1c24;
+    --fundo-folha: #ffffff;      /* Certifique-se de que está #ffffff */
+    --texto-padrao: #000000;     /* Certifique-se de que está #000000 */
+    --fundo-externo: #1a1a1a;    /* O fundo escuro de trás do livro */
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Container que joga o lápis pro canto superior direito alinhado com o título */
+.container-lapis-tema {
+    position: absolute;
+    right: 20px;       /* Distância da borda direita do cabeçalho */
+    top: 22px;         /* Ajuste fino para alinhar verticalmente com o 'FICHA LV' */
+    z-index: 10;
+}
+
+/* Estilo do botão do lápis atualizado */
+.botao-lapis-custom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: #474747; /* Seu cinza escuro irado */
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    
+    /* 3 linhas para limpar o comportamento padrão de tag button */
+    border: none;
+    outline: none;
+    padding: 0;
+}
+
+/* Efeito de hover - acende na cor do tema que o usuário escolheu */
+.botao-lapis-custom:hover {
+    transform: scale(1.1);
+    background-color: var(--cor-tema); 
+    box-shadow: 0 0 10px var(--cor-tema);
+}
+
+/* Evita que o ícone interno interfira no clique do botão */
+.botao-lapis-custom svg {
+    pointer-events: none;
+}
+
+/* Essencial para o cálculo de largura */
+
+body {
+    background-color: #222;
+    display: flex;
+    justify-content: center;
+    font-family: 'Arial Black', sans-serif;
+    padding: 20px;
+    margin: 0;
+}
+
+
+.col-direita {
+    width: 320px;
+    min-width: 320px;
+    /* Removemos o display: flex daqui */
+    display: block;
+}
+
+/* Criamos o espaçamento (gap) manualmente para os filhos da coluna direita */
+.col-direita>* {
+    margin-bottom: 10px;
+}
+
+.col-direita>*:last-child {
+    margin-bottom: 0;
+}
+
+.header-preto {
+    background: black;
+    color: white;
+    padding: 15px;
+    min-height: 100px;
+}
+
+.header-preto h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+/* Estilo do novo Input de Nome */
+#player_nome_input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    /* Mesma fonte do resto da ficha */
+    font-size: 22px;
+    width: 100%;
+    margin-top: 10px;
+    outline: none;
+    text-transform: uppercase;
+    /* Opcional: deixa o nome sempre em maiúsculas como no molde */
+}
+
+/* Cor do "Digite seu nome..." (Placeholder) */
+#player_nome_input::placeholder {
+    color: #555;
+    /* Tom claro solicitado */
+    text-transform: none;
+    /* Placeholder não fica em maiúsculas */
+}
+
+#campo_lv {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 21px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    outline: none;
+}
+
+#campo_lv option {
+    background: black;
+}
+
+.moldura-foto-container {
+    width: 100%;
+    margin: 15px 0;
+}
+
+
+/* Efeito ao passar o mouse */
+.upload-area:hover {
+    background-color: #f0f0f0;
+    border-color: #888;
+}
+
+#placeholder_upload {
+    text-align: center;
+    pointer-events: none;
+}
+
+#placeholder_upload p {
+    margin-top: 10px;
+    color: #999;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: none;
+    /* Mantém minúsculas como na imagem */
+}
+
+.nuvem-icone {
+    opacity: 0.6;
+    transition: transform 0.3s ease;
+}
+
+/* ... (mantenha o início do código igual) */
+
+.upload-area {
+    width: 100%;
+    height: 250px;
+    background-color: #f9f9f9;
+    border: 2px dashed #ccc;
+    /* DIMINUÍDO: De 20px para 8px para a moldura externa */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Estado Ativo: Quando a classe 'foto-postada' é adicionada via JS */
+.upload-area.foto-postada {
+    border: 1px solid #4e0101;
+    /* Muda de tracejado para LINHA SÓLIDA */
+    background-color: white;
+}
+
+/* Efeito de hover suave apenas quando já tem a foto */
+.upload-area.foto-postada:hover {
+    border-color: var(--vermelho);
+    /* Destaque sutil com a cor da ficha */
+    box-shadow: 0 4px 15px rgba(20, 0, 0, 0.26);
+    transform: scale(1.01);
+}
+
+#preview_img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* DIMINUÍDO: De 10px para 5px para a foto interna */
+    border-radius: 5px;
+    display: block;
+}
+
+/* ... (resto do código igual) */
+
+.titulo-sessao {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    font-size: 21px;
+    margin: 5px 0;
+}
+
+.tabela-dados {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-dados td {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tabela-dados input {
+    border: none;
+    width: 100%;
+    outline: none;
+    font-weight: bold;
+}
+
+.status-bar {
+    border: 1px solid black;
+    padding: 5px;
+    font-size: 18px;
+    font-family: 'Arial Black', sans-serif;
+}
+
+.progresso {
+    height: 6px;
+    width: 85%;
+    border: 1px solid black;
+    margin-top: 4px;
+}
+
+.verde {
+    background: #8efc69;
+}
+
+.roxo {
+    background: #8a59ff;
+}
+
+.amarelo {
+    background: #ffeb3b;
+}
+
+.attr-item {
+    display: flex;
+    justify-content: space-between;
+    border: 2px solid black;
+    padding: 4px;
+    margin-bottom: 2px;
+    font-size: 12px;
+}
+
+.attr-item input {
+    width: 35px;
+    text-align: center;
+}
+
+
+/* Estilo do Input de Espécie para parecer clicável */
+#especie_input {
+    cursor: pointer;
+    color: #000000;
+    transition: background 0.3s;
+}
+
+#especie_input:hover {
+    background: #fff0f0;
+}
+
+/* O MODAL (Fundo escuro) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+
+    /* MUDANÇA AQUI: Impede que o fundo role */
+    overflow: hidden;
+    padding: 0;
+}
+
+/* CONTEÚDO DO MODAL (A aba de resumo) */
+.modal-content {
+    background-color: white;
+    margin: 5vh auto;
+    /* 5% da altura da tela */
+    padding: 20px;
+    border: 3px solid black;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+
+    /* MUDANÇA AQUI: A rolagem fica só aqui dentro */
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Esconde a barra de rolagem lateral do fundo quando o modal abre */
+body.modal-aberto {
+    overflow: hidden;
+}
+
+/* BOTÃO DE FECHAR NO MODAL */
+.close-btn {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    /* Cor branca solicitada */
+    line-height: 1;
+    transition: color 0.2s ease;
+    z-index: 1001;
+    /* Garante que fique acima da barra preta */
+}
+
+/* BOTÃO DE FECHAR NO MODAL */
+.close-btn2 {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: rgb(0, 0, 0);
+    /* Cor branca solicitada */
+    line-height: 1;
+    transition: color 0.2s ease;
+    z-index: 1001;
+    /* Garante que fique acima da barra preta */
+}
+
+.close-btn2:hover {
+    color: #eb0000;
+    /* Fica cinza claro ao passar o mouse */
+}
+
+.close-btn:hover {
+    color: #bd0000;
+    /* Fica cinza claro ao passar o mouse */
+}
+
+/* Ajuste opcional na barra de título para destacar o botão */
+.modal-content h2.titulo-sessao {
+    margin: -20px -20px 20px -20px;
+    /* Alinha com as bordas do modal */
+    border-radius: 7px 7px 0 0;
+    padding: 15px;
+    position: relative;
+}
+
+/* GRID DE BOTÕES */
+.grid-especies-modal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.categoria-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tag-attr {
+    background: black;
+    color: white;
+    width: fit-content;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.categoria-modal button {
+    text-align: left;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    padding: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+
+.categoria-modal button:hover {
+    background: #f0f0f0;
+    color: var(--vermelho);
+    border-bottom-color: var(--vermelho);
+}
+
+/* Tags de Cores */
+.tag-attr {
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    width: fit-content;
+}
+
+.tag-attr.for {
+    background: #ed1c24;
+}
+
+.tag-attr.vig {
+    background: #2ecc71;
+}
+
+.tag-attr.des {
+    background: #f1c40f;
+}
+
+.tag-attr.car {
+    background: #f75ec9;
+}
+
+.tag-attr.int {
+    background: #3498db;
+}
+
+.tag-attr.nul {
+    background: #555555;
+}
+
+/* Efeito de Hover Colorido nos Botões */
+.categoria-modal:has(.for) button:hover {
+    color: #ed1c24;
+    border-bottom-color: #ed1c24;
+}
+
+.categoria-modal:has(.vig) button:hover {
+    color: #2ecc71;
+    border-bottom-color: #2ecc71;
+}
+
+.categoria-modal:has(.des) button:hover {
+    color: #f1c40f;
+    border-bottom-color: #f1c40f;
+}
+
+.categoria-modal:has(.car) button:hover {
+    color: #e91e63;
+    border-bottom-color: #e91e63;
+}
+
+.categoria-modal:has(.int) button:hover {
+    color: #3498db;
+    border-bottom-color: #3498db;
+}
+
+.categoria-modal:has(.nul) button:hover {
+    color: #524f4f;
+    border-bottom-color: #000000;
+}
+
+
+/* Estilo base das tags para manter consistência */
+.tag-attr {
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    width: fit-content;
+    margin-bottom: 5px;
+    text-align: center;
+    min-width: 40px;
+}
+
+/* Estilo da Ficha Explicativa */
+.ficha-explicativa {
+    max-width: 450px;
+    border: 4px solid black;
+}
+
+.header-detalhes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+}
+
+.foto-especie-container {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.foto-especie-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.info-texto p {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.btn-confirmar {
+    width: 100%;
+    padding: 12px;
+    background: black;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn-confirmar:hover {
+    background: #68b965;
+}
+
+/* Novo Layout: Foto + Resumo */
+.topo-detalhes-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    /* Foto fixa em 150px e texto ocupa o resto */
+    gap: 15px;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.mini-resumo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mini-resumo h3 {
+    font-size: 14px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid black;
+    width: fit-content;
+}
+
+.mini-resumo p {
+    font-size: 12px;
+    font-style: italic;
+    color: #555;
+    line-height: 1.4;
+}
+
+/* O wrapper precisa deixar os itens lado a lado */
+.campo-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    width: 100%;
+}
+
+/* O botão sutil */
+.btn-lixeira-sutil {
+    display: none;
+    /* Começa escondido */
+    background: none;
+    border: none;
+    padding: 0 10px;
+    cursor: pointer;
+    color: #ccc;
+    font-weight: bold;
+}
+
+/* REGRA CRÍTICA: Se o input tiver a classe, mostra o botão vizinho */
+#especie_input.tem-conteudo+.btn-lixeira-sutil {
+    display: inline-block !important;
+}
+
+.btn-lixeira-sutil:hover {
+    color: #ed1c24;
+}
+
+
+.header-preta {
+    background: #000;
+    color: #fff;
+    text-align: center;
+    font-weight: 800;
+    padding: 10px;
+    font-size: 20px;
+    font-family: 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* ESTA LINHA CRIA O ESPAÇO ACIMA */
+    margin-top: 8px;
+
+    margin-bottom: 8px;
+    display: block;
+    /* Garante que a margem funcione corretamente */
+}
+
+.status-card {
+    display: flex;
+    border: 1px solid #000;
+    margin-bottom: 6px;
+    background: #fff;
+    height: 75px;
+}
+
+.corpo-principal {
+    flex: 1;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* ÁREA LATERAL BEM ENCOLHIDA */
+.bonus-slim {
+    width: 60px;
+    /* Largura mínima para o bônus */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.divisor-v {
+    width: 1.5px;
+    background: #000;
+    align-self: stretch;
+}
+
+.dado-val,
+.bonus-val {
+    width: 100%;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-weight: bold;
+    outline: none;
+}
+
+.dado-val {
+    font-size: 15px;
+    color: #333;
+}
+
+.bonus-val {
+    font-size: 14px;
+    margin-top: -3px;
+}
+
+/* Barras e Inputs */
+.topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sigla-status {
+    font-weight: 900;
+    font-size: 20px;
+    width: 30px;
+}
+
+.barra-externa {
+    flex-grow: 1;
+    height: 10px;
+    background: #ddd;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    overflow: hidden;
+}
+
+.barra-interna {
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease-out;
+}
+
+.inputs-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-unidade {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-unidade input {
+    width: 52px;
+    height: 26px;
+    text-align: center;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.input-unidade label {
+    font-size: 8px;
+    font-weight: 900;
+    color: #555;
+    margin-top: 2px;
+}
+
+.bg-read {
+    background: #fff5f5;
+    color: #d00;
+    border: none !important;
+}
+
+.barra-div {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: -12px;
+}
+
+/* Cores dos Temas */
+.bg-pv {
+    background: #2ecc71;
+}
+
+.cor-pv {
+    color: #27ae60;
+}
+
+.borda-pv {
+    border-left: 6px solid #27ae60;
+}
+
+.bg-ps {
+    background: #9b59b6;
+}
+
+.cor-ps {
+    color: #8e44ad;
+}
+
+.borda-ps {
+    border-left: 6px solid #8e44ad;
+}
+
+.bg-pe {
+    background: #f1c40f;
+}
+
+.cor-pe {
+    color: #f39c12;
+}
+
+.borda-pe {
+    border-left: 6px solid #f39c12;
+}
+
+/* Container principal estilizado como um card da ficha */
+.card-teste-morte {
+    width: 100%;
+    max-width: 100%; /* Encaixa perfeitamente na coluna abaixo das barras */
+    border: 2px solid #000000;
+    border-radius: 6px; /* Cantos suavemente arredondados para um ar moderno */
+    overflow: hidden;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra sutil de fundo */
+}
+
+/* O Header do Teste de Morte - Idêntico ao bloco STATUS */
+.morte-header {
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 900;
+    padding: 6px 0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Espaçamento interno do card */
+.morte-body {
+    padding: 10px;
+    background-color: #fafafa; /* Fundo cinza bem claro para destacar as caixas */
+}
+
+/* O grupo de caixas de seleção */
+.morte-grid-inputs {
+    display: flex;
+    gap: 20px; /* Espaçamento elegante entre os quadrados (estilo botões independentes) */
+    justify-content: center;
+    width: 100%;
+}
+
+/* 2. Removemos o 'flex: 1' para que os botões não preencham a tela toda */
+.item-checkbox-morte {
+    cursor: pointer;
+    position: relative;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 55px;         /* LARGURA FIXA DOS QUADRADOS (Ajuste aqui se quiser menor/maior) */
+}
+
+.item-checkbox-morte input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* O quadrado visual (Estado Normal: Mostra o número preto) */
+.caixa-morte-design {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    color: #000000; /* Cor do número original */
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    user-select: none;
+    text-align: center;
+    width: 100%;
+    position: relative; /* Necessário para posicionar a caveira perfeitamente */
+}
+/* Hover ao passar o mouse */
+.item-checkbox-morte:hover .caixa-morte-design {
+    border-color: #000000;
+    background-color: #f0f0f0;
+    transform: translateY(-1px);
+}
+
+/* ESTADO ATIVADO (Quando toma a falha): Fundo vermelho neon com brilho */
+.item-checkbox-morte input:checked + .caixa-morte-design {
+    background-color: #ed1c24 !important; /* Vermelho padrão do projeto */
+    color: #ffffff !important;
+    border-color: #b31015;
+    box-shadow: 0 0 10px rgba(237, 28, 36, 0.4); /* Efeito de brilho de energia/perigo */
+    transform: scale(0.98); /* Efeito de clique físico pressionado */
+}
+
+/* ESTADO ATIVADO: Quando clicado, o quadrado fica vermelho com brilho */
+.item-checkbox-morte input:checked + .caixa-morte-design {
+    background-color: #ed1c24 !important; /* Vermelho padrão */
+    border-color: #b31015;
+    box-shadow: 0 0 10px rgba(237, 28, 36, 0.5);
+    transform: scale(0.95);
+    
+    /* MÁGICA AQUI: Deixa o número original (1, 2 ou 3) invisível */
+    color: transparent !important; 
+}
+
+/* INJEÇÃO DA CAVEIRA: Ela aparece exatamente por cima do número escondido */
+.item-checkbox-morte input:checked + .caixa-morte-design::after {
+    content: "☠️"; /* Pode trocar por "☠️" se preferir o estilo pirata */
+    position: absolute;
+    font-size: 16px; /* Tamanho da caveira ligeiramente maior para destacar */
+    color: #ffffff !important; /* Caveira fica branca contrastando com o fundo vermelho */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centraliza perfeitamente no meio do quadrado */
+}
+
+/*campo de atributos
+
+/* Container que agrupa os atributos */
+.lista-atributos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Espaço entre as caixas */
+    padding: 1px 0;
+}
+
+/* Atualização de Fonte para os Atributos */
+.attr-item {
+    font-family: 'Arial Black', sans-serif;
+    /* A fonte robusta da Sorte */
+    color: #000;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+
+    /* Mantendo as bordas fechadas que você pediu */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid #000000;
+    border-radius: 6px;
+    height: 45px;
+    padding: 0 12px;
+    background: #fff;
+}
+
+/* Efeito de foco quando passa o mouse na caixa toda */
+.attr-item:hover {
+    border-color: #4b4b4b;
+    background: #e7e7e7;
+}
+
+/* Nome do Atributo: Mais limpo e legível */
+.attr-item span,
+.attr-item {
+    color: #000000;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Garantindo que o input do número também use a fonte se quiser manter o padrão */
+.attr-item input {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    color: #000000;
+    /* Cor cinza para o número como no seu print */
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 45px;
+    height: 32px;
+    text-align: center;
+    outline: none;
+}
+
+/* Quando o input é selecionado */
+.attr-item input:focus {
+    border-color: var(--vermelho);
+    background: #fff;
+    box-shadow: 0 0 4px rgba(237, 28, 36, 0.2);
+}
+
+/* Estilo para valor negativo */
+.attr-item input[value="-1"] {
+    color: #ed1c24;
+    border-color: #ffb3b3;
+}
+
+/* Remove setas padrão */
+.attr-item input::-webkit-inner-spin-button,
+.attr-item input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.chart-container {
+    width: 100% !important;
+    max-width: 320px !important;
+    height: 300px !important;
+    /* Altura física obrigatória */
+    margin: 15px auto;
+    position: relative !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#radarChart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
+/* campo de sorte e defesa */
+
+
+/* Centraliza o quadrado perfeitamente dentro de cada card individual */
+.grid-atributo-separado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+}
+
+/* O Quadrado Branco (Cópia visual exata dos botões do Teste de Morte) */
+.caixa-atributo-design {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px; /* Cantos suavizados idênticos ao original */
+    width: 59px;  /* Largura ideal para não esticar e manter o formato quadrado */
+    height: 27px; /* Altura proporcional aos botões do Teste de Morte */
+    transition: border-color 0.2s ease;
+}
+
+/* Realce sutil ao clicar ou passar o mouse na caixinha */
+.caixa-atributo-design:focus-within,
+.caixa-atributo-design:hover {
+    border-color: #000000;
+}
+
+/* Input invisível que centraliza o número grande dentro do quadrado */
+.input-atributo-morte {
+    border: none;
+    background: transparent;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 18px; /* Tamanho numérico idêntico ao Teste de Morte */
+    font-weight: bold;
+    color: #000000;
+    outline: none;
+}
+
+/* Esconde as setinhas nativas do navegador no campo numérico de Defesa */
+.input-atributo-morte::-webkit-outer-spin-button,
+.input-atributo-morte::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* CLASSES */
+
+
+/* Layout das Abas */
+.tabs-classes {
+    display: flex;
+    justify-content: space-around;
+    background: #222;
+    padding: 5px;
+    border-bottom: 2px solid #000;
+}
+
+.tab-btn-classe {
+    flex: 1;
+    padding: 12px 5px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-family: 'Arial Black', sans-serif;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: 0.3s;
+}
+
+.tab-btn-classe.active {
+    opacity: 1;
+}
+
+/* Cores das Abas Ativas */
+.tab-btn-classe[data-cor="vermelho"].active {
+    border-bottom: 4px solid #ff4d4d;
+}
+
+.tab-btn-classe[data-cor="verde"].active {
+    border-bottom: 4px solid #4CAF50;
+}
+
+.tab-btn-classe[data-cor="amarelo"].active {
+    border-bottom: 4px solid #FFC107;
+}
+
+.tab-btn-classe[data-cor="rosa"].active {
+    border-bottom: 4px solid #E91E63;
+}
+
+.tab-btn-classe[data-cor="azul"].active {
+    border-bottom: 4px solid #2196F3;
+}
+
+/* Grid de Seleção */
+.conteudo-classe {
+    display: none;
+    padding: 20px;
+}
+
+.conteudo-classe.active {
+    display: block;
+}
+
+.grid-classes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Duas colunas */
+    gap: 15px;
+}
+
+.card-classe {
+    border: 2px solid #000;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.card-classe:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+/* Selinhos dos Atributos Secundários */
+.sec-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    color: #fff;
+    border-radius: 3px;
+    border: 1px solid #000;
+}
+
+.b-for {
+    background: #eb2d2d;
+}
+
+.b-vig {
+    background: #4CAF50;
+}
+
+.b-des {
+    background: #FFC107;
+    color: #ffffff;
+}
+
+.b-car {
+    background: #db4eac;
+}
+
+.b-int {
+    background: #2196F3;
+}
+
+/* Se o seu modal principal usar outra classe (ex: .modal-content-classe), 
+   ajuste o nome abaixo. O importante é ter "position: relative" */
+.modal-content {
+    position: relative;
+    /* Dá o ponto de referência para o X se posicionar */
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 550px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilização exata do X no canto superior direito */
+.fechar-modal-custom {
+    position: absolute;
+    top: 15px;
+    /* Alinha perfeitamente no topo interno */
+    right: 20px;
+    /* Alinha perfeitamente na direita interna */
+    color: #000000;
+    /* Cor original: Preto */
+    font-size: 38px;
+    /* Tamanho de destaque idêntico ao print */
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    /* Efeito suave ao passar o mouse */
+    z-index: 100;
+    /* Garante que fique por cima das abas e textos */
+}
+
+/* Quando passar o mouse por cima do X */
+.fechar-modal-custom:hover {
+    color: #ff0000;
+    /* Muda para Vermelho absoluto */
+}
+
+/* Badges internas dinâmicas do topo do Split */
+.badge-principal-detalhe {
+    font-size: 11px;
+    padding: 3px 8px;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+.badge-principal-detalhe.for {
+    background: #eb2d2d;
+}
+
+.badge-principal-detalhe.vig {
+    background: #4CAF50;
+}
+
+.badge-principal-detalhe.des {
+    background: #FFC107;
+    color: #000;
+}
+
+.badge-principal-detalhe.car {
+    background: #db4eac;
+}
+
+.badge-principal-detalhe.int {
+    background: #2196F3;
+}
+
+/* Estilos de Textos de Conteúdo */
+.bloco-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 12px;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+.bloco-info p {
+    margin: 0;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    color: #555;
+    line-height: 1.4;
+    text-transform: none;
+    /* Mantém caixa mista para leitura confortável */
+}
+
+/*teste classe abas
+
+/* Organização interna do corpo do modal */
+.modal-body-layout {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    align-items: flex-start;
+}
+
+/* Espaço reservado escuro para a imagem */
+.placeholder-img-classe {
+    width: 170px;
+    height: 230px;
+    border: 2px solid #686868;
+    border-radius: 4px;
+    background: #1e1e24;
+    flex-shrink: 0;
+}
+
+.placeholder-img-classe img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Alinhamento dos blocos de texto */
+.modal-textos-classe h3 {
+    margin: 0 0 5px 0;
+    font-size: 13px;
+    color: #000;
+    font-weight: bold;
+}
+
+.modal-textos-classe p {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+}
+
+/* Alinhamento dos botões inferiores */
+.modal-botoes-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.btn-voltar-classes {
+    background: #fff;
+    color: #000;
+    border: 2px solid #000;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-voltar-classes:hover {
+    background: #eee;
+}
+
+.btn-confirmar-classe {
+    flex-grow: 1;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-confirmar-classe:hover {
+    background: #5fac54;
+}
+
+/* Organiza o título e o badge na mesma linha de forma elegante */
+.modal-header-detalhe {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin-bottom: 15px !important;
+    padding-right: 5px;
+    /* Evita que cole na lateral */
+}
+
+/* O Badge corrigido: agora ele respeita as margens do modal */
+.badge-status-classe {
+    display: inline-block !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    padding: 6px 14px !important;
+    border-radius: 4px !important;
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Remove os absolute antigos para descer o elemento */
+    position: static !important;
+}
+
+/* Cores das Vertentes mantidas e reforçadas */
+.badge-status-classe.vig {
+    background-color: #4caf50 !important;
+}
+
+.badge-status-classe.des {
+    background-color: #ffc107 !important;
+}
+
+.badge-status-classe.car {
+    background-color: #e91e63 !important;
+}
+
+.badge-status-classe.int {
+    background-color: #2196f3 !important;
+}
+
+.badge-status-classe.for {
+    background-color: #ed1c24 !important;
+}
+
+/* Estilo do Input de classe para parecer clicável */
+#classe_input {
+    cursor: pointer;
+    color: #000000;
+    transition: background 0.3s;
+}
+
+#classe_input:hover {
+    background: #fff0f0;
+}
+
+/* CAMPO PERICIAS */
+
+
+/* ==========================================================================
+   CAIXINHA DE BÔNUS BRANCA MINIMALISTA (+0)
+   ========================================================================== */
+
+/* 1. O Container Pai: Junta os dois no centro horizontal */
+.linha-titulo-bonus-p {
+    display: flex !important;
+    align-items: center !important;     /* Alinhamento vertical perfeito */
+    justify-content: center !important;  /* Centraliza o combo no meio da tela */
+    gap: 12px !important;               /* Espaço entre o título e a caixinha */
+    width: 100% !important;
+    min-height: 40px !important;
+    margin-bottom: 15px !important;
+    position: relative !important;
+}
+
+/* 2. O Título */
+.titulo-pericias-topo {
+    color: #ffffff !important;
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    letter-spacing: 2px !important;
+    font-family: sans-serif !important;
+    text-align: center !important;
+    margin: 0 !important;
+    position: static !important;
+    transform: none !important;
+}
+
+/* 3. A Caixinha do Bônus: Quadrada, branca e compacta */
+.linha-titulo-bonus-p .caixa-bonus-pericia-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #d9dee3 !important; 
+    border: 1px solid #bdc3c7 !important;
+    padding: 6px 8px !important;         /* Ajustado para equilibrar o espaço interno */
+    border-radius: 8px !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+    position: static !important;
+}
+
+
+/* 4. O Campo numérico editável */
+.linha-titulo-bonus-p .caixa-bonus-pericia-wrapper input {
+    width: 42px !important;              /* Aumentado de 22px para 42px para caber "+10", "+15", etc. */
+    background: transparent !important;
+    border: none !important;
+    color: #2d3748 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    text-align: center !important;        /* Mudado para center para o número não ficar colado na esquerda */
+    outline: none !important;
+    padding: 0 !important;
+    cursor: text !important;
+}
+
+/* Oculta as setinhas do input number */
+.linha-titulo-bonus-p .caixa-bonus-pericia-wrapper input::-webkit-outer-spin-button,
+.linha-titulo-bonus-p .caixa-bonus-pericia-wrapper input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+/* ==========================================================================
+   1. MOLDURA DO LIVRO E ALINHAMENTO CENTRAL
+   ========================================================================== */
+/* Garante que o fundo da tela seja escuro e centralizado */
+body {
+    background-color: #1a1a1a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.ficha-container {
+    width: 100%;
+    max-width: 700px; /* Mantém o tamanho exato que você definiu */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+
+.folha-branca-livro {
+    background-color: #ffffff; /* 🌟 Fixado em branco puro de forma definitiva */
+    color: #000000;            /* 🌟 Garante que o texto fique sempre preto no papel branco */
+    border: 2px solid #000;
+    border-left: 15px solid var(--cor-tema);
+    padding: 25px; 
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 600px; 
+    border-radius: 0 0 8px 8px;
+    
+    /* Transição suave apenas para a cor de destaque da borda lateral */
+    transition: border-left-color 0.3s ease;
+}
+/* ==========================================================================
+   2. DESIGN DAS ABAS DO TOPO (BASEADO NO SEU PRINT)
+   ========================================================================== */
+.abas-livro-container {
+    display: flex;
+    gap: 4px;
+    padding-left: 2px;
+}
+
+.aba-livro {
+    padding: 8px 18px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #2a2a2a; /* Cor cinza escuro para abas desativadas */
+    border: 1px solid #000;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.aba-livro:hover {
+    background-color: #3a3a3a;
+}
+
+/* ==========================================================================
+   PAINEL DE CONTROLE DAS PERÍCIAS (BUSCA E FILTROS)
+   ========================================================================== */
+
+   /* Container para posicionar o SVG corretamente dentro do input */
+.icone-lupa-svg {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: #a0aec0; /* Cor cinza padrão antes do clique */
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+/* Quando você clicar para digitar, a lupa ganha a cor ativa da ficha automaticamente */
+.wrapper-busca-input input:focus + .icone-lupa-svg {
+    color: var(--cor-tema, #e53e3e);
+}
+
+/* Container principal que junta título, busca e botões */
+.header-pericias-container {
+    background-color: #2b2b2b;
+    border: 1px solid #b8b8b8;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espaço uniforme entre as linhas */
+}
+
+/* Camada 1: Título "PERÍCIAS" */
+.titulo-pericias-topo {
+    text-align: center;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    font-family: sans-serif;
+}
+
+/* Camada 2: Container da Barra de Busca */
+.barra-pesquisa-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Wrapper para alinhar o input e a lupa */
+.wrapper-busca-input {
+    position: relative;
+    width: 100%;
+    max-width: 500px; /* Garante que ela não fique gigante em telas enormes, nem cortada */
+}
+
+.wrapper-busca-input input {
+    width: 100%;
+    background-color: #d9d9da;
+    border: 1px solid #2a313e;
+    color: #020202;
+    padding: 12px 45px 12px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+/* Efeito ao clicar para digitar */
+.wrapper-busca-input input:focus {
+    border-color: #a5a5a5;
+    box-shadow: 0 0 10px rgba(167, 18, 18, 0.295);
+    background-color: #d9d9da;
+}
+
+/* Ícone de Lupa dentro do input */
+.icone-lupa {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Camada 3: Container dos Botões de Filtro */
+.botoes-filtro-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Se a tela for pequena, eles quebram linha sem esmagar */
+    justify-content: center;
+}
+
+/* Botões de Filtro (Estilo Gamer/RPG) */
+.btn-filtro-rpg {
+    background-color: #d9d9da;
+    color: #616161;
+    border: 1px solid #2a313e;
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+}
+
+/* Efeito de passar o mouse nos botões (Usa a cor da sua ficha bem clarinha) */
+.btn-filtro-rpg:hover {
+    background-color: var(--cor-tema, #9127b3);
+    filter: brightness(1.2); /* Dá uma leve clareada na cor ao passar o mouse */
+    opacity: 0.2; /* Deixa o fundo bem suave/translúcido */
+    color: #ffffff; 
+    border-color: var(--cor-tema, #4a5568);
+}
+
+.btn-filtro-rpg.active {
+    background-color: var(--cor-tema, #e53e3e);
+    color: #ffffff;
+    border-color: transparent;
+    
+    /* Brilho bem reduzido e suave */
+    box-shadow: 0 0 6px rgba(155, 155, 155, 0.459); 
+}
+
+/* DESTAQUE DE PERICIA*/
+
+/* Regra principal para a linha quando destacada na busca */
+.linha-pericia-nova.pericia-destacada {
+    /* Fundo escuro translúcido para dar profundidade e leveza */
+    background-color: rgba(192, 158, 7, 0.541) !important; 
+    
+    /* Borda lateral grossa com a cor dinâmica da sua ficha */
+    border-left: 5px solid var(--cor-tema, #e53e3e) !important; 
+    
+    /* Brilho neon sutil focado apenas na borda esquerda */
+    box-shadow: 2px 0 8px var(--cor-tema, rgba(229, 62, 62, 0.4)) !important; 
+    
+    /* Dá um leve espaço para o texto não colar na borda colorida */
+    padding-left: 20px !important;
+    
+    /* Transição e animação ao acender na tela */
+    transition: all 0.2s ease-in-out;
+    animation: acenderSuave 0.25s ease-in-out;
+    
+    position: relative;
+    z-index: 1;
+}
+
+/* Garante contraste total do texto e números sobre o fundo sutil */
+.linha-pericia-nova.pericia-destacada span,
+.linha-pericia-nova.pericia-destacada p,
+.linha-pericia-nova.pericia-destacada div,
+.linha-pericia-nova.pericia-destacada input {
+    color: #ffffff !important;
+}
+
+/* Animação para a borda expandir suavemente quando você digita */
+@keyframes acenderSuave {
+    0% {
+        opacity: 0.7;
+        border-left-width: 0px;
+    }
+    100% {
+        opacity: 1;
+        border-left-width: 5px;
+    }
+}
+
+/* ==========================================================================
+   3. SISTEMA DE TROCA DE PÁGINAS (A MÁGICA DO LIVRO)
+   ========================================================================== */
+/* Esconde as páginas desativadas */
+.pagina-livro {
+    display: none; /* Esconde as páginas inativas */
+    width: 100%;
+    box-sizing: border-box;
+}
+/* Quando a Página Principal está ativa, ela usa Grid ou Flex para manter as duas colunas originais */
+#pagina_principal:checked ~ .abas-livro-container .btn-principal {
+    background-color: #ff4d4d;
+}
+#pagina_principal:checked ~ .folha-branca-livro #conteudo_principal {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide em duas colunas perfeitas idênticas ao início */
+    gap: 20px; /* Espaço entre a coluna da foto/status e a coluna dos atributos */
+}
+
+/* Configuração da Página de Perícias */
+#pagina_pericias:checked ~ .abas-livro-container .btn-pericias {
+    background-color: #ff4d4d;
+}
+#pagina_pericias:checked ~ .folha-branca-livro #conteudo_pericias {
+    display: block; /* Abre em bloco normal ocupando o espaço */
+}
+
+/* Configuração da Página de Perfil */
+#pagina_perfil:checked ~ .abas-livro-container .btn-perfil {
+    background-color: #ff4d4d;
+}
+#pagina_perfil:checked ~ .folha-branca-livro #conteudo_perfil {
+    display: block;
+}
+
+/* ==========================================================================
+   ESTILIZAÇÃO DA NOVA PÁGINA DE PERÍCIAS (DESIGN OTIMIZADO)
+   ========================================================================== */
+
+/* Container Principal do Título - Preto e Centralizado */
+.header-pericias-fino {
+    background: #111111; /* Preto suave */
+    color: #ffffff;
+    
+    /* Centraliza os elementos internos perfeitamente no meio */
+    display: flex !important;
+    justify-content: center !important; 
+    align-items: center !important;
+    gap: 12px !important; /* Espaço controlado entre a palavra PERÍCIAS e o quadradinho */
+    
+    width: 100% !important; 
+    box-sizing: border-box !important;
+    
+    padding: 12px 20px !important;
+    margin-bottom: 24px !important;
+    border-radius: 6px;
+    
+    /* Detalhe de linha vermelha na base combinando com a ficha */
+    /* ... todo o resto do código que já fizemos ... */
+    border-bottom: 3px solid var(--cor-tema) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Texto "PERÍCIAS" */
+.header-pericias-fino span {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* O Quadrado de Bônus de Cima Totalmente Redesenhado */
+.header-pericias-fino .seu-estilo-aqui {
+    width: 46px !important;
+    height: 28px !important;
+    text-align: center !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    font-family: 'Arial', sans-serif;
+    
+    /* Cores combinando com os inputs de atributos da página principal */
+    color: #111111 !important;
+    background: #f5f5f5 !important;
+    
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    
+    /* Trava o tamanho no flexbox */
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    max-width: 46px !important;
+    
+    transition: all 0.2s ease;
+}
+
+/* Efeito de foco ao clicar no bônus adaptado ao tema dinâmico */
+.header-pericias-fino input:focus {
+    outline: none !important;
+    background: #ffffff !important;
+    border-color: var(--cor-tema) !important; /* Muda para a cor escolhida */
+    box-shadow: 0 0 8px var(--cor-tema) !important; /* Cria o brilho perfeito com a cor do tema */
+}
+
+/* Container que alinha as tabelas uma embaixo da outra e no centro */
+.grid-pericias-colunas {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;     /* MÁGICA: Centraliza as tabelas na página */
+    gap: 25px !important;              /* Espaço extra super elegante entre blocos */
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Tabelas com largura controlada - Nem gigantescas, nem espremidas */
+.caixa-categoria-nova {
+    width: 100% !important;
+    max-width: 520px !important;       /* LIMITE VISUAL: Perfeito para ler sem cansar os olhos */
+    border: 1px solid #000000;
+    border-radius: 6px;                /* Cantos ligeiramente mais arredondados */
+    background: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04); /* Sombra leve para dar profundidade e destaque */
+    box-sizing: border-box !important;
+}
+
+/* Títulos das Categorias com as Cores Oficiais */
+.topo-cat-pericia {
+    font-family: 'Arial Black', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    padding: 5px 10px;
+    color: #000000;
+    border-bottom: 1px solid #000000;
+    text-transform: uppercase;
+}
+.topo-cat-pericia span {
+    font-family: Arial, sans-serif;
+    font-weight: normal;
+    font-style: italic;
+    text-transform: none;
+}
+
+/* Mapeamento exato de cores baseado nas suas tags de atributos */
+.topo-cat-pericia.c-for { background: #ffeded; color: #ed1c24; }
+.topo-cat-pericia.c-vig { background: #eef9f1; color: #2ecc71; }
+.topo-cat-pericia.c-des { background: #f8ebde; color: #e67e22; }
+.topo-cat-pericia.c-car { background: #fdf2fa; color: #db4eac; }
+.topo-cat-pericia.c-int { background: #eef7fc; color: #2196f3; }
+
+/* Linha do cabeçalho interna da caixa */
+.tabela-cabecalho-p {
+    display: flex !important;
+    justify-content: flex-end !important; /* MÁGICA: Empurra os títulos todos para a direita */
+    background: #f8f9fa !important;
+    padding: 6px 16px !important; /* Mantém o mesmo recuo interno das linhas de baixo */
+    border-bottom: 1px solid #e0e0e0 !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+    color: #777777 !important;
+    font-family: Arial, sans-serif;
+}
+
+/* Container dos três títulos - Alinhamento Forçado por Tamanho Fixo */
+.tabela-cabecalho-p .grupo-titulos-colunas {
+    display: flex !important;
+    gap: 0 !important;
+    
+    /* Força o bloco de textos a ter o tamanho idêntico ao bloco de inputs */
+    width: 116px !important;  /* (38px * 3 inputs) + 2px das linhas internas */
+    min-width: 116px !important;
+    
+    /* Cria o recuo da borda direita igual ao padding que a linha de baixo tem */
+    margin-right: 2px !important; 
+}
+
+.tabela-cabecalho-p .col-cap {
+    /* Mude para 39px. O input de baixo tem 38px, então 39px compensa 
+       a espessura da linha vertical de divisão perfeitamente! */
+    width: 39px !important; 
+    
+    text-align: center !important;
+    display: inline-block !important;
+    box-sizing: border-box !important;
+    border-left: 1px solid #dcdcdc !important; /* A linha divisória do topo */
+}
+
+/* Garante que o primeiro título (Base) tenha a primeira linha divisória */
+.tabela-cabecalho-p .col-cap:first-child {
+    border-left: 1px solid #dcdcdc !important; 
+}
+
+
+/* Base de Força - Número Vermelho */
+.inputs-tres input.pericia-base-for {
+    color: #ed1c24 !important;
+}
+
+/* Base de Vigor - Número Verde */
+.inputs-tres input.pericia-base-vig {
+    color: #2ecc71 !important;
+}
+
+/* Base de Destreza - Número Laranja */
+.inputs-tres input.pericia-base-des {
+    color: #e67e22 !important;
+}
+
+/* Base de Carisma - Número Rosa */
+.inputs-tres input.pericia-base-car {
+    color: #e91e63 !important;
+}
+
+/* Base de Intelecto - Número Azul */
+.inputs-tres input.pericia-base-int {
+    color: #3498db !important;
+}
+
+.inputs-tres input {
+    width: 38px !important;
+    height: 24px !important;
+    text-align: center !important;
+    font-size: 14px !important; /* Aumentei um tiquinho para destacar mais */
+    
+    /* MÁGICA DO NEGITO E SUBINHADO: */
+    font-weight: bold !important; /* Deixa em negrito */
+    border: none !important;      /* Remove todas as bordas antigas dos lados e de cima */
+    border-radius: 0 !important;
+    background: transparent !important;
+    
+    /* Cria uma linha padrão preta embaixo (caso queira uma base para todos) */
+    border-bottom: 2px solid #000000 !important; 
+}
+
+/* Opcional: Se quiser dar um fundo cinza de leve apenas no campo Total */
+.inputs-tres input.t-p {
+    background: #f4f4f4 !important;
+}
+
+/* Cria uma borda sutil ao redor de todo o bloco de números para fechar a "caixa" de dados */
+.inputs-tres {
+    border: 1px solid #dcdcdc !important;
+    border-radius: 4px !important; /* Deixa os cantos externos do conjunto arredondados */
+    overflow: hidden; /* Garante que os inputs internos sigam o arredondado das pontas */
+    background: #ffffff;
+}
+
+/* Base de Força - Número e Linha Vermelhos */
+.inputs-tres input.pericia-base-for {
+    color: #df0a11 !important;
+    border-bottom: 2px solid #cc1218  !important;
+}
+
+/* Base de Vigor - Número e Linha Verde */
+.inputs-tres input.pericia-base-vig {
+    color: #2ecc71 !important;
+    border-bottom: 2px solid #2ecc71 !important;
+}
+
+/* Base de Destreza - Número e Linha Laranja */
+.inputs-tres input.pericia-base-des {
+    color: #e67e22 !important;
+    border-bottom: 2px solid #e67e22 !important;
+}
+
+/* Base de Carisma - Número e Linha Rosa */
+.inputs-tres input.pericia-base-car {
+    color: #eb2dcb !important;
+    border-bottom: 2px solid #eb2dcb !important;
+}
+
+/* Base de Intelecto - Número e Linha Azul */
+.inputs-tres input.pericia-base-int {
+    color: #3498db !important;
+    border-bottom: 2px solid #3498db !important;
+}
+
+
+/* ==========================================================================
+   DICA: CASO QUEIRA COMPENSAR OS CAMPOS DE BUILD E TOTAL
+   ========================================================================== */
+/* Faz com que os campos de Build e Total também fiquem em negrito e com linha preta embaixo */
+.inputs-tres input:not([class*="pericia-base"]) {
+    color: #000000 !important;
+    border-bottom: 2px solid #000000 !important;
+}
+
+
+/* Corpo da Tabela e Linhas de Perícias */
+.corpo-tabela-p {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Deixando os textos e linhas mais "grandinhos" e fáceis de ler */
+.linha-pericia-nova {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 8px 16px !important;      /* Mais espaço interno (respiro para os olhos) */
+    border-bottom: 1px dashed #eaeaea !important;
+}
+
+.linha-pericia-nova:last-child {
+    border-bottom: none;
+}
+
+.linha-pericia-nova > span {
+    font-size: 13.5px !important;      /* Texto um pouco maior para leitura rápida */
+    font-weight: 500 !important;
+    color: #1a1a1a !important;
+}
+
+/* Bloco que junta as 3 caixinhas de inputs na direita */
+.inputs-tres {
+    display: flex;
+    gap: 4px;
+}
+
+.inputs-tres input {
+    width: 32px;
+    height: 20px;
+    text-align: center;
+    font-size: 11px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-weight: bold;
+    background: #ffffff;
+    outline: none;
+}
+
+/* Estilo do campo de Total (Cinza e travado para leitura) */
+.inputs-tres input.t-p {
+    background: #f0f0f0;
+    border-color: #bbbbbb;
+    color: #000000;
+}
+
+/* Remove as setinhas dos campos numéricos em navegadores Webkit (Chrome, Safari, Edge, Opera) */
+.inputs-tres input::-webkit-outer-spin-button,
+.inputs-tres input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Remove as setinhas no Firefox de forma moderna e sem avisos no editor */
+.inputs-tres input[type=number] {
+    appearance: textfield; /* Padrão moderno */
+    -moz-appearance: textfield !important; /* Compatibilidade com versões antigas */
+}
+
+/* ==========================================================================
+   CUSTOMIZAÇÃO: DROPDOWN RESPONSIVO (MOBILE-FRIENDLY)
+   ========================================================================== */
+
+/* Container do Dropdown */
+.menu-tema-dropdown {
+    display: none; /* Escondido por padrão, controlado via JS */
+    position: absolute;
+    right: 0;
+    top: 38px;
+    background-color: #1a1a1b; /* Tom escuro profundo imersivo */
+    border: 1.5px solid #2d2b38;
+    border-radius: 8px;
+    padding: 14px;
+    width: 200px; /* Largura levemente maior para melhor leitura no mobile */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 110;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    
+    /* Prepara transições suaves caso queira usar */
+    animation: surgimentoSuave 0.2s ease-out;
+}
+
+/* Classe utilitária para exibir o menu via JS */
+.menu-tema-dropdown.ativo {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px; /* Espaçamento ideal para telas de toque */
+}
+
+/* Seções Internas do Menu */
+.menu-tema-secao {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.menu-tema-secao label {
+    color: #a8a8a8; /* Cinza azulado elegante */
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+/* Customização Dinâmica do Input de Cor */
+.menu-tema-secao input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 36px; /* Altura confortável para clicar no celular */
+    background: #1e1d26;
+    border: 1px solid #2d2b38;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 4px;
+    transition: border-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Suporte de bordas internas para navegadores diferentes */
+.menu-tema-secao input[type="color"]::-webkit-color-swatch {
+    border: 1px solid #374151;
+    border-radius: 4px;
+}
+.menu-tema-secao input[type="color"]::-moz-color-swatch {
+    border: 1px solid #374151;
+    border-radius: 4px;
+}
+
+.menu-tema-secao input[type="color"]:hover {
+    border-color: var(--cor-tema);
+}
+
+.menu-tema-secao input[type="color"]:active {
+    transform: scale(0.98); /* Feedback tátil rápido ao clicar no celular */
+}
+
+/* Linha Divisória */
+.menu-tema-divisor {
+    height: 1.5px;
+    background-color: #2d2b38;
+    margin: 4px 0;
+    width: 100%;
+}
+
+/* Animação de Entrada */
+@keyframes surgimentoSuave {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   Ajuste de Media Query (Segurança para telas muito pequenas)
+   ========================================================================== */
+@media (max-width: 480px) {
+    .menu-tema-dropdown {
+        right: -10px; /* Ajusta o alinhamento caso a tela do celular seja muito estreita */
+        width: 180px;
+    }
+}
+
+
+
+/* ==========================================================================
+   LAYOUT PERFIL - RPG MODERNO INTERATIVO (ADAPTÁVEL)
+   ========================================================================== */
+
+#conteudo_perfil {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: #f8f9fa; /* Fundo claro, limpo e moderno */
+    color: #1a1a1a;
+}
+
+/* ==========================================================================
+   BOTÕES DE SUB-ABAS (ESTILO SELEÇÃO DE MENU GAMER)
+   ========================================================================== */
+.menu-sub-abas-rpg {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    padding-bottom: 5px;
+}
+
+.btn-sub-aba {
+    background: #ffffff;
+    color: #2d3748;
+    border: 2px solid #2d3748;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 0px #2d3748; /* Efeito de profundidade 3D */
+    transition: all 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Efeito Hover Sutil */
+.btn-sub-aba:hover {
+    background: #f7fafc;
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 0px #2d3748;
+}
+
+/* SUB-ABA ATIVA: Adapta-se dinamicamente à cor principal da sua ficha */
+.btn-sub-aba.active {
+    background-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3)) !important;
+    color: #ffffff !important;
+    border-color: #2d3748;
+    transform: translateY(4px); /* Botão "afunda" ao ser clicado/ativo */
+    box-shadow: 0px 0px 0px #2d3748;
+}
+
+/* ==========================================================================
+   CARDS E CAIXAS DE STATUS (NEO-MINIMALISTA)
+   ========================================================================== */
+.card-perfil-status {
+    background: #ffffff;
+    border: 2px solid #2d3748;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(45, 55, 72, 0.08);
+    margin-bottom: 24px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Títulos Limpos com Detalhe da Cor da Ficha */
+.card-perfil-status h3 {
+    margin: 0 0 20px 0;
+    font-size: 14px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Pequeno marcador quadrado antes do título que puxa a cor da ficha */
+.card-perfil-status h3::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 14px;
+    background-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+    border-radius: 2px;
+}
+
+/* ==========================================================================
+   INPUTS INTERATIVOS
+   ========================================================================== */
+.grid-inputs-perfil input, 
+.item-relacao .nome-npc,
+.textarea-itens,
+.textarea-notas,
+.moeda-item input {
+    background-color: #ffffff !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    color: #2d3748 !important;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none !important;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+/* Focus: Borda muda dinamicamente para a cor da sua ficha */
+.grid-inputs-perfil input:focus, 
+.item-relacao .nome-npc:focus,
+.textarea-itens:focus,
+.textarea-notas:focus {
+    border-color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3)) !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(145, 39, 179, 0.15) !important;
+}
+
+/* Grid de Características */
+.grid-inputs-perfil {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.grid-inputs-perfil label {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #718096;
+}
+
+/* ==========================================================================
+   RELAÇÕES E SLIDERS
+   ========================================================================== */
+.item-relacao {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   SISTEMA DE AFINIDADE POR CORAÇÕES (ESTILO STARDEW VALLEY)
+   ========================================================================= */
+.container-coracoes {
+    display: flex;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #edf2f7;
+    border-radius: 20px;
+    border: 2px solid #2d3748;
+    user-select: none;
+    align-items: center;
+    height: 28px;
+}
+
+.coracao-rpg {
+    font-size: 20px;
+    color: #cbd5e0;
+    cursor: pointer;
+    transition: transform 0.1s ease, color 0.15s ease;
+    line-height: 1;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.15);
+}
+
+.coracao-rpg:hover {
+    transform: scale(1.3);
+}
+
+.coracao-rpg.active {
+    color: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+}
+
+/* Botão Adicionar Relação */
+.btn-adicionar-sutil {
+    background: #ecc94b !important;
+    border: 2px solid #2d3748;
+    color: #2d3748;
+    width: 100%;
+    padding: 12px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 3px 0px #2d3748;
+    transition: all 0.1s;
+    margin-top: 8px;
+}
+
+.btn-adicionar-sutil:hover {
+    transform: translateY(-1px);
+    box-shadow: 0px 4px 0px #2d3748;
+}
+
+.btn-adicionar-sutil:active {
+    transform: translateY(3px);
+    box-shadow: 0px 0px 0px #2d3748;
+}
+
+/* ==========================================================================
+   DIÁRIO DE CAMPANHA (TEXTAREA LIMPO)
+   ========================================================================== */
+.container-topicos-dinamicos {
+    background: #ffffff;
+    border-radius: 8px;
+}
+
+.textarea-notas {
+    width: 100%;
+    height: 280px;
+    border: 2px solid #e2e8f0 !important;
+    resize: none;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.abas-anotacoes-botoes {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    background: #edf2f7;
+    padding: 6px;
+    border-radius: 8px;
+}
+
+.aba-nota {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #4a5568;
+    padding: 8px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.aba-nota.active {
+    background: var(--cor-tema, var(--cor-roxa-lateral, #9127b3));
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   NOVO LAYOUT DE INVENTÁRIO (ESTILO GAMER / REFORMULADO)
+   ========================================================================== */
+.secao-inventario-moderno {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Barra de Progresso de Carga */
+.wrapper-barra-carga {
+    background: #edf2f7;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #2d3748;
+    margin-bottom: 20px;
+}
+
+.info-texto-carga {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.barra-carga-bg {
+    width: 100%;
+    height: 12px;
+    background: #cbd5e0;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #2d3748;
+}
+
+.barra-carga-progresso {
+    height: 100%;
+    background: var(--cor-tema, #9127b3);
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.2s ease;
+}
+
+/* Grid Interno da Mochila */
+.mochila-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 16px;
+}
+
+.mochila-grid-layout h4 {
+    margin: 0 0 8px 0;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #718096;
+}
+
+.textarea-itens {
+    width: 100%;
+    height: 160px;
+    resize: none;
+}
+
+/* Novo Controle Numérico de Peso (+ e -) */
+.controle-carga-novo {
+    display: flex;
+    align-items: center;
+    border: 2px solid #2d3748;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.btn-peso-ajuste {
+    background: #edf2f7;
+    border: none;
+    width: 35px;
+    height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    color: #2d3748;
+    transition: background 0.2s;
+}
+
+.btn-peso-ajuste:hover {
+    background: #cbd5e0;
+}
+
+.input-carga-nova {
+    width: 100%;
+    height: 40px;
+    border: none !important;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #2d3748;
+    background: #ffffff;
+    outline: none;
+}
+
+/* Remover setas nativas do input de carga */
+.input-carga-nova::-webkit-outer-spin-button,
+.input-carga-nova::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.slot-controle-direto small {
+    display: block;
+    text-align: center;
+    margin-top: 6px;
+    font-size: 10px;
+    color: #a0aec0;
+    font-weight: bold;
+}
+
+/* Moedas com Ícones e Cores Temáticas Laterais */
+.calculadora-moedas-nova {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.moeda-item-novo {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 2px solid #2d3748;
+    border-radius: 8px;
+    padding: 8px 12px;
+    gap: 12px;
+}
+
+.moeda-icone {
+    font-size: 20px;
+    user-select: none;
+}
+
+.moeda-corpo {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.moeda-corpo label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #718096;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.input-moeda-nova {
+    border: none !important;
+    padding: 2px 0 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #2d3748 !important;
+    width: 100%;
+    background: transparent !important;
+    outline: none;
+}
+
+.moeda-item-novo.platina { border-left: 6px solid #4fd1c5; } /* Azul Diamante/Platina */
+.moeda-item-novo.ouro { border-left: 6px solid #d69e2e; }    /* Dourado */
+.moeda-item-novo.prata { border-left: 6px solid #a0aec0; }   /* Prata */
+.moeda-item-novo.bronze { border-left: 6px solid #cd7f32; }  /* Bronze */
+
+/* Caixa de Totalizadores de Dinheiro */
+.total-dinheiro-box-novo {
+    background: #1a202c;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    border: 2px solid #2d3748;
+}
+
+.patrimonio-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #a0aec0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.total-dinheiro-box-novo span {
+    color: #48bb78; /* Verde clássico de dinheiro */
+    font-size: 22px;
+    font-weight: 800;
+}
+
+/* ==========================================================================
+   SISTEMA DE EXIBIÇÃO DE SUB-ABAS (OCULTAÇÃO)
+   ========================================================================== */
+.bloco-sub-aba-conteudo {
+    display: none !important; 
+    width: 100%;
+}
+
+.bloco-sub-aba-conteudo.active {
+    display: block !important; 
+}
+
+/* Responsividade Geral */
+@media (max-width: 768px) {
+    .secao-inventario-moderno, 
+    .mochila-grid-layout, 
+    .grid-inputs-perfil {
+        grid-template-columns: 1fr;
+    }
+}

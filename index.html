@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=900">
+    <title>Ficha - LUVES</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="ficha-container">
+
+        <input type="radio" name="abas_livro" id="pagina_principal" checked hidden>
+        <input type="radio" name="abas_livro" id="pagina_pericias" hidden>
+        <input type="radio" name="abas_livro" id="pagina_perfil" hidden>
+
+        <div class="abas-livro-container">
+            <label for="pagina_principal" class="aba-livro btn-principal">Principal</label>
+            <label for="pagina_pericias" class="aba-livro btn-pericias">Perícias</label>
+            <label for="pagina_perfil" class="aba-livro btn-perfil">Perfil & Anotações</label>
+        </div>
+
+        <div class="folha-branca-livro">
+
+            <div class="pagina-livro" id="conteudo_principal">
+
+                <div class="col-esquerda">
+                    <header class="header-preto" style="position: relative; padding-top: 15px;">
+                        <div class="container-lapis-tema"
+                            style="position: absolute; right: 20px; top: 20px; z-index: 100;">
+                            <button type="button" class="botao-lapis-custom" id="btn-menu-tema"
+                                onclick="toggleMenuTema(event)" title="Configurações de Aparência">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffffff"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                            </button>
+
+                            <div class="menu-tema-dropdown" id="menu-tema-dropdown">
+                                <div class="menu-tema-secao">
+                                    <label>Cor do Tema</label>
+                                    <input type="color" id="seletor-cor" value="#ed1c24"
+                                        oninput="atualizarTemaFicha(this.value)">
+                                </div>
+
+                                <div class="menu-tema-divisor"></div>
+
+                                <div class="menu-tema-secao">
+                                    <label style="color: #f87171;">Atenção ao campo abaixo!</label>
+                                    <button type="button" class="btn-resetar-ficha" onclick="confirmarResetFicha(event)"
+                                        style="background-color: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.25); padding: 8px 10px; border-radius: 4px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; font-size: 11px; margin-top: 6px; transition: all 0.2s;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path
+                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                        </svg>
+                                        Resetar Ficha
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cabecalho-topo">
+                            <h1>FICHA LV
+                                <select id="campo_lv">
+                                    <script>
+                                        for (let i = 0; i <= 15; i++) {
+                                            document.write(`<option value="${i}">${i}</option>`);
+                                        }
+                                    </script>
+                                </select>
+                            </h1>
+                            <input type="text" id="player_nome_input" placeholder="Digite seu nome..."
+                                spellcheck="false">
+                        </div>
+                    </header>
+
+                    <div class="moldura-foto-container">
+                        <div id="container_foto" class="upload-area"
+                            onclick="document.getElementById('input_foto').click()">
+                            <img id="preview_img" src="#" style="display:none;">
+                            <div id="placeholder_upload">
+                                <div class="nuvem-icone">
+                                    <svg viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="#888"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17.5 19a5.5 5.5 0 0 0 0-11h-1.5a7 7 0 1 0-13.5 3.5"></path>
+                                        <polyline points="12 12 12 16"></polyline>
+                                        <polyline points="9 13 12 10 15 13"></polyline>
+                                    </svg>
+                                </div>
+                                <p>ARRASTE OU CLIQUE PARA ENVIAR</p>
+                            </div>
+                            <input type="file" id="input_foto" accept="image/*" onchange="carregarFoto(event)" hidden>
+                        </div>
+                    </div>
+
+                    <table class="tabela-dados">
+                        <tr>
+                            <td>PERSONA</td>
+                            <td><input type="text" placeholder="Ex: Sr.Dogo"></td>
+                        </tr>
+                        <tr>
+                            <td>ESPÉCIE</td>
+                            <td>
+                                <div class="campo-wrapper">
+                                    <input type="text" id="especie_input" placeholder="Selecione..." readonly
+                                        onclick="abrirModal()">
+                                    <button id="btn_limpar_especie" class="btn-lixeira-sutil" onclick="limparEspecie()"
+                                        title="Limpar">✕</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>CLASSE</td>
+                            <td>
+                                <div class="campo-wrapper">
+                                    <input type="text" id="classe_input" placeholder="Selecione..." readonly
+                                        onclick="abrirModalExclusivo('modalClasse')">
+
+                                    <button id="btn_limpar_classe" class="btn-lixeira-sutil"
+                                        onclick="event.stopPropagation(); limparClasse();" title="Limpar">✕</button>
+                                </div>
+                            </td>
+                    </table>
+
+                    <div class="container-status">
+                        <div class="header-preta">STATUS</div>
+                        <div class="lista-status">
+
+                            <div class="status-card borda-pv">
+                                <div class="corpo-principal">
+                                    <div class="topo">
+                                        <span class="sigla-status">PV</span>
+                                        <div class="barra-externa">
+                                            <div id="barra_pv" class="barra-interna bg-pv"></div>
+                                        </div>
+                                    </div>
+                                    <div class="inputs-row">
+                                        <div class="input-unidade">
+                                            <input type="number" id="pv_total" placeholder="0"
+                                                oninput="atualizar('pv')">
+                                            <label>TOTAL</label>
+                                        </div>
+                                        <span class="barra-div">/</span>
+                                        <div class="input-unidade">
+                                            <input type="number" id="pv_atual" value="0" readonly class="bg-read">
+                                            <label>ATUAL</label>
+                                        </div>
+                                        <span class="barra-div">/</span>
+                                        <div class="input-unidade">
+                                            <input type="number" id="pv_dano" placeholder="0" oninput="atualizar('pv')">
+                                            <label>DANO</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divisor-v"></div>
+                                <div class="bonus-slim">
+                                    <input type="text" class="dado-val" placeholder="1d10" oninput="autoDado(this)">
+                                    <input type="text" class="bonus-val cor-pv" placeholder="+0"
+                                        oninput="autoMais(this)">
+                                </div>
+                            </div>
+                            <div class="status-card borda-ps">
+                                <div class="corpo-principal">
+                                    <div class="topo">
+                                        <span class="sigla-status">PS</span>
+                                        <div class="barra-externa">
+                                            <div id="barra_ps" class="barra-interna bg-ps"></div>
+                                        </div>
+                                    </div>
+                                    <div class="inputs-row">
+                                        <div class="input-unidade">
+                                            <input type="number" id="ps_total" placeholder="0"
+                                                oninput="atualizar('ps')">
+                                            <label>TOTAL</label>
+                                        </div>
+                                        <span class="barra-div">/</span>
+                                        <div class="input-unidade">
+                                            <input type="number" id="ps_atual" value="0" readonly class="bg-read">
+                                            <label>ATUAL</label>
+                                        </div>
+                                        <span class="barra-div">/</span>
+                                        <div class="input-unidade">
+                                            <input type="number" id="ps_dano" placeholder="0" oninput="atualizar('ps')">
+                                            <label>DANO</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divisor-v"></div>
+                                <div class="bonus-slim">
+                                    <input type="text" class="dado-val" placeholder="1d8" oninput="autoDado(this)">
+                                    <input type="text" class="bonus-val cor-ps" placeholder="+0"
+                                        oninput="autoMais(this)">
+                                </div>
+                            </div>
+                            <div class="status-card borda-pe">
+                                <div class="corpo-principal">
+                                    <div class="topo">
+                                        <span class="sigla-status">PE</span>
+                                        <div class="barra-externa">
+                                            <div id="barra_pe" class="barra-interna bg-pe"></div>
+                                        </div>
+                                    </div>
+                                    <div class="inputs-row">
+                                        <div class="input-unidade">
+                                            <input type="number" id="pe_total" placeholder="0"
+                                                oninput="atualizar('pe')">
+                                            <label>TOTAL</label>
+                                        </div>
+                                        <span class="barra-div">/</span>
+                                        <div class="input-unidade">
+                                            <input type="number" id="pe_atual" value="0" readonly class="bg-read">
+                                            <label>ATUAL</label>
+                                        </div>
+                                        <span class="barra-div">/</span>
+                                        <div class="input-unidade">
+                                            <input type="number" id="pe_dano" placeholder="0" oninput="atualizar('pe')">
+                                            <label>DANO</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divisor-v"></div>
+                                <div class="bonus-slim">
+                                    <input type="text" class="dado-val" placeholder="1d6" oninput="autoDado(this)">
+                                    <input type="text" class="bonus-val cor-pe" placeholder="+0"
+                                        oninput="autoMais(this)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-teste-morte">
+                        <div class="morte-header">TESTE DE MORTE</div>
+                        <div class="morte-body">
+                            <div class="morte-grid-inputs">
+                                <label class="item-checkbox-morte">
+                                    <input type="checkbox" id="morte_1" onclick="atualizarTesteMorte()">
+                                    <div class="caixa-morte-design">1</div>
+                                </label>
+                                <label class="item-checkbox-morte">
+                                    <input type="checkbox" id="morte_2" onclick="atualizarTesteMorte()">
+                                    <div class="caixa-morte-design">2</div>
+                                </label>
+                                <label class="item-checkbox-morte">
+                                    <input type="checkbox" id="morte_3" onclick="atualizarTesteMorte()">
+                                    <div class="caixa-morte-design">3</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-direita">
+                    <h2 class="titulo-sessao">ATRIBUTOS</h2>
+
+                    <div class="chart-container">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+
+                    <div class="lista-atributos">
+                        <div class="attr-item">FORÇA <input type="text" id="base_for" placeholder="+0"
+                                onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                        <div class="attr-item">VIGOR <input type="text" id="base_vig" placeholder="+0"
+                                onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                        <div class="attr-item">DESTREZA <input type="text" id="base_des" placeholder="+0"
+                                onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                        <div class="attr-item">CARISMA <input type="text" id="base_car" placeholder="+0"
+                                onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                        <div class="attr-item">INTELECTO <input type="text" id="base_int" placeholder="+0"
+                                onfocus="removerSinal(this)" oninput="validarRapido(this)"></div>
+                    </div>
+
+                    <div class="card-teste-morte" style="margin-top: 15px;">
+                        <div class="morte-header">SORTE</div>
+                        <div class="morte-body">
+                            <div class="grid-atributo-separado">
+                                <div class="caixa-atributo-design">
+                                    <input type="text" id="sorte_input" placeholder="+0" oninput="autoMais(this)"
+                                        class="input-atributo-morte">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-teste-morte" style="margin-top: 15px;">
+                        <div class="morte-header">DEFESA</div>
+                        <div class="morte-body">
+                            <div class="grid-atributo-separado">
+                                <div class="caixa-atributo-design">
+                                    <input type="number" id="defesa_input" value="10" placeholder="10"
+                                        class="input-atributo-morte">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modal_especies" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="fecharModal()">&times;</span>
+                        <h2 class="titulo-sessao">ESCOLHA SUA ESPÉCIE</h2>
+                        <div class="grid-especies-modal">
+                            <div class="categoria-modal">
+                                <div class="tag-attr nul">NULO</div> <button
+                                    onclick="selecionarEspecie('Humanos', 'NUL')">Humanos</button>
+                            </div>
+                            <div class="categoria-modal">
+                                <div class="tag-attr for">FOR</div> <button
+                                    onclick="selecionarEspecie('Dragões', 'FOR')">Dragões</button><button
+                                    onclick="selecionarEspecie('Feras', 'FOR')">Feras</button><button
+                                    onclick="selecionarEspecie('Mutante', 'FOR')">Mutante</button>
+                            </div>
+                            <div class="categoria-modal">
+                                <div class="tag-attr vig">VIG</div> <button
+                                    onclick="selecionarEspecie('Plantas', 'VIG')">Plantas</button><button
+                                    onclick="selecionarEspecie('Reencarnados', 'VIG')">Reencarnados</button><button
+                                    onclick="selecionarEspecie('Vampiros', 'VIG')">Vampiros</button>
+                            </div>
+                            <div class="categoria-modal">
+                                <div class="tag-attr des">DES</div> <button
+                                    onclick="selecionarEspecie('Goblins', 'DES')">Goblins</button><button
+                                    onclick="selecionarEspecie('Insectos', 'DES')">Insectos</button><button
+                                    onclick="selecionarEspecie('Limosos', 'DES')">Limosos</button>
+                            </div>
+                            <div class="categoria-modal">
+                                <div class="tag-attr car">CAR</div> <button
+                                    onclick="selecionarEspecie('Anjos', 'CAR')">Anjos</button><button
+                                    onclick="selecionarEspecie('Demônios', 'CAR')">Demônios</button><button
+                                    onclick="selecionarEspecie('Gemas', 'CAR')">Gemas</button>
+                            </div>
+                            <div class="categoria-modal">
+                                <div class="tag-attr int">INT</div> <button
+                                    onclick="selecionarEspecie('Construtos', 'INT')">Construtos</button><button
+                                    onclick="selecionarEspecie('Elfos', 'INT')">Elfos</button><button
+                                    onclick="selecionarEspecie('Marcianos', 'INT')">Marcianos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modal_detalhes" class="modal">
+                    <div class="modal-content ficha-explicativa">
+                        <span class="close-btn2" onclick="fecharDetalhes()">&times;</span>
+                        <div class="header-detalhes">
+                            <h2 id="detalhe_nome">Nome da Espécie</h2>
+                            <div class="tag-attr" id="detalhe_tag">ATTR</div>
+                        </div>
+                        <div class="topo-detalhes-grid">
+                            <div class="foto-especie-container"><img id="detalhe_img" src="" alt="Representação"></div>
+                            <div class="mini-resumo">
+                                <h3>RESUMO</h3>
+                                <p id="detalhe_resumo_curto">Breve introdução sobre a espécie aqui...</p>
+                            </div>
+                        </div>
+                        <div class="info-texto">
+                            <p><strong>• Bônus de Atributo:</strong> <span id="detalhe_bonus"></span></p>
+                            <p><strong>• Descrição Física:</strong> <span id="detalhe_desc"></span></p>
+                            <p><strong>• Idade:</strong> <span id="detalhe_idade"></span></p>
+                            <p><strong>• Tamanho:</strong> <span id="detalhe_tamanho"></span></p>
+                        </div>
+                        <button class="btn-confirmar" onclick="confirmarEscolha()">ESCOLHER ESTA ESPÉCIE</button>
+                    </div>
+                </div>
+
+                <div id="modalClasse" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2>ESCOLHA SUA CLASSE</h2>
+                            <span class="fechar-modal-custom" onclick="fecharModalClasse('modalClasse')">&times;</span>
+                        </div>
+
+                        <div class="tabs-classes">
+                            <button class="tab-btn-classe active" data-cor="vermelho"
+                                onclick="trocarAbaClasse(event, 'classe-for')">FOR</button>
+                            <button class="tab-btn-classe" data-cor="verde"
+                                onclick="trocarAbaClasse(event, 'classe-vig')">VIG</button>
+                            <button class="tab-btn-classe" data-cor="amarelo"
+                                onclick="trocarAbaClasse(event, 'classe-des')">DES</button>
+                            <button class="tab-btn-classe" data-cor="rosa"
+                                onclick="trocarAbaClasse(event, 'classe-car')">CAR</button>
+                            <button class="tab-btn-classe" data-cor="azul"
+                                onclick="trocarAbaClasse(event, 'classe-int')">INT</button>
+                        </div>
+
+                        <div id="classe-for" class="conteudo-classe active">
+                            <div class="grid-classes">
+                                <div class="card-classe" onclick="selecionarClasse('Bárbaro')">Bárbaro <span
+                                        class="sec-badge b-vig">VIG</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Ceifador')">Ceifador <span
+                                        class="sec-badge b-des">DES</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Performático')">Performático <span
+                                        class="sec-badge b-car">CAR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Exorcista')">Exorcista <span
+                                        class="sec-badge b-int">INT</span></div>
+                            </div>
+                        </div>
+
+                        <div id="classe-vig" class="conteudo-classe">
+                            <div class="grid-classes">
+                                <div class="card-classe" onclick="selecionarClasse('Sentinela')">Sentinela <span
+                                        class="sec-badge b-for">FOR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Monge')">Monge <span
+                                        class="sec-badge b-des">DES</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Paladino')">Paladino <span
+                                        class="sec-badge b-car">CAR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Socorrista')">Socorrista <span
+                                        class="sec-badge b-int">INT</span></div>
+                            </div>
+                        </div>
+
+                        <div id="classe-des" class="conteudo-classe">
+                            <div class="grid-classes">
+                                <div class="card-classe" onclick="selecionarClasse('Assassino')">Assassino <span
+                                        class="sec-badge b-for">FOR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Caçador')">Caçador <span
+                                        class="sec-badge b-vig">VIG</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Gatuno')">Gatuno <span
+                                        class="sec-badge b-car">CAR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Hacker')">Hacker <span
+                                        class="sec-badge b-int">INT</span></div>
+                            </div>
+                        </div>
+
+                        <div id="classe-car" class="conteudo-classe">
+                            <div class="grid-classes">
+                                <div class="card-classe" onclick="selecionarClasse('Cozinheiro')">Cozinheiro <span
+                                        class="sec-badge b-for">FOR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Maestro')">Maestro <span
+                                        class="sec-badge b-vig">VIG</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Alfaiate')">Alfaiate <span
+                                        class="sec-badge b-des">DES</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Ocultista')">Ocultista <span
+                                        class="sec-badge b-int">INT</span></div>
+                            </div>
+                        </div>
+
+                        <div id="classe-int" class="conteudo-classe">
+                            <div class="grid-classes">
+                                <div class="card-classe" onclick="selecionarClasse('Mecânico')">Mecânico <span
+                                        class="sec-badge b-for">FOR</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Alquimista')">Alquimista <span
+                                        class="sec-badge b-vig">VIG</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Investigador')">Investigador <span
+                                        class="sec-badge b-des">DES</span></div>
+                                <div class="card-classe" onclick="selecionarClasse('Arcanista')">Arcanista <span
+                                        class="sec-badge b-car">CAR</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modal_detalhes_classe" class="modal" style="display: none;">
+                    <div class="modal-content">
+                        <div class="modal-header-detalhe">
+                            <h2 id="detalhe_classe_nome" style="margin: 0;">BÁRBARO</h2>
+                            <span id="detalhe_classe_tag" class="badge-status-classe vig">VIG</span>
+                        </div>
+
+                        <hr>
+
+                        <div class="modal-body-layout">
+                            <div class="placeholder-img-classe">
+                                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='170' height='230'><rect width='170' height='230' fill='%23222'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%23666' font-family='sans-serif' font-size='12'>[Imagem da Classe]</text></svg>"
+                                    alt="Espaço da Imagem">
+                            </div>
+
+                            <div class="modal-textos-classe">
+                                <h3>PROFICIÊNCIAS</h3>
+                                <p id="detalhe_classe_proficiencias">Carregando...</p>
+
+                                <h3>HABILIDADE INICIAL: <em id="detalhe_classe_hab_nome">Carregando...</em></h3>
+                                <p id="detalhe_classe_hab_desc">Carregando...</p>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="modal-botoes-footer">
+                            <button class="btn-voltar-classes" onclick="voltarParaListaClasses()">← Voltar</button>
+                            <button class="btn-confirmar-classe" onclick="confirmarEscolhaClasseFinal()">Confirmar
+                                Classe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pagina-livro" id="conteudo_pericias">
+                <div class="header-pericias-container">
+
+                    <div class="linha-titulo-bonus-p">
+                        <div class="titulo-pericias-topo">
+                            <span>PERÍCIAS</span>
+                        </div>
+
+                        <div class="caixa-bonus-pericia-wrapper">
+                            <label for="bonus_geral_pericias"></label>
+                            <input type="text" id="bonus_geral_pericias" placeholder="+0" oninput="autoMais(this)">
+                        </div>
+                    </div>
+                    <div class="barra-pesquisa-container">
+                        <div class="wrapper-busca-input">
+                            <input type="text" id="busca_pericias" placeholder="Digite para buscar uma perícia..."
+                                oninput="filtrarPericias()">
+
+                            <div class="icone-lupa-svg">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="botoes-filtro-container">
+                        <button class="btn-filtro-rpg active" data-filtro="todas"
+                            onclick="mudarFiltroAtributo(this)">Ver Todas</button>
+                        <button class="btn-filtro-rpg" data-filtro="c-for"
+                            onclick="mudarFiltroAtributo(this)">FOR</button>
+                        <button class="btn-filtro-rpg" data-filtro="c-vig"
+                            onclick="mudarFiltroAtributo(this)">VIG</button>
+                        <button class="btn-filtro-rpg" data-filtro="c-des"
+                            onclick="mudarFiltroAtributo(this)">DES</button>
+                        <button class="btn-filtro-rpg" data-filtro="c-car"
+                            onclick="mudarFiltroAtributo(this)">CAR</button>
+                        <button class="btn-filtro-rpg" data-filtro="c-int"
+                            onclick="mudarFiltroAtributo(this)">INT</button>
+                    </div>
+
+                </div>
+
+
+                <div class="grid-pericias-colunas">
+
+                    <div class="caixa-categoria-nova">
+                        <div class="topo-cat-pericia c-for">FOR: <span>Força</span></div>
+                        <div class="tabela-cabecalho-p">
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
+                        </div>
+                        <div class="corpo-tabela-p">
+                            <div class="linha-pericia-nova">
+                                <span>Arremesso</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Arrombamento</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Atletismo</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Combate</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Levantamento</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-for" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caixa-categoria-nova">
+                        <div class="topo-cat-pericia c-vig">VIG: <span>Vigor</span></div>
+
+                        <div class="tabela-cabecalho-p">
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
+                        </div>
+
+                        <div class="corpo-tabela-p">
+                            <div class="linha-pericia-nova">
+                                <span>Consciência</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Resistência</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Tolerância</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
+                            </div>
+
+                            <div class="linha-pericia-nova">
+                                <span>Fôlego</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-vig" value="0" readonly>
+                                    <input type="text" placeholder="+0"> <input type="text" readonly value="0"
+                                        class="t-p">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caixa-categoria-nova">
+                        <div class="topo-cat-pericia c-des">DES: <span>Destreza</span></div>
+                        <div class="tabela-cabecalho-p">
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
+                        </div>
+                        <div class="corpo-tabela-p">
+                            <div class="linha-pericia-nova"><span>Acrobacia</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Condução</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Furtividade</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Percepção</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Pontaria</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Prestidigitação</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Reflexo</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-des" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caixa-categoria-nova">
+                        <div class="topo-cat-pericia c-car">CAR: <span>Carisma</span></div>
+                        <div class="tabela-cabecalho-p">
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
+                        </div>
+                        <div class="corpo-tabela-p">
+                            <div class="linha-pericia-nova"><span>Adestramento</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Artes</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Atuação</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Diplomacia</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Enganação</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Intimidação</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Intuição</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Sedução</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-car" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="caixa-categoria-nova">
+                        <div class="topo-cat-pericia c-int">INT: <span>Intelecto</span></div>
+                        <div class="tabela-cabecalho-p">
+                            <div class="grupo-titulos-colunas">
+                                <span class="col-cap">Base</span>
+                                <span class="col-cap">Build</span>
+                                <span class="col-cap">Total</span>
+                            </div>
+                        </div>
+                        <div class="corpo-tabela-p">
+                            <div class="linha-pericia-nova"><span>Alquimia</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Arcanismo</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Biologia</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>História</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Investigação</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Linguística</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Medicina</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Ocultismo</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                            <div class="linha-pericia-nova"><span>Tecnologia</span>
+                                <div class="inputs-tres">
+                                    <input type="text" class="pericia-base-int" value="0" readonly>
+                                    <input type="text" placeholder="+0">
+                                    <input type="text" readonly value="0" class="t-p">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagina-livro" id="conteudo_perfil">
+
+                <div class="menu-sub-abas-rpg">
+                    <button type="button" class="btn-sub-aba active"
+                        onclick="alternarSubAba(this, 'sub_caracteristicas')">👤
+                        Personagem</button>
+                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_diario')">📜 Diário
+                        de
+                        Campanha</button>
+                    <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_inventario')">🎒
+                        Inventário</button>
+                </div>
+
+                <div id="sub_caracteristicas" class="bloco-sub-aba-conteudo active">
+                    <div class="pagina-perfil-container">
+                        <div class="card-perfil-status">
+                            <h3>Características</h3>
+                            <div class="grid-inputs-perfil">
+                                <label>Idade <input type="text" placeholder="Ex: 22 anos"></label>
+                                <label>Altura <input type="text" placeholder="Ex: 1,75m"></label>
+                                <label>Gênero <input type="text" placeholder="Ex: Masculino"></label>
+                                <label>Cabelo <input type="text" placeholder="Ex: Preto"></label>
+                                <label>Olhos <input type="text" placeholder="Ex: Castanhos"></label>
+                                <label>Outros <input type="text" placeholder="Cicatrizes..."></label>
+                            </div>
+                        </div>
+
+                        <div class="card-perfil-status">
+                            <h3>Relações & Afinidade</h3>
+                            <div id="lista-relacoes">
+                                <div class="item-relacao">
+                                    <input type="text" class="nome-npc" placeholder="Nome do Aliado / NPC">
+                                    <div class="container-coracoes" data-valor="3">
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 1)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 2)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 3)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 4)">♥</span>
+                                        <span class="coracao-rpg" onclick="definirAfinidadeCoracao(this, 5)">♥</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-adicionar-sutil" onclick="adicionarNovaRelacao()">+
+                                Adicionar Relação</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub_diario" class="bloco-sub-aba-conteudo">
+                    <div class="pagina-perfil-container">
+                        <div class="card-perfil-status anotacoes-wrapper">
+                            <h3>Anotações do Personagem</h3>
+                            <div class="abas-anotacoes-botoes">
+                                <button type="button" class="aba-nota active"
+                                    onclick="mudarNotaInterna(this, 'historia')">História</button>
+                                <button type="button" class="aba-nota"
+                                    onclick="mudarNotaInterna(this, 'objetivos')">Objetivos</button>
+                                <button type="button" class="aba-nota"
+                                    onclick="mudarNotaInterna(this, 'geral')">Gerais</button>
+                            </div>
+                            <div class="container-topicos-dinamicos">
+                                <textarea id="texto_notas_perfil" class="textarea-notas"
+                                    placeholder="Escreva o passado e as origens do seu personagem aqui..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="sub_inventario" class="bloco-sub-aba-conteudo">
+                    <div class="pagina-perfil-container secao-inventario-moderno">
+
+                        <div class="card-perfil-status container-itens-slots">
+                            <h3>🎒 Mochila & Equipamentos</h3>
+
+                            <div class="wrapper-barra-carga">
+                                <div class="info-texto-carga">
+                                    <span>Peso Carregado</span>
+                                    <strong id="peso_atual_texto">0 / 20 KG</strong>
+                                </div>
+                                <div class="barra-carga-bg">
+                                    <div class="barra-carga-progresso" id="barra_peso_visual" style="width: 0%;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mochila-grid-layout">
+                                <div class="slot-descricao">
+                                    <h4>Descrição Detalhada dos Itens</h4>
+                                    <textarea class="textarea-itens" id="input_inventario_texto"
+                                        placeholder="Ex: &#10;• 1x Canivete Tático (0.5 KG)&#10;• 1x Lanterna de Mão (0.2 KG)&#10;• 1x Colete Kevlar (4.0 KG)"
+                                        oninput="atualizarCargaPeloTexto()"></textarea>
+                                </div>
+
+                                <div class="slot-controle-direto">
+                                    <h4>Ajuste Rápido de Peso</h4>
+                                    <div class="controle-carga-novo">
+                                        <button type="button" class="btn-peso-ajuste"
+                                            onclick="ajustarPesoRapido(-1)">-</button>
+                                        <input type="number" class="input-carga-nova" id="input_carga_num" value="0"
+                                            oninput="atualizarBarraCarga()">
+                                        <button type="button" class="btn-peso-ajuste"
+                                            onclick="ajustarPesoRapido(1)">+</button>
+                                    </div>
+                                    <small>Limite Máximo: 20 KG</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-perfil-status container-carteira-moderna">
+                            <h3>💰 Compartimento de Valores</h3>
+                            <div class="calculadora-moedas-nova">
+
+                                <div class="moeda-item-novo platina">
+                                    <div class="moeda-icone">💎</div>
+                                    <div class="moeda-corpo">
+                                        <label>Platina (+$1000)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="moeda-item-novo ouro">
+                                    <div class="moeda-icone">🪙</div>
+                                    <div class="moeda-corpo">
+                                        <label>Ouro (+$100)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="moeda-item-novo prata">
+                                    <div class="moeda-icone">🪙</div>
+                                    <div class="moeda-corpo">
+                                        <label>Prata (+$10)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="moeda-item-novo bronze">
+                                    <div class="moeda-icone">🪙</div>
+                                    <div class="moeda-corpo">
+                                        <label>Bronze (+$1)</label>
+                                        <input type="number" class="input-moeda-nova" value="0"
+                                            oninput="calcularPatrimonioTotal()">
+                                    </div>
+                                </div>
+
+                                <div class="total-dinheiro-box-novo">
+                                    <div class="patrimonio-label">Valor do Dinheiro</div>
+                                    <span id="total_carteira">$0</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <script src="config.js"></script>
+                        <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso - Ficha de RPG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-site: #0d0c10;
+            --bg-card: #ffffff;
+            --cor-primaria: #62af43;
+            --cor-primaria-hover: #519336;
+            --texto-principal: #1f1f29;
+            --texto-secundario: #6b7280;
+            --cor-borda: #e5e7eb;
+            --cor-borda-foco: #62af43;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-site);
+            /* O SEGREDO DO EFEITO "TELA DE CARREGAMENTO":
+              1º Gradiente: Vinheta escura radial que ilumina sutilmente o centro e escurece muito as bordas.
+              2º URL: Imagem temática de fantasia escura de alta qualidade.
+            */
+            background-image: 
+                radial-gradient(circle at center, rgba(13, 12, 16, 0.65) 0%, rgba(13, 12, 16, 0.98) 100%),
+                url('https://images.unsplash.com/photo-1519074069444-1ba4e6663104?q=80&w=1920&auto=format&fit=crop');
+            
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Mantém a imagem estática de fundo */
+            
+            color: var(--texto-principal);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* CARD PRINCIPAL - Responsivo para PC, Notebook e Celular */
+        .container-login {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 40px 40px;
+            width: 100%;             
+            max-width: 440px;        
+            margin: 20px;            
+            text-align: center;
+            /* Sombra projetada mais densa para dar aspecto de flutuação sobre o cenário */
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            animation: surgir 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 2; 
+        }
+
+        .header-logo {
+            margin-bottom: 24px;
+        }
+
+        .rpg-logo-img {
+            width: 200px;
+            height: 110px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .nome-sistema {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--texto-principal);
+            letter-spacing: -0.5px;
+        }
+
+        .nome-sistema span {
+            color: var(--cor-primaria);
+        }
+
+        .subtitulo {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--texto-secundario);
+            margin-top: 4px;
+            margin-bottom: 28px;
+        }
+
+        .grupo-input {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .grupo-input label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--texto-principal);
+            margin-bottom: 6px;
+        }
+
+        .grupo-input label span {
+            color: var(--cor-primaria);
+        }
+
+        /* Container da senha isolando perfeitamente o input e o olho */
+        .container-senha {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .grupo-input input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--cor-borda);
+            background-color: #fafafa;
+            color: var(--texto-principal);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        /* Garante espaço interno para o texto digitado não passar por trás do botão do olho */
+        .container-senha input {
+            padding-right: 42px;
+        }
+
+        .grupo-input input:focus {
+            border-color: var(--cor-borda-foco);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(98, 175, 67, 0.15);
+        }
+
+        /* Posição do olho centralizada verticalmente */
+        .btn-olho {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--texto-secundario);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+            height: 20px;
+            width: 20px;
+        }
+
+        .btn-olho:hover {
+            color: var(--cor-primaria);
+        }
+
+        /* Link Esqueci a Senha fora do container-senha */
+        .container-esqueci {
+            text-align: right;
+            margin-top: 6px;
+        }
+
+        .link-esqueci {
+            font-size: 12px;
+            color: var(--texto-secundario);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link-esqueci:hover {
+            color: var(--cor-primaria);
+            text-decoration: underline;
+        }
+
+        button.btn-principal, #btn_google {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-principal {
+            background-color: var(--cor-primaria);
+            color: #ffffff;
+        }
+
+        .btn-principal:hover {
+            background-color: var(--cor-primaria-hover);
+            transform: translateY(-1px);
+        }
+
+        .divisor {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--texto-secundario);
+            font-size: 11px;
+            font-weight: 500;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divisor::before,
+        .divisor::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        .divisor:not(:empty)::before { margin-right: 1em; }
+        .divisor:not(:empty)::after { margin-left: 1em; }
+
+        #btn_google {
+            background-color: #ffffff;
+            border: 1px solid var(--cor-borda);
+            color: #374151;
+            font-weight: 500;
+            margin-top: 0;
+        }
+
+        #btn_google:hover {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .alternar-modo {
+            font-size: 13px;
+            color: var(--texto-secundario);
+            margin-top: 24px;
+        }
+
+        .alternar-modo span {
+            color: var(--cor-primaria);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .alternar-modo span:hover {
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            margin-top: 32px;
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .escondido {
+            display: none !important;
+        }
+
+        /* MEDIA QUERY: Regras exclusivas para telas menores e celulares */
+        @media (max-width: 480px) {
+            .container-login {
+                padding: 30px 24px;
+                margin: 12px;
+            }
+            
+            .rpg-logo-img {
+                width: 160px;
+                height: 90px;
+            }
+
+            .nome-sistema {
+                font-size: 20px;
+            }
+        }
+
+        @keyframes surgir {
+            from { opacity: 0; transform: scale(0.96) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-login">
+        <div class="header-logo">
+            <img src="logo.png" alt="Logo Ficha RPG" class="rpg-logo-img">
+            <div class="nome-sistema" id="sistema_titulo">Ficha <span>RPG</span> Conflux</div>
+            <div class="subtitulo" id="sistema_subtitulo">SEJA BEM VINDO(A) A SUA FICHA</div>
+        </div>
+
+        <div class="grupo-input">
+            <label for="email_input">E-mail do Jogador <span>*</span></label>
+            <input type="email" id="email_input" placeholder="Digite seu e-mail cadastrado" required autocomplete="off">
+        </div>
+
+        <div class="grupo-input">
+            <label for="senha_input">Senha <span>*</span></label>
+            <div class="container-senha">
+                <input type="password" id="senha_input" placeholder="Digite sua senha de acesso" required>
+                <button type="button" id="btn_toggle_senha" class="btn-olho" title="Mostrar/Esconder Senha">
+                    <svg id="olho_svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+            </div>
+            <div class="container-esqueci" id="container_esqueci">
+                <span class="link-esqueci" id="btn_esqueci_senha">Esqueceu a senha?</span>
+            </div>
+        </div>
+
+        <div class="grupo-input escondido" id="grupo_confirmar_senha">
+            <label for="confirmar_senha_input">Confirmar Senha <span>*</span></label>
+            <div class="container-senha">
+                <input type="password" id="confirmar_senha_input" placeholder="Digite a senha novamente">
+                <button type="button" id="btn_toggle_confirmar" class="btn-olho" title="Mostrar/Esconder Senha">
+                    <svg id="olho_confirmar_svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+            </div>
+        </div>
+
+        <button id="btn_entrar" class="btn-principal">Entrar na Ficha</button>
+        <button id="btn_cadastrar" class="btn-principal escondido">Registrar Novo Jogador</button>
+
+        <div class="divisor">ou</div>
+
+        <button id="btn_google">
+            <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 8px;">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.927h6.6c-.29 1.53-1.14 2.82-2.4 3.68v3.053h3.88c2.27-2.09 3.66-5.17 3.66-8.59z" />
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.11 0-5.74-2.11-6.68-4.96H1.21v3.15C3.18 21.88 7.31 24 12 24z" />
+                <path fill="#FBBC05" d="M5.32 14.24A7.16 7.16 0 0 1 4.91 12c0-.79.13-1.57.38-2.31V6.54H1.21A11.94 11.94 0 0 0 0 12c0 1.92.45 3.74 1.21 5.39l4.11-3.15z" />
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.18 2.12 1.21 5.61l4.11 3.15c.94-2.85 3.57-4.96 6.68-4.96z" />
+            </svg>
+            Continuar com o Google
+        </button>
+
+        <div class="alternar-modo">
+            <p id="texto_alternar">Não possui uma conta? <span id="link_alternar">Inscreva-se</span></p>
+        </div>
+
+        <div class="footer-copyright">
+            © 2026 Ficha RPG v2 — Todos os direitos reservados<br>
+        </div>
+    </div>
+
+    <script>
+        const titulo = document.getElementById("sistema_titulo");
+        const subtitulo = document.getElementById("sistema_subtitulo");
+        const btnEntrar = document.getElementById("btn_entrar");
+        const btnCadastrar = document.getElementById("btn_cadastrar");
+        const linkAlternar = document.getElementById("link_alternar");
+        const textoAlternar = document.getElementById("texto_alternar");
+        
+        const grupoConfirmar = document.getElementById("grupo_confirmar_senha");
+        const containerEsqueci = document.getElementById("container_esqueci");
+
+        const senhaInput = document.getElementById("senha_input");
+        const btnToggleSenha = document.getElementById("btn_toggle_senha");
+        const olhoSvg = document.getElementById("olho_svg");
+
+        const confirmarInput = document.getElementById("confirmar_senha_input");
+        const btnToggleConfirmar = document.getElementById("btn_toggle_confirmar");
+        const olhoConfirmarSvg = document.getElementById("olho_confirmar_svg");
+
+        const iconeOlhoAberto = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+        const iconeOlhoFechado = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+
+        function gerenciarOlho(input, svg) {
+            if (input.type === "password") {
+                input.type = "text";
+                svg.innerHTML = iconeOlhoFechado;
+            } else {
+                input.type = "password";
+                svg.innerHTML = iconeOlhoAberto;
+            }
+        }
+
+        btnToggleSenha.addEventListener("click", () => gerenciarOlho(senhaInput, olhoSvg));
+        btnToggleConfirmar.addEventListener("click", () => gerenciarOlho(confirmarInput, olhoConfirmarSvg));
+
+        let modoCadastro = false;
+
+        function alternarTelas() {
+            modoCadastro = !modoCadastro;
+
+            if (modoCadastro) {
+                titulo.innerHTML = "Criar <span>Conta</span>";
+                subtitulo.textContent = "Registre sua conta";
+                btnEntrar.classList.add("escondido");
+                containerEsqueci.classList.add("escondido"); 
+                btnCadastrar.classList.remove("escondido");
+                grupoConfirmar.classList.remove("escondido"); 
+                textoAlternar.innerHTML = 'Já possui uma conta? <span id="link_alternar">Fazer Login</span>';
+            } else {
+                titulo.innerHTML = "Ficha <span>RPG</span> Conflux";
+                subtitulo.textContent = "SEJA BEM VINDO(A) A SUA FICHA";
+                btnEntrar.classList.remove("escondido");
+                containerEsqueci.classList.remove("escondido"); 
+                btnCadastrar.classList.add("escondido");
+                grupoConfirmar.classList.add("escondido"); 
+                textoAlternar.innerHTML = 'Não possui uma conta? <span id="link_alternar">Inscreva-se</span>';
+            }
+
+            document.getElementById("link_alternar").addEventListener("click", alternarTelas);
+        }
+
+        linkAlternar.addEventListener("click", alternarTelas);
+    </script>
+
+    <script type="module" src="login.js"></script>
+</body>
+
+</html>
