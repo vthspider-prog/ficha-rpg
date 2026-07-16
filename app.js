@@ -1,17 +1,9 @@
+import { firebaseConfig } from "./config.js";
 // 1. Importando as ferramentas do Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// Configuração do projeto Firebase (Substitua com suas credenciais se necessário)
-const firebaseConfig = {
-    apiKey: "AIzaSyCW9IT5EiSGuitu-y_hA2wRY8ixDRczQRI",
-    authDomain: "ficha-rpg-luves.firebaseapp.com",
-    projectId: "ficha-rpg-luves",
-    storageBucket: "ficha-rpg-luves.firebasestorage.app",
-    messagingSenderId: "1051576175162",
-    appId: "1:1051576175162:web:1275c7770a5addf2e94303"
-};
 
 // Inicialização das instâncias do Firebase (Correção essencial)
 const app = initializeApp(firebaseConfig);
@@ -796,298 +788,298 @@ function inicializarFicha() {
         dispararSalvarComDebounce();
     };
 
-// ==========================================================================
-// 1. EXECUÇÕES E VÍNCULOS DE INICIALIZAÇÃO INTERNA
-// ==========================================================================
+    // ==========================================================================
+    // 1. EXECUÇÕES E VÍNCULOS DE INICIALIZAÇÃO INTERNA
+    // ==========================================================================
 
-// Inicializa o gráfico de atributos
-if (typeof initChart === "function") {
-    initChart();
-}
-
-// Recupera e aplica a cor do tema salva (usando sua chave original 'temaFichaRPG')
-const corSalva = localStorage.getItem('temaFichaRPG');
-if (corSalva) {
-    if (typeof window.atualizarTemaFicha === "function") {
-        window.atualizarTemaFicha(corSalva);
+    // Inicializa o gráfico de atributos
+    if (typeof initChart === "function") {
+        initChart();
     }
-    const inputCor = document.getElementById('seletor-cor');
-    if (inputCor) {
-        inputCor.value = corSalva;
-    }
-}
 
-// Inicializa os corações de afinidade do RPG
-document.querySelectorAll(".container-coracoes").forEach(container => {
-    const valorInicial = parseInt(container.getAttribute("data-valor")) || 0;
-    const primeiroCoracao = container.querySelector(".coracao-rpg");
-    if (primeiroCoracao && valorInicial > 0 && typeof window.definirAfinidadeCoracao === "function") {
-        window.definirAfinidadeCoracao(primeiroCoracao, valorInicial);
-    }
-});
-
-// Funções de atualização e cálculo iniciais
-if (typeof window.atualizarBarraCarga === "function") window.atualizarBarraCarga();
-if (typeof window.calcularPatrimonioTotal === "function") window.calcularPatrimonioTotal();
-
-// VÍNCULOS DOS ATRIBUTOS (Sem problemas de Hoisting)
-if (typeof vincularAtributoPericia === "function") {
-    vincularAtributoPericia("base_for", "pericia-base-for");
-    vincularAtributoPericia("base_vig", "pericia-base-vig");
-    vincularAtributoPericia("base_des", "pericia-base-des");
-    vincularAtributoPericia("base_car", "pericia-base-car");
-    vincularAtributoPericia("base_int", "pericia-base-int");
-}
-
-// ==========================================================================
-// 2. COMPORTAMENTO DO DROPDOWN (PREVINE FECHAMENTO ACIDENTAL)
-// ==========================================================================
-
-// Evita que cliques dentro do painel de cores ou do botão fechem o menu
-const dropdownMenu = document.getElementById('menu-tema-dropdown');
-if (dropdownMenu) {
-    dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
-}
-
-// Gerencia a abertura e fechamento seguro do menu
-window.toggleMenuTema = function (event) {
-    if (event) event.stopPropagation(); // Impede o clique de subir para o document
-    const dropdown = document.getElementById('menu-tema-dropdown');
-    if (dropdown) {
-        dropdown.classList.toggle('ativo');
-    }
-};
-
-// Fecha o menu de temas ao clicar em qualquer lugar fora dele
-document.addEventListener('click', (e) => {
-    const dropdown = document.getElementById('menu-tema-dropdown');
-    const botaoLapis = document.getElementById('btn-menu-tema');
-    
-    // Só fecha se o clique não foi no próprio menu e nem no botão do lápis
-    if (dropdown && !dropdown.contains(e.target) && botaoLapis && !botaoLapis.contains(e.target)) {
-        dropdown.classList.remove('ativo');
-    }
-});
-
-// ==========================================================================
-// 3. SISTEMA SEGURO DE RESET DE FICHA (ZONA DE PERIGO)
-// ==========================================================================
-
-/**
- * Dispara os prompts de dupla confirmação antes de apagar os dados
- */
-window.confirmarResetFicha = function (event) {
-    if (event) {
-        event.stopPropagation(); // Evita fechar o menu antes de exibir os popups
-    }
-    
-    const confirmacaoPrimeira = confirm("⚠️ ATENÇÃO:\n\nVocê deseja realmente limpar todos os dados desta ficha?");
-    
-    if (confirmacaoPrimeira) {
-        const confirmacaoSegunda = confirm("⚠️ TEM CERTEZA ABSOLUTA?\n\nEsta ação apagará de forma irreversível todos os atributos, nomes, inventários e anotações do seu personagem.");
-        
-        if (confirmacaoSegunda) {
-            // Fecha o dropdown imediatamente antes do reset para evitar gargalos visuais
-            const dropdown = document.getElementById('menu-tema-dropdown');
-            if (dropdown) {
-                dropdown.classList.remove('ativo');
-            }
-            
-            // Executa a limpeza pesada
-            resetarCamposFicha();
+    // Recupera e aplica a cor do tema salva (usando sua chave original 'temaFichaRPG')
+    const corSalva = localStorage.getItem('temaFichaRPG');
+    if (corSalva) {
+        if (typeof window.atualizarTemaFicha === "function") {
+            window.atualizarTemaFicha(corSalva);
         }
-    }
-};
-
-/**
- * VERSÃO INTEGRADA AO FIREBASE:
- * Limpa o banco de dados online, o cache local e reseta a tela de forma limpa.
- */
-async function resetarCamposFicha() {
-    // 1. Bloqueia o salvamento automático para não salvar campos vazios por engano
-    window.onbeforeunload = null;
-    window.onunload = null;
-    window.autosaveBloqueado = true;
-    window.isResetting = true;
-    clearTimeout(timeoutSalvamento); // Cancela qualquer salvamento pendente do Debounce
-
-    // 2. Apaga os dados do Firebase (Firestore)
-    const usuario = auth.currentUser;
-    if (usuario) {
-        const uid = usuario.uid;
-        const docRef = doc(db, "usuarios", uid);
-
-        try {
-            // Define no banco de dados o objeto "limpo" inicial (valores padrão)
-            const dadosResetados = {
-                topo: {
-                    nivel: "0",
-                    nomeJogador: "",
-                    persona: "",
-                    especie: "",
-                    classe: "",
-                    foto: "" // Remove a foto Base64 do banco de dados
-                },
-                status: {
-                    pv: { total: "0", dano: "0", dadoVal: "", bonusVal: "" },
-                    ps: { total: "0", dano: "0", dadoVal: "", bonusVal: "" },
-                    pe: { total: "0", dano: "0", dadoVal: "", bonusVal: "" }
-                },
-                testesMorte: { morte_1: false, morte_2: false, morte_3: false },
-                atributos: {
-                    forca: "+0",
-                    vigor: "+0",
-                    destreza: "+0",
-                    carisma: "+0",
-                    intelecto: "+0",
-                    sorte: "+0",
-                    defesa: "10"
-                },
-                pericias: {
-                    bonusGeral: "0",
-                    dadosTreino: {} // Limpa todos os treinos de perícias
-                },
-                // Preservamos apenas a cor do tema que ele configurou para não estragar a estética
-                aparencia: {
-                    corTema: document.getElementById("seletor-cor")?.value || "#ed1c24",
-                    modoBrilho: "claro"
-                },
-                atualizadoEm: new Date().toISOString()
-            };
-
-            // Sobrescreve o documento no Firebase com os dados zerados de forma assíncrona
-            await setDoc(docRef, dadosResetados);
-            console.log("Banco de dados limpo com sucesso no Firebase!");
-
-        } catch (error) {
-            console.error("Erro ao limpar dados no Firestore:", error);
+        const inputCor = document.getElementById('seletor-cor');
+        if (inputCor) {
+            inputCor.value = corSalva;
         }
     }
 
-    // 3. Limpa completamente toda a memória local (Cache do navegador)
-    localStorage.clear();
-    sessionStorage.clear();
-    imagemBase64Ficha = ""; // Zera a variável da imagem na memória do script
+    // Inicializa os corações de afinidade do RPG
+    document.querySelectorAll(".container-coracoes").forEach(container => {
+        const valorInicial = parseInt(container.getAttribute("data-valor")) || 0;
+        const primeiroCoracao = container.querySelector(".coracao-rpg");
+        if (primeiroCoracao && valorInicial > 0 && typeof window.definirAfinidadeCoracao === "function") {
+            window.definirAfinidadeCoracao(primeiroCoracao, valorInicial);
+        }
+    });
 
-    // 4. Limpa fisicamente a imagem de visualização do avatar
-    const previewImg = document.getElementById("preview_img");
-    const placeholder = document.getElementById("placeholder_upload");
-    const containerFoto = document.getElementById("container_foto");
+    // Funções de atualização e cálculo iniciais
+    if (typeof window.atualizarBarraCarga === "function") window.atualizarBarraCarga();
+    if (typeof window.calcularPatrimonioTotal === "function") window.calcularPatrimonioTotal();
 
-    if (previewImg) {
-        previewImg.src = "";
-        previewImg.style.display = "none";
+    // VÍNCULOS DOS ATRIBUTOS (Sem problemas de Hoisting)
+    if (typeof vincularAtributoPericia === "function") {
+        vincularAtributoPericia("base_for", "pericia-base-for");
+        vincularAtributoPericia("base_vig", "pericia-base-vig");
+        vincularAtributoPericia("base_des", "pericia-base-des");
+        vincularAtributoPericia("base_car", "pericia-base-car");
+        vincularAtributoPericia("base_int", "pericia-base-int");
     }
-    if (placeholder) placeholder.style.display = "block";
-    if (containerFoto) containerFoto.style.borderStyle = "dashed"; // Volta a borda pontilhada original
 
-    // 5. Exibe mensagem e força o recarregamento total da página de forma limpa
-    alert("A ficha foi totalmente limpa e resetada com sucesso!");
-    window.location.replace(window.location.href);
-}
+    // ==========================================================================
+    // 2. COMPORTAMENTO DO DROPDOWN (PREVINE FECHAMENTO ACIDENTAL)
+    // ==========================================================================
 
-// Expondo a função de reset globalmente para o botão HTML conseguir acessar
-window.resetarCamposFicha = resetarCamposFicha;
+    // Evita que cliques dentro do painel de cores ou do botão fechem o menu
+    const dropdownMenu = document.getElementById('menu-tema-dropdown');
+    if (dropdownMenu) {
+        dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
+    }
 
-// ==========================================================================
-// 4. COMPORTAMENTO DO CAMPO DE BÔNUS GERAL DE PERÍCIAS
-// ==========================================================================
-const inputBonusGeral = document.getElementById('bonus_geral_pericias');
-if (inputBonusGeral) {
-    let valorInicial = parseInt(inputBonusGeral.value.replace(/[^\d-]/g, ''));
-    if (!isNaN(valorInicial) && valorInicial > 0) inputBonusGeral.value = "+" + valorInicial;
+    // Gerencia a abertura e fechamento seguro do menu
+    window.toggleMenuTema = function (event) {
+        if (event) event.stopPropagation(); // Impede o clique de subir para o document
+        const dropdown = document.getElementById('menu-tema-dropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('ativo');
+        }
+    };
 
-    inputBonusGeral.addEventListener('change', function () {
-        let valor = parseInt(this.value.replace(/[^\d-]/g, ''));
-        if (isNaN(valor)) { this.value = "0"; return; }
-        this.value = (valor > 0) ? "+" + valor : valor;
+    // Fecha o menu de temas ao clicar em qualquer lugar fora dele
+    document.addEventListener('click', (e) => {
+        const dropdown = document.getElementById('menu-tema-dropdown');
+        const botaoLapis = document.getElementById('btn-menu-tema');
+
+        // Só fecha se o clique não foi no próprio menu e nem no botão do lápis
+        if (dropdown && !dropdown.contains(e.target) && botaoLapis && !botaoLapis.contains(e.target)) {
+            dropdown.classList.remove('ativo');
+        }
     });
-    inputBonusGeral.addEventListener('focus', function () { this.value = this.value.replace('+', '').trim(); });
-    inputBonusGeral.addEventListener('blur', function () {
-        let valor = parseInt(this.value.replace(/[^\d-]/g, ''));
-        if (!isNaN(valor) && valor > 0) this.value = "+" + valor;
-    });
-}
 
-// ==========================================================================
-// 5. MONITORAMENTO DE INPUTS DA TABELA DE TRÊS CAMPOS
-// ==========================================================================
-document.querySelectorAll('.inputs-tres').forEach(function (container) {
-    const inputs = container.querySelectorAll('input');
-    if (inputs.length >= 2) {
-        const inputBuild = inputs[1];
-        inputBuild.addEventListener("input", () => {
-            // Uso seguro da função global que criamos anteriormente
-            if (typeof window.calcularTotalLinhaGlobal === "function") {
-                window.calcularTotalLinhaGlobal(container);
+    // ==========================================================================
+    // 3. SISTEMA SEGURO DE RESET DE FICHA (ZONA DE PERIGO)
+    // ==========================================================================
+
+    /**
+     * Dispara os prompts de dupla confirmação antes de apagar os dados
+     */
+    window.confirmarResetFicha = function (event) {
+        if (event) {
+            event.stopPropagation(); // Evita fechar o menu antes de exibir os popups
+        }
+
+        const confirmacaoPrimeira = confirm("⚠️ ATENÇÃO:\n\nVocê deseja realmente limpar todos os dados desta ficha?");
+
+        if (confirmacaoPrimeira) {
+            const confirmacaoSegunda = confirm("⚠️ TEM CERTEZA ABSOLUTA?\n\nEsta ação apagará de forma irreversível todos os atributos, nomes, inventários e anotações do seu personagem.");
+
+            if (confirmacaoSegunda) {
+                // Fecha o dropdown imediatamente antes do reset para evitar gargalos visuais
+                const dropdown = document.getElementById('menu-tema-dropdown');
+                if (dropdown) {
+                    dropdown.classList.remove('ativo');
+                }
+
+                // Executa a limpeza pesada
+                resetarCamposFicha();
             }
+        }
+    };
+
+    /**
+     * VERSÃO INTEGRADA AO FIREBASE:
+     * Limpa o banco de dados online, o cache local e reseta a tela de forma limpa.
+     */
+    async function resetarCamposFicha() {
+        // 1. Bloqueia o salvamento automático para não salvar campos vazios por engano
+        window.onbeforeunload = null;
+        window.onunload = null;
+        window.autosaveBloqueado = true;
+        window.isResetting = true;
+        clearTimeout(timeoutSalvamento); // Cancela qualquer salvamento pendente do Debounce
+
+        // 2. Apaga os dados do Firebase (Firestore)
+        const usuario = auth.currentUser;
+        if (usuario) {
+            const uid = usuario.uid;
+            const docRef = doc(db, "usuarios", uid);
+
+            try {
+                // Define no banco de dados o objeto "limpo" inicial (valores padrão)
+                const dadosResetados = {
+                    topo: {
+                        nivel: "0",
+                        nomeJogador: "",
+                        persona: "",
+                        especie: "",
+                        classe: "",
+                        foto: "" // Remove a foto Base64 do banco de dados
+                    },
+                    status: {
+                        pv: { total: "0", dano: "0", dadoVal: "", bonusVal: "" },
+                        ps: { total: "0", dano: "0", dadoVal: "", bonusVal: "" },
+                        pe: { total: "0", dano: "0", dadoVal: "", bonusVal: "" }
+                    },
+                    testesMorte: { morte_1: false, morte_2: false, morte_3: false },
+                    atributos: {
+                        forca: "+0",
+                        vigor: "+0",
+                        destreza: "+0",
+                        carisma: "+0",
+                        intelecto: "+0",
+                        sorte: "+0",
+                        defesa: "10"
+                    },
+                    pericias: {
+                        bonusGeral: "0",
+                        dadosTreino: {} // Limpa todos os treinos de perícias
+                    },
+                    // Preservamos apenas a cor do tema que ele configurou para não estragar a estética
+                    aparencia: {
+                        corTema: document.getElementById("seletor-cor")?.value || "#ed1c24",
+                        modoBrilho: "claro"
+                    },
+                    atualizadoEm: new Date().toISOString()
+                };
+
+                // Sobrescreve o documento no Firebase com os dados zerados de forma assíncrona
+                await setDoc(docRef, dadosResetados);
+                console.log("Banco de dados limpo com sucesso no Firebase!");
+
+            } catch (error) {
+                console.error("Erro ao limpar dados no Firestore:", error);
+            }
+        }
+
+        // 3. Limpa completamente toda a memória local (Cache do navegador)
+        localStorage.clear();
+        sessionStorage.clear();
+        imagemBase64Ficha = ""; // Zera a variável da imagem na memória do script
+
+        // 4. Limpa fisicamente a imagem de visualização do avatar
+        const previewImg = document.getElementById("preview_img");
+        const placeholder = document.getElementById("placeholder_upload");
+        const containerFoto = document.getElementById("container_foto");
+
+        if (previewImg) {
+            previewImg.src = "";
+            previewImg.style.display = "none";
+        }
+        if (placeholder) placeholder.style.display = "block";
+        if (containerFoto) containerFoto.style.borderStyle = "dashed"; // Volta a borda pontilhada original
+
+        // 5. Exibe mensagem e força o recarregamento total da página de forma limpa
+        alert("A ficha foi totalmente limpa e resetada com sucesso!");
+        window.location.replace(window.location.href);
+    }
+
+    // Expondo a função de reset globalmente para o botão HTML conseguir acessar
+    window.resetarCamposFicha = resetarCamposFicha;
+
+    // ==========================================================================
+    // 4. COMPORTAMENTO DO CAMPO DE BÔNUS GERAL DE PERÍCIAS
+    // ==========================================================================
+    const inputBonusGeral = document.getElementById('bonus_geral_pericias');
+    if (inputBonusGeral) {
+        let valorInicial = parseInt(inputBonusGeral.value.replace(/[^\d-]/g, ''));
+        if (!isNaN(valorInicial) && valorInicial > 0) inputBonusGeral.value = "+" + valorInicial;
+
+        inputBonusGeral.addEventListener('change', function () {
+            let valor = parseInt(this.value.replace(/[^\d-]/g, ''));
+            if (isNaN(valor)) { this.value = "0"; return; }
+            this.value = (valor > 0) ? "+" + valor : valor;
         });
-        inputBuild.addEventListener("blur", () => {
-            let valorPuro = parseInt(inputBuild.value.replace(/[^\d-]/g, ''));
-            if (!isNaN(valorPuro) && valorPuro >= 0) inputBuild.value = "+" + valorPuro;
-        });
-        inputBuild.addEventListener("focus", () => {
-            if (inputBuild.value.startsWith("+")) inputBuild.value = inputBuild.value.replace("+", "");
+        inputBonusGeral.addEventListener('focus', function () { this.value = this.value.replace('+', '').trim(); });
+        inputBonusGeral.addEventListener('blur', function () {
+            let valor = parseInt(this.value.replace(/[^\d-]/g, ''));
+            if (!isNaN(valor) && valor > 0) this.value = "+" + valor;
         });
     }
-});
 
-// ==========================================================================
-// 6. SISTEMA DE FECHAMENTO DOS MODAIS AO CLICAR FORA
-// ==========================================================================
-window.onclick = function (event) {
-    const mEspecies = document.getElementById('modal_especies');
-    const mDetalhes = document.getElementById('modal_detalhes');
-    if (event.target == mEspecies && typeof window.fecharModal === "function") window.fecharModal();
-    if (event.target == mDetalhes && typeof window.fecharDetalhes === "function") window.fecharDetalhes();
-    if (event.target.classList && event.target.classList.contains('modal')) {
-        event.target.style.display = "none";
+    // ==========================================================================
+    // 5. MONITORAMENTO DE INPUTS DA TABELA DE TRÊS CAMPOS
+    // ==========================================================================
+    document.querySelectorAll('.inputs-tres').forEach(function (container) {
+        const inputs = container.querySelectorAll('input');
+        if (inputs.length >= 2) {
+            const inputBuild = inputs[1];
+            inputBuild.addEventListener("input", () => {
+                // Uso seguro da função global que criamos anteriormente
+                if (typeof window.calcularTotalLinhaGlobal === "function") {
+                    window.calcularTotalLinhaGlobal(container);
+                }
+            });
+            inputBuild.addEventListener("blur", () => {
+                let valorPuro = parseInt(inputBuild.value.replace(/[^\d-]/g, ''));
+                if (!isNaN(valorPuro) && valorPuro >= 0) inputBuild.value = "+" + valorPuro;
+            });
+            inputBuild.addEventListener("focus", () => {
+                if (inputBuild.value.startsWith("+")) inputBuild.value = inputBuild.value.replace("+", "");
+            });
+        }
+    });
+
+    // ==========================================================================
+    // 6. SISTEMA DE FECHAMENTO DOS MODAIS AO CLICAR FORA
+    // ==========================================================================
+    window.onclick = function (event) {
+        const mEspecies = document.getElementById('modal_especies');
+        const mDetalhes = document.getElementById('modal_detalhes');
+        if (event.target == mEspecies && typeof window.fecharModal === "function") window.fecharModal();
+        if (event.target == mDetalhes && typeof window.fecharDetalhes === "function") window.fecharDetalhes();
+        if (event.target.classList && event.target.classList.contains('modal')) {
+            event.target.style.display = "none";
+        }
+    };
+
+    // ==========================================================================
+    // 7. GATILHOS DE SALVAMENTO AUTOMÁTICO
+    // ==========================================================================
+    const camposParaSalvar = [
+        'campo_lv', 'player_nome_input', 'especie_input', 'classe_input',
+        'pv_total', 'pv_dano', 'ps_total', 'ps_dano', 'pe_total', 'pe_dano',
+        'base_for', 'base_vig', 'base_des', 'base_car', 'base_int', 'sorte_input', 'defesa_input'
+    ];
+
+    camposParaSalvar.forEach(id => {
+        const elemento = document.getElementById(id);
+        if (elemento) {
+            elemento.addEventListener('blur', () => {
+                if (typeof window.atualizarTudo === "function") window.atualizarTudo();
+                salvarDadosFicha();
+            });
+        }
+    });
+
+    const inputPersona = document.querySelector('.tabela-dados tr:nth-child(1) input');
+    if (inputPersona) {
+        inputPersona.addEventListener('blur', () => salvarDadosFicha());
     }
-};
 
-// ==========================================================================
-// 7. GATILHOS DE SALVAMENTO AUTOMÁTICO
-// ==========================================================================
-const camposParaSalvar = [
-    'campo_lv', 'player_nome_input', 'especie_input', 'classe_input',
-    'pv_total', 'pv_dano', 'ps_total', 'ps_dano', 'pe_total', 'pe_dano',
-    'base_for', 'base_vig', 'base_des', 'base_car', 'base_int', 'sorte_input', 'defesa_input'
-];
-
-camposParaSalvar.forEach(id => {
-    const elemento = document.getElementById(id);
-    if (elemento) {
-        elemento.addEventListener('blur', () => {
-            if (typeof window.atualizarTudo === "function") window.atualizarTudo();
-            salvarDadosFicha();
-        });
+    for (let i = 1; i <= 3; i++) {
+        const chk = document.getElementById(`morte_${i}`);
+        if (chk) {
+            chk.addEventListener('change', () => salvarDadosFicha());
+        }
     }
-});
 
-const inputPersona = document.querySelector('.tabela-dados tr:nth-child(1) input');
-if (inputPersona) {
-    inputPersona.addEventListener('blur', () => salvarDadosFicha());
-}
+    document.querySelectorAll('.inputs-tres').forEach(container => {
+        const inputs = container.querySelectorAll('input');
+        if (inputs.length >= 2) {
+            inputs[1].addEventListener('blur', () => salvarDadosFicha());
+        }
+    });
 
-for (let i = 1; i <= 3; i++) {
-    const chk = document.getElementById(`morte_${i}`);
-    if (chk) {
-        chk.addEventListener('change', () => salvarDadosFicha());
+    const inputB_Geral = document.getElementById('bonus_geral_pericias');
+    if (inputB_Geral) {
+        inputB_Geral.addEventListener('blur', () => salvarDadosFicha());
     }
-}
 
-document.querySelectorAll('.inputs-tres').forEach(container => {
-    const inputs = container.querySelectorAll('input');
-    if (inputs.length >= 2) {
-        inputs[1].addEventListener('blur', () => salvarDadosFicha());
-    }
-});
-
-const inputB_Geral = document.getElementById('bonus_geral_pericias');
-if (inputB_Geral) {
-    inputB_Geral.addEventListener('blur', () => salvarDadosFicha());
-}
-
-// === FECHAMENTO SEGURO DA FUNÇÃO inicializarFicha() ===
-// Esta chave fecha a função aberta lá na Parte 2/3!
+    // === FECHAMENTO SEGURO DA FUNÇÃO inicializarFicha() ===
+    // Esta chave fecha a função aberta lá na Parte 2/3!
 }
