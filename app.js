@@ -775,21 +775,20 @@ window.adicionarNovaRelacao = function () {
     }, 10);
 };
 
-// CAMPO HABILIDADES - PERFIL
 // ==========================================================================
-// CONTROLE DE ABAS E CARDS DE HABILIDADES EDITÁVEIS
+// CONTROLE DE ABAS E CARDS DE HABILIDADES EDITÁVEIS (INTEGRADO NO APP.JS)
 // ==========================================================================
 
-// Dados iniciais genéricos para quando a ficha for aberta pela primeira vez
+// Dados iniciais genéricos 100% limpos (dados como strings vazias para usar placeholders)
 const habilidadesPadrao = {
     especie: [
-        { subtitulo: "Subtítulo", nome: "Nome da Habilidade", descricao: "Escreva aqui os detalhes e efeitos desta habilidade...", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+        { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
     ],
     classe: [
-        { subtitulo: "Subtítulo", nome: "Nome da Habilidade", descricao: "Escreva aqui os detalhes e efeitos desta habilidade...", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+        { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
     ],
     outros: [
-        { subtitulo: "Subtítulo", nome: "Nome da Habilidade", descricao: "Escreva aqui os detalhes e efeitos desta habilidade...", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+        { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
     ]
 };
 
@@ -820,19 +819,28 @@ window.mudarAbaHabilidades = function(botao, categoria) {
     }
 };
 
+// Função auxiliar para capitalizar apenas a primeira letra do input
+window.tratarPrimeiraLetraMaiuscula = function(inputElement) {
+    let texto = inputElement.value;
+    if (texto.length > 0) {
+        inputElement.value = texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+    salvarProgressoHabilidades();
+};
+
 window.adicionarNovoCardHabilidade = function(categoria) {
     let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
     let dados = dadosSalvos ? JSON.parse(dadosSalvos) : JSON.parse(JSON.stringify(habilidadesPadrao));
 
-    // Adiciona um card totalmente genérico e limpo
+    // Adiciona um card totalmente vazio e limpo
     dados[categoria].push({
-        subtitulo: "Subtítulo",
-        nome: "Nome da Habilidade",
-        descricao: "Escreva aqui os detalhes e efeitos desta habilidade...",
+        subtitulo: "",
+        nome: "",
+        descricao: "",
         atual: 1,
         maximo: 1,
         tipoRecurso: "usos",
-        custo: "1 PE"
+        custo: ""
     });
 
     localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
@@ -848,8 +856,46 @@ window.excluirHabilidade = function(categoria, index) {
     let dados = JSON.parse(dadosSalvos);
     dados[categoria].splice(index, 1);
     
+    // Se o usuário apagar o último card de uma aba, garante que ela não fique vazia (começa limpo)
+    if (dados[categoria].length === 0) {
+        dados[categoria].push({
+            subtitulo: "",
+            nome: "",
+            descricao: "",
+            atual: 1,
+            maximo: 1,
+            tipoRecurso: "usos",
+            custo: ""
+        });
+    }
+    
     localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
     carregarHabilidades();
+};
+
+// Formata dinamicamente o número digitado pelo jogador para incluir o sufixo (PV, PS ou PE)
+window.atualizarCustoAutomatico = function(inputElement) {
+    const card = inputElement.closest('.card-habilidade');
+    if (!card) return;
+
+    const selectRecurso = card.querySelector('.select-tipo-recurso');
+    if (!selectRecurso) return;
+    
+    const tipo = selectRecurso.value;
+    if (tipo === 'usos' || tipo === 'nulo') return;
+
+    // Extrai apenas os dígitos numéricos digitados
+    let valorDigitado = inputElement.value;
+    let apenasNumeros = valorDigitado.replace(/\D/g, '');
+
+    // Aplica a formatação automatizada se houver números
+    if (apenasNumeros !== '') {
+        inputElement.value = `${apenasNumeros} ${tipo.toUpperCase()}`;
+    } else {
+        inputElement.value = '';
+    }
+
+    salvarProgressoHabilidades();
 };
 
 window.alterarTipoRecurso = function(selectElement, categoria, index) {
@@ -864,8 +910,10 @@ window.alterarTipoRecurso = function(selectElement, categoria, index) {
     if (novoTipo === 'usos') {
         dados[categoria][index].atual = 1;
         dados[categoria][index].maximo = 1;
+    } else if (novoTipo === 'nulo') {
+        dados[categoria][index].custo = "";
     } else {
-        dados[categoria][index].custo = novoTipo === 'pe' ? '1 PE' : '1 PS';
+        dados[categoria][index].custo = `1 ${novoTipo.toUpperCase()}`;
     }
 
     localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
@@ -885,7 +933,7 @@ window.alterarUsoLocal = function(botao, valor) {
     const maximo = dados[categoria][index].maximo || 0;
 
     atual += valor;
-    if (atual < 0) atual = 0;
+    if (atual < 0)  atual = 0;
     if (atual > maximo) atual = maximo;
 
     dados[categoria][index].atual = atual;
@@ -932,7 +980,7 @@ window.salvarProgressoHabilidades = function() {
         if (tipoRecurso === 'usos') {
             recursoDados.atual = parseInt(card.querySelector('.atual').textContent, 10) || 0;
             recursoDados.maximo = parseInt(card.querySelector('.input-limite-maximo').value, 10) || 1;
-        } else {
+        } else if (tipoRecurso !== 'nulo') {
             recursoDados.custo = card.querySelector('.input-custo-badge').value;
         }
 
@@ -945,7 +993,17 @@ window.salvarProgressoHabilidades = function() {
 // Carrega os dados salvos e os renderiza na tela
 function carregarHabilidades() {
     let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
-    let dados = dadosSalvos ? JSON.parse(dadosSalvos) : habilidadesPadrao;
+    
+    let dados;
+    if (dadosSalvos) {
+        dados = JSON.parse(dadosSalvos);
+        // Garante que nenhuma aba renderize vazia caso esteja sem dados salvos
+        if (!dados.especie || dados.especie.length === 0) dados.especie = JSON.parse(JSON.stringify(habilidadesPadrao.especie));
+        if (!dados.classe || dados.classe.length === 0) dados.classe = JSON.parse(JSON.stringify(habilidadesPadrao.classe));
+        if (!dados.outros || dados.outros.length === 0) dados.outros = JSON.parse(JSON.stringify(habilidadesPadrao.outros));
+    } else {
+        dados = JSON.parse(JSON.stringify(habilidadesPadrao));
+    }
 
     renderizarAbaHabilidades('especie', dados.especie);
     renderizarAbaHabilidades('classe', dados.classe);
@@ -956,6 +1014,15 @@ function renderizarAbaHabilidades(categoria, lista) {
     const container = document.getElementById(`lista-hab-${categoria}`);
     if (!container) return;
     container.innerHTML = "";
+
+    // Mapeamento dos Placeholders dos Subtítulos de acordo com cada aba
+    const placeholdersSubtitulo = {
+        especie: "SUBTÍTULO (EX: ANJO, VAMPIRO, ELFO)",
+        classe: "SUBTÍTULO (EX: OCULTISTA, GATUNO, BÁRBARO)",
+        outros: "SUBTÍTULO (EX: RITUAIS, MAGIAS)"
+    };
+
+    const placeholderAtual = placeholdersSubtitulo[categoria] || "SUBTÍTULO";
 
     lista.forEach((hab, index) => {
         const card = document.createElement("div");
@@ -968,11 +1035,11 @@ function renderizarAbaHabilidades(categoria, lista) {
                 <i class="fa-solid fa-trash-can"></i>
             </button>
             <div class="cabecalho-habilidade">
-                <input type="text" class="input-hab-subtitulo" value="${hab.subtitulo}" placeholder="SUBTÍTULO (EX: RITUAIS, MAGIAS)" oninput="salvarProgressoHabilidades()">
-                <input type="text" class="input-hab-nome" value="${hab.nome}" placeholder="Nome da Habilidade" oninput="salvarProgressoHabilidades()">
+                <input type="text" class="input-hab-subtitulo" value="${hab.subtitulo || ''}" placeholder="${placeholderAtual}" oninput="salvarProgressoHabilidades()">
+                <input type="text" class="input-hab-nome" value="${hab.nome || ''}" placeholder="Nome da Habilidade" oninput="tratarPrimeiraLetraMaiuscula(this)">
             </div>
             <div class="descricao-habilidade">
-                <textarea class="textarea-hab-sobre" placeholder="Escreva os detalhes e efeitos desta habilidade..." oninput="salvarProgressoHabilidades()">${hab.descricao}</textarea>
+                <textarea class="textarea-hab-sobre" placeholder="Escreva os detalhes e efeitos desta habilidade..." oninput="salvarProgressoHabilidades()">${hab.descricao || ''}</textarea>
             </div>
             <div class="rodape-habilidade">
                 <div class="recurso-habilidade">
@@ -980,6 +1047,8 @@ function renderizarAbaHabilidades(categoria, lista) {
                         <option value="usos" ${hab.tipoRecurso === 'usos' ? 'selected' : ''}>Contador de Usos</option>
                         <option value="pe" ${hab.tipoRecurso === 'pe' ? 'selected' : ''}>Custo de PE</option>
                         <option value="ps" ${hab.tipoRecurso === 'ps' ? 'selected' : ''}>Custo de PS</option>
+                        <option value="pv" ${hab.tipoRecurso === 'pv' ? 'selected' : ''}>Custo de PV</option>
+                        <option value="nulo" ${hab.tipoRecurso === 'nulo' ? 'selected' : ''}>Nulo</option>
                     </select>
 
                     <div class="container-valores-recurso">
@@ -998,15 +1067,24 @@ function gerarCamposRecursoHTML(hab) {
             <div class="contador-usos">
                 <button type="button" onclick="alterarUsoLocal(this, -1)">-</button>
                 <span class="valor-uso">
-                    <strong class="atual">${hab.atual}</strong>/<input type="number" class="input-limite-maximo" value="${hab.maximo}" min="1" onchange="atualizarMaximoLocal(this)"> Usos
+                    <strong class="atual">${hab.atual}</strong>
+                    <span>/</span>
+                    <input type="number" class="input-limite-maximo" value="${hab.maximo}" min="1" onchange="atualizarMaximoLocal(this)"> Usos
                 </span>
                 <button type="button" onclick="alterarUsoLocal(this, 1)">+</button>
             </div>
         `;
+    } else if (hab.tipoRecurso === 'nulo') {
+        return ``;
     } else {
-        const classeBadge = hab.tipoRecurso === 'pe' ? 'pe' : 'ps';
+        const classeBadge = hab.tipoRecurso;
+        const placeholderCusto = `Ex: 6 ${hab.tipoRecurso.toUpperCase()}`;
         return `
-            <input type="text" class="input-custo-badge ${classeBadge}" value="${hab.custo}" placeholder="Ex: 6 ${hab.tipoRecurso.toUpperCase()}" oninput="salvarProgressoHabilidades()">
+            <input type="text" 
+                   class="input-custo-badge ${classeBadge}" 
+                   value="${hab.custo || ''}" 
+                   placeholder="${placeholderCusto}" 
+                   oninput="atualizarCustoAutomatico(this)">
         `;
     }
 }

@@ -2783,32 +2783,32 @@ body {
     margin-bottom: 12px;
 }
 
-/* Inputs integrados que parecem textos normais do cabeçalho */
+/* Remove bordas, fundos e estiliza o Subtítulo */
 .input-hab-subtitulo {
-    display: block;
-    width: calc(100% - 30px);
-    border: none;
-    background: transparent;
-    font-size: 0.75rem;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--cor-tema);
-    font-weight: 900;
-    padding: 2px 0;
-    margin-bottom: 2px;
-    outline: none;
+    color: #666; /* Ou a cor cinza que preferir */
+    padding: 0 !important;
+    margin-bottom: 4px;
+    width: 100%;
 }
 
+/* Remove bordas, fundos e estiliza o Nome da Habilidade */
 .input-hab-nome {
-    display: block;
-    width: calc(100% - 30px);
-    border: none;
-    background: transparent;
-    font-size: 1.2rem;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-size: 20px; /* Tamanho do título */
     font-weight: 800;
-    color: #111111;
-    padding: 2px 0;
-    outline: none;
+    color: #333; /* Cor do título */
+    padding: 0 !important;
+    margin-bottom: 8px;
+    width: 100%;
+    font-family: inherit;
 }
 
 .input-hab-subtitulo:focus,
@@ -2818,19 +2818,19 @@ body {
     padding-left: 6px;
 }
 
-/* Descrição da Habilidade (Textarea expansível integrada) */
+/* Remove bordas, fundos e estiliza a caixa de texto da Descrição */
 .textarea-hab-sobre {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    resize: none; /* Impede que o usuário redimensione manualmente de forma feia */
     width: 100%;
     min-height: 80px;
-    border: none;
-    background: transparent;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    color: #2b2b2b;
-    resize: vertical;
+    font-size: 14px;
+    color: #444;
     font-family: inherit;
-    padding: 6px 0;
-    outline: none;
+    line-height: 1.5;
+    padding: 0 !important;
 }
 
 .textarea-hab-sobre:focus {
@@ -2840,36 +2840,46 @@ body {
     border-radius: 0 4px 4px 0;
 }
 
-/* Rodapé do Card (Custos e Usos) */
+/* ==========================================================================
+   RODAPÉ DO CARD (CUSTOS E USOS) - AJUSTADO E ORGANIZADO
+   ========================================================================== */
+
 .rodape-habilidade {
-    margin-top: 15px;
+    margin-top: 16px;
     padding-top: 12px;
     border-top: 2px dashed var(--cor-borda-suave);
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between; /* Dropdown na esquerda, valores na extrema direita */
     align-items: center;
+    width: 100%;
 }
 
 .recurso-habilidade {
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Garante o espaçamento perfeito das duas pontas */
+    width: 100%;
     gap: 12px;
-    font-size: 0.9rem;
-    color: #111111;
-    font-weight: 700;
 }
 
 /* Menu de seleção do tipo de recurso */
 .select-tipo-recurso {
-    border: 2px solid var(--cor-borda-suave);
+    border: 2px solid var(--cor-borda-padrao);
     border-radius: 8px;
-    padding: 4px 8px;
+    padding: 6px 12px;
     font-size: 0.8rem;
-    font-weight: 700;
-    color: #444;
+    font-weight: 800;
+    color: #333333;
     background-color: #ffffff;
     cursor: pointer;
     outline: none;
+    box-shadow: 0 2px 0 var(--cor-borda-padrao);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.select-tipo-recurso:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--cor-borda-padrao);
 }
 
 .select-tipo-recurso:focus {
@@ -2881,12 +2891,12 @@ body {
     align-items: center;
 }
 
-/* Badges de Custo Dinâmicos (PE e PS em formato de Input) */
+/* Badges de Custo Dinâmicos (PE, PS, PV) */
 .input-custo-badge {
-    width: 85px;
+    width: 90px;
     border: 2px solid var(--cor-borda-padrao);
-    border-radius: 8px;
-    padding: 4px 8px;
+    border-radius: 20px; /* Formato de pílula super moderno */
+    padding: 6px 10px;
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
@@ -2896,22 +2906,32 @@ body {
     transition: transform 0.1s, box-shadow 0.1s;
 }
 
+/* Cores das Badges ajustadas para combinar com as fontes */
 .input-custo-badge.pe {
-    background-color: #e0f2fe; /* Azul claro */
-    color: #0369a1;
+    background-color: #f1cc8f; /* Azul claro */
+    color: #9b6307;
 }
 
 .input-custo-badge.ps {
-    background-color: #fee2e2; /* Vermelho claro */
-    color: #b91c1c;
+    background-color: #cd9feca0; /* Amarelo suave */
+    color: #55326d;
+}
+
+.input-custo-badge.pv {
+    background-color: #a7e4a4; /* Vermelho claro */
+    color: #1b5819;
 }
 
 .input-custo-badge:focus {
     transform: translateY(-1px);
     box-shadow: 0 3px 0 var(--cor-borda-padrao);
+    border-color: var(--cor-tema);
 }
 
-/* Contador de Usos Interativo Neobrutalista */
+/* ==========================================================================
+   CONTADOR DE USOS INTERATIVO NEOBRUTALISTA (SEM SETINHAS & ALINHADO)
+   ========================================================================== */
+
 .contador-usos {
     display: inline-flex;
     align-items: center;
@@ -2920,6 +2940,7 @@ body {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 0 var(--cor-borda-padrao);
+    height: 34px;
 }
 
 .contador-usos button {
@@ -2929,13 +2950,16 @@ body {
     font-size: 1.1rem;
     font-weight: 800;
     width: 32px;
-    height: 32px;
+    height: 100%;
     cursor: pointer;
     transition: background-color 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .contador-usos button:hover {
-    background-color: #f1f1f1;
+    background-color: #f8fafc;
 }
 
 .contador-usos button:first-child {
@@ -2946,38 +2970,85 @@ body {
     border-left: 2px solid var(--cor-borda-padrao);
 }
 
+/* Container do texto e inputs no meio do contador */
 .contador-usos .valor-uso {
-    padding: 0 12px;
-    font-size: 0.85rem;
-    color: #111111;
-    font-weight: 800;
-    user-select: none;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important; /* REDUZIDO: de 6px para 2px para aproximar tudo horizontalmente */
+    padding: 0 12px !important;
+    font-size: 0.9rem !important;
+    color: #111111 !important;
+    font-weight: 800 !important;
+    user-select: none !important;
+    height: 100% !important;
+    line-height: 1 !important;
 }
 
+/* O número do contador atual (Bloqueado) */
 .contador-usos .valor-uso .atual {
-    color: var(--cor-tema); /* Usa a cor dinâmica no contador */
-}
-
-/* Input do limite máximo do contador */
-.input-limite-maximo {
-    width: 35px;
-    border: 1px solid var(--cor-borda-suave);
-    border-radius: 4px;
-    text-align: center;
-    font-family: inherit;
+    color: var(--cor-tema);
+    font-size: 0.9rem;
     font-weight: 800;
-    font-size: 0.85rem;
-    background: #f1f1f1;
-    padding: 2px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
 }
 
+/* O divisor barra "/" perfeitamente alinhado */
+.contador-usos .valor-uso span {
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    color: #111111 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 1px !important; /* Espaçamento sutil nas laterais da barra */
+    
+    /* TRUQUE DE MESTRE: Eleva levemente a barra para compensar o desenho natural do caractere */
+    transform: translateY(-1px) !important; 
+}
+
+/* Input do limite máximo editável */
+.input-limite-maximo {
+    width: 14px !important; /* REDUZIDO: de 24px para 14px para colar o número na barra "/" */
+    border: none !important;
+    background: transparent !important;
+    text-align: center !important;
+    font-family: inherit !important;
+    font-weight: 800 !important;
+    font-size: 0.9rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #111111 !important;
+    outline: none !important;
+    cursor: pointer !important;
+    border-bottom: 2px solid transparent !important;
+    transition: border-color 0.2s !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    height: 18px !important;
+}
+/* Remove qualquer margem ou padding residual que o navegador aplique ao input */
 .input-limite-maximo:focus {
-    background: #ffffff;
-    border-color: var(--cor-tema);
-    outline: none;
+    border-bottom: 2px solid var(--cor-tema);
+    background: transparent;
 }
 
-/* Animação suave ao trocar de aba */
+/* ==========================================================================
+   REMOVE TODAS AS SETINHAS (CHROME, SAFARI, EDGE, OPERA & FIREFOX)
+   ========================================================================== */
+.input-limite-maximo::-webkit-outer-spin-button,
+.input-limite-maximo::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+
+/* Animação de Fade */
 @keyframes fadeInHabilidade {
     from {
         opacity: 0;
