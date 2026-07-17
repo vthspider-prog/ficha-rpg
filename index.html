@@ -33,42 +33,38 @@
 
                 <div class="col-esquerda">
                     <header class="header-preto" style="position: relative; padding-top: 15px;">
-                        <div class="container-lapis-tema"
-                            style="position: absolute; right: 20px; top: 20px; z-index: 100;">
+                        <div class="container-lapis-tema">
+
                             <button type="button" class="botao-lapis-custom" id="btn-menu-tema"
                                 onclick="toggleMenuTema(event)" title="Configurações de Aparência">
-                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#ffffff"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                    <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                                </svg>
+                                <i class="fa-solid fa-pen-to-square icone-custom-menu"></i>
                             </button>
 
                             <div class="menu-tema-dropdown" id="menu-tema-dropdown">
                                 <div class="menu-tema-secao">
-                                    <label>Cor do Tema</label>
-                                    <input type="color" id="seletor-cor" value="#ed1c24"
-                                        oninput="atualizarTemaFicha(this.value)">
+                                    <label><i class="fa-solid fa-palette"></i> Aparência da Ficha</label>
+                                    <div class="input-cor-wrapper"
+                                        onclick="document.getElementById('seletor-cor').click()">
+                                        <input type="color" id="seletor-cor" value="#ed1c24"
+                                            oninput="atualizarTemaFicha(this.value)">
+                                        <span class="input-cor-texto">Mudar Cor Geral</span>
+                                    </div>
                                 </div>
 
                                 <div class="menu-tema-divisor"></div>
 
                                 <div class="menu-tema-secao">
-                                    <label style="color: #f87171;">Atenção ao campo abaixo!</label>
-                                    <button type="button" class="btn-resetar-ficha" onclick="confirmarResetFicha(event)"
-                                        style="background-color: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.25); padding: 8px 10px; border-radius: 4px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; font-size: 11px; margin-top: 6px; transition: all 0.2s;">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path
-                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                            </path>
-                                        </svg>
-                                        Resetar Ficha
+                                    <label class="label-perigo">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                        <span>CUIDADO COM O CAMPO<br>ABAIXO</span>
+                                    </label>
+                                    <button type="button" class="btn-resetar-ficha"
+                                        onclick="confirmarResetFicha(event)">
+                                        <i class="fa-solid fa-trash-can"></i> Resetar Dados da Ficha
                                     </button>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="cabecalho-topo">
@@ -91,15 +87,11 @@
                             onclick="document.getElementById('input_foto').click()">
                             <img id="preview_img" src="#" style="display:none;">
                             <div id="placeholder_upload">
-                                <div class="nuvem-icone">
-                                    <svg viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="#888"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M17.5 19a5.5 5.5 0 0 0 0-11h-1.5a7 7 0 1 0-13.5 3.5"></path>
-                                        <polyline points="12 12 12 16"></polyline>
-                                        <polyline points="9 13 12 10 15 13"></polyline>
-                                    </svg>
+                                <div class="upload-icone-wrapper">
+                                    <i class="fa-regular fa-image upload-icone"></i>
+
                                 </div>
-                                <p>ARRASTE OU CLIQUE PARA ENVIAR</p>
+                                <p>CLIQUE PARA ENVIAR SUA IMAGEM</p>
                             </div>
                             <input type="file" id="input_foto" accept="image/*" onchange="carregarFoto(event)" hidden>
                         </div>
@@ -108,18 +100,21 @@
                     <table class="tabela-dados">
                         <tr>
                             <td>PERSONA</td>
-                            <td><input type="text" placeholder="Ex: Sr.Dogo"></td>
-                        </tr>
-                        <tr>
-                            <td>ESPÉCIE</td>
-                            <td>
-                                <div class="campo-wrapper">
-                                    <input type="text" id="especie_input" placeholder="Selecione..." readonly
-                                        onclick="abrirModal()">
-                                    <button id="btn_limpar_especie" class="btn-lixeira-sutil" onclick="limparEspecie()"
-                                        title="Limpar">✕</button>
-                                </div>
+                            <td><input type="text" placeholder="Ex: Sr.Dogo"
+                                    oninput="this.value = this.value.replace(/(^\w|\s\w)/g, m => m.toUpperCase());">
                             </td>
+                        </tr>
+                        <td>ESPÉCIE</td>
+                        <td>
+                            <div class="campo-wrapper">
+                                <input type="text" id="especie_input" placeholder="Selecione..." readonly
+                                    onclick="abrirModal()">
+                                <button id="btn_limpar_especie" class="btn-lixeira-sutil" onclick="limparEspecie()"
+                                    title="Limpar">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </td>
                         </tr>
                         <tr>
                             <td>CLASSE</td>
@@ -127,11 +122,13 @@
                                 <div class="campo-wrapper">
                                     <input type="text" id="classe_input" placeholder="Selecione..." readonly
                                         onclick="abrirModalExclusivo('modalClasse')">
-
                                     <button id="btn_limpar_classe" class="btn-lixeira-sutil"
-                                        onclick="event.stopPropagation(); limparClasse();" title="Limpar">✕</button>
+                                        onclick="event.stopPropagation(); limparClasse();" title="Limpar">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
                                 </div>
                             </td>
+                        </tr>
                     </table>
 
                     <div class="container-status">
@@ -870,7 +867,7 @@
                         <i class="fa-solid fa-wand-magic-sparkles"></i> HABILIDADES
                     </button>
                     <button type="button" class="btn-sub-aba" onclick="alternarSubAba(this, 'sub_bag-shopping')">
-                        <i class="fa-solid fa-backpack"></i> INVENTÁRIO
+                        <i class="fa-solid fa-briefcase"></i> INVENTÁRIO
                     </button>
                 </div>
 
@@ -1032,10 +1029,8 @@
                             </div>
 
                             <div class="container-conteudo-habilidades">
-
                                 <div id="hab-especie" class="secao-habilidade-conteudo active">
-                                    <div class="lista-cards-habilidades" id="lista-hab-especie">
-                                    </div>
+                                    <div class="lista-cards-habilidades" id="lista-hab-especie"></div>
                                     <button type="button" class="btn-adicionar-rpg"
                                         onclick="adicionarNovoCardHabilidade('especie')">
                                         <i class="fa-solid fa-plus"></i> Adicionar Habilidade de Espécie
@@ -1043,8 +1038,7 @@
                                 </div>
 
                                 <div id="hab-classe" class="secao-habilidade-conteudo" style="display: none;">
-                                    <div class="lista-cards-habilidades" id="lista-hab-classe">
-                                    </div>
+                                    <div class="lista-cards-habilidades" id="lista-hab-classe"></div>
                                     <button type="button" class="btn-adicionar-rpg"
                                         onclick="adicionarNovoCardHabilidade('classe')">
                                         <i class="fa-solid fa-plus"></i> Adicionar Habilidade de Classe
@@ -1052,18 +1046,56 @@
                                 </div>
 
                                 <div id="hab-outros" class="secao-habilidade-conteudo" style="display: none;">
-                                    <div class="lista-cards-habilidades" id="lista-hab-outros">
-                                    </div>
+                                    <div class="lista-cards-habilidades" id="lista-hab-outros"></div>
                                     <button type="button" class="btn-adicionar-rpg"
                                         onclick="adicionarNovoCardHabilidade('outros')">
                                         <i class="fa-solid fa-plus"></i> Adicionar Outra Habilidade/Ritual
                                     </button>
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                 </div>
+                <div id="sub_bag-shopping" class="bloco-sub-aba-conteudo" style="display: none;">
+                    <div class="cartao-inventario">
+
+                        <div class="titulo-sessao-inventario">
+                            <i class="fa-solid fa-coins" style="color: var(--cor-tema, #7a1827); font-size: 18px;"></i>
+                            <h3>DINHEIRO & VALORES</h3>
+                        </div>
+
+                        <div class="grid-moedas-rpg">
+                            <div class="caixa-moeda">
+                                <label><i class="fa-solid fa-circle-dollar-to-slot"></i> Platina [+ $1.000]</label>
+                                <input type="number" id="moeda_platina" value="0" min="0"
+                                    oninput="calcularTotalDinheiro(); dispararSalvarComDebounce();">
+                            </div>
+                            <div class="caixa-moeda">
+                                <label><i class="fa-solid fa-coins"></i> Ouro [+ $100]</label>
+                                <input type="number" id="moeda_ouro" value="0" min="0"
+                                    oninput="calcularTotalDinheiro(); dispararSalvarComDebounce();">
+                            </div>
+                            <div class="caixa-moeda">
+                                <label><i class="fa-solid fa-coin"></i> Prata [+ $10]</label>
+                                <input type="number" id="moeda_prata" value="0" min="0"
+                                    oninput="calcularTotalDinheiro(); dispararSalvarComDebounce();">
+                            </div>
+                            <div class="caixa-moeda">
+                                <label><i class="fa-solid fa-circle-dot"></i> Bronze [+ $1]</label>
+                                <input type="number" id="moeda_bronze" value="0" min="0"
+                                    oninput="calcularTotalDinheiro(); dispararSalvarComDebounce();">
+                            </div>
+                        </div>
+
+                        <div class="painel-total-dinheiro">
+                            <span class="label-total"><i class="fa-solid fa-vault"></i> Valor do Dinheiro</span>
+                            <span id="total_dinheiro_exibicao" class="valor-total">$0</span>
+                        </div>
+
+                    </div>
+                </div>
+
 
                 <script type="module" src="config.js"></script>
                 <script type="module" src="app.js"></script>

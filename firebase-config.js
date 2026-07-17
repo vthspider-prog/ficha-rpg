@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
 
 // ⚠️ APAGUE ESTE BLOCO ABAIXO E COLE O SEU CONST FIREBASECONFIG QUE ESTÁ NO SITE!
@@ -14,7 +14,27 @@ const firebaseConfig = {
 
 // Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-// Exporta os serviços que vamos usar nos outros arquivos
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+// Variável global para controlar o ID do usuário conectado
+let usuarioId = null;
+
+// Monitor do Firebase: ele avisa o seu código se o jogador está logado ou não
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        usuarioId = user.uid;
+        console.log("Usuário conectado com sucesso:", usuarioId);
+    } else {
+        usuarioId = null;
+        console.log("Nenhum usuário conectado.");
+    }
+});
+
+// FUNÇÃO SEGURA para os outros arquivos (como o app.js) pegarem o ID atualizado
+export function getUsuarioId() {
+    return usuarioId;
+}
+
+// Exporta as instâncias para os outros arquivos usarem o banco de dados
+export { app, auth, db };

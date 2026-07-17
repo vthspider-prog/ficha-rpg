@@ -12,46 +12,49 @@
     box-sizing: border-box;
 }
 
-/* Container que joga o lápis pro canto superior direito alinhado com o título */
+/* Container que joga o botão pro canto superior direito */
 .container-lapis-tema {
     position: absolute;
     right: 20px;
-    /* Distância da borda direita do cabeçalho */
     top: 22px;
-    /* Ajuste fino para alinhar verticalmente com o 'FICHA LV' */
     z-index: 10;
 }
 
-/* Estilo do botão do lápis atualizado */
+/* Botão do Lápis - Versão Minimalista */
 .botao-lapis-custom {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    background-color: #474747;
-    /* Seu cinza escuro irado */
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-
-    /* 3 linhas para limpar o comportamento padrão de tag button */
+    width: 40px;
+    height: 24px;
+    background: none;
+    /* Remove o fundo cinza circular */
     border: none;
+    /* Sem bordas */
     outline: none;
     padding: 0;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    opacity: 0.8;
+    /* Fica quase invisível por padrão, bem discreto */
 }
 
-/* Efeito de hover - acende na cor do tema que o usuário escolheu */
-.botao-lapis-custom:hover {
-    transform: scale(1.1);
-    background-color: var(--cor-tema);
-    box-shadow: 0 0 10px var(--cor-tema);
-}
-
-/* Evita que o ícone interno interfira no clique do botão */
-.botao-lapis-custom svg {
+/* Novo estilo do ícone interno */
+.icone-custom-menu {
+    font-size: 18px;
+    /* Tamanho limpo */
+    color: #ffffff;
+    /* Ícone branco */
     pointer-events: none;
+    transition: color 0.2s ease;
+}
+
+/* Efeito de hover - Apenas acende a opacidade, sem brilhos espalhafatosos */
+.botao-lapis-custom:hover {
+    opacity: 1;
+    /* Revela o ícone totalmente ao passar o mouse */
+    transform: scale(1.05);
+    /* Um feedback de clique bem sutil */
 }
 
 /* Essencial para o cálculo de largura */
@@ -137,11 +140,34 @@ body {
     margin: 15px 0;
 }
 
+.upload-area {
+    width: 100%;
+    height: 250px;
+    background-color: #fcfcfc;
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
 
-/* Efeito ao passar o mouse */
+/* Efeito ao passar o mouse na área de upload */
 .upload-area:hover {
-    background-color: #f0f0f0;
-    border-color: #888;
+    background-color: #f3f4f6;
+    border-color: #4d010191;
+    /* Cor vermelha da sua ficha */
+}
+
+/* Efeito de hover no ícone quando passa o mouse no container */
+.upload-area:hover .upload-icone {
+    color: #270101;
+    /* Ícone ganha a cor de destaque */
+    transform: translateY(-5px) scale(1.05);
+    /* Sobe de leve com efeito de profundidade */
 }
 
 #placeholder_upload {
@@ -150,49 +176,44 @@ body {
 }
 
 #placeholder_upload p {
-    margin-top: 10px;
-    color: #999;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: normal;
+    margin-top: 14px;
+    color: #9ca3af;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
     text-transform: none;
-    /* Mantém minúsculas como na imagem */
+    transition: color 0.3s ease;
 }
 
-.nuvem-icone {
-    opacity: 0.6;
-    transition: transform 0.3s ease;
+.upload-area:hover #placeholder_upload p {
+    color: #444444;
+    /* Texto também reage ao hover */
 }
 
-/* ... (mantenha o início do código igual) */
-
-.upload-area {
-    width: 100%;
-    height: 250px;
-    background-color: #f9f9f9;
-    border: 2px dashed #ccc;
-    /* DIMINUÍDO: De 20px para 8px para a moldura externa */
-    border-radius: 8px;
+/* Estilização do Novo Ícone */
+.upload-icone-wrapper {
     display: flex;
-    align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    overflow: hidden;
-    position: relative;
+    align-items: center;
 }
 
-/* Estado Ativo: Quando a classe 'foto-postada' é adicionada via JS */
+.upload-icone {
+    font-size: 48px;
+    /* Tamanho perfeito do ícone */
+    color: #9ca3af;
+    /* Cinza elegante padrão */
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s ease;
+}
+
+/* Estado Ativo: Quando a foto é carregada */
 .upload-area.foto-postada {
     border: 1px solid #4e0101;
-    /* Muda de tracejado para LINHA SÓLIDA */
     background-color: white;
 }
 
-/* Efeito de hover suave apenas quando já tem a foto */
 .upload-area.foto-postada:hover {
-    border-color: var(--vermelho);
-    /* Destaque sutil com a cor da ficha */
+    border-color: #4e0101;
     box-shadow: 0 4px 15px rgba(20, 0, 0, 0.26);
     transform: scale(1.01);
 }
@@ -202,7 +223,6 @@ body {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* DIMINUÍDO: De 10px para 5px para a foto interna */
     border-radius: 5px;
     display: block;
 }
@@ -235,6 +255,7 @@ body {
     width: 100%;
     outline: none;
     font-weight: bold;
+    text-transform: capitalize;
 }
 
 .status-bar {
@@ -593,25 +614,31 @@ body.modal-aberto {
 
 /* O botão sutil */
 .btn-lixeira-sutil {
-    display: none;
-    /* Começa escondido */
+    display: none; /* Começa escondido */
     background: none;
     border: none;
     padding: 0 10px;
     cursor: pointer;
-    color: #ccc;
-    font-weight: bold;
+    color: #a1a1aa; /* Cinza sutil combinando com o tema escuro */
+    transition: color 0.2s ease, transform 0.1s ease;
 }
 
-/* REGRA CRÍTICA: Se o input tiver a classe, mostra o botão vizinho */
-#especie_input.tem-conteudo+.btn-lixeira-sutil {
+/* Controla o tamanho do ícone do Font Awesome lá dentro */
+.btn-lixeira-sutil i {
+    font-size: 13px;
+}
+
+/* REGRA CRÍTICA: Se o input de espécie OU classe tiver a classe 'tem-conteudo', mostra o botão */
+#especie_input.tem-conteudo + .btn-lixeira-sutil,
+#classe_input.tem-conteudo + .btn-lixeira-sutil {
     display: inline-block !important;
 }
 
+/* Hover: Muda para o vermelho do tema ao passar o mouse */
 .btn-lixeira-sutil:hover {
     color: #ed1c24;
+    transform: scale(1.1); /* Dá uma leve saltada charmosa */
 }
-
 
 .header-preta {
     background: #000;
@@ -755,39 +782,39 @@ body.modal-aberto {
 
 /* Cores dos Temas */
 .bg-pv {
-    background: #2ecc71;
+    background: #2abd51 ;
 }
 
 .cor-pv {
-    color: #27ae60;
+    color: #34A853;
 }
 
 .borda-pv {
-    border-left: 6px solid #27ae60;
+    border-left: 6px solid #34A853;
 }
 
 .bg-ps {
-    background: #9b59b6;
+    background: #5891ec;
 }
 
 .cor-ps {
-    color: #8e44ad;
+    color: #4285F4;
 }
 
 .borda-ps {
-    border-left: 6px solid #8e44ad;
+    border-left: 6px solid #4285F4;
 }
 
 .bg-pe {
-    background: #f1c40f;
+    background: #facc4c;
 }
 
 .cor-pe {
-    color: #f39c12;
+    color: #e6b327;
 }
 
 .borda-pe {
-    border-left: 6px solid #f39c12;
+    border-left: 6px solid #ffca3c;
 }
 
 /* Container principal estilizado como um card da ficha */
@@ -902,19 +929,17 @@ body.modal-aberto {
     color: transparent !important;
 }
 
-/* INJEÇÃO DA CAVEIRA: Ela aparece exatamente por cima do número escondido */
+/* INJEÇÃO DA CAVEIRA MINIMALISTA (Apenas a cabeça) */
 .item-checkbox-morte input:checked+.caixa-morte-design::after {
-    content: "☠️";
-    /* Pode trocar por "☠️" se preferir o estilo pirata */
+    content: "\f54c"; /* Código unicode para o ícone 'fa-skull' */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
     position: absolute;
-    font-size: 16px;
-    /* Tamanho da caveira ligeiramente maior para destacar */
-    color: #ffffff !important;
-    /* Caveira fica branca contrastando com o fundo vermelho */
+    font-size: 18px; /* Tamanho ajustado para o box */
+    color: #ffffff !important; /* Branco em contraste com o fundo vermelho */
     left: 50%;
     top: 50%;
-    transform: translate(-50%, -50%);
-    /* Centraliza perfeitamente no meio do quadrado */
+    transform: translate(-50%, -50%); /* Centralização perfeita */
 }
 
 /*campo de atributos
@@ -1696,49 +1721,36 @@ body {
 
 /* DESTAQUE DE PERICIA*/
 
-/* Regra principal para a linha quando destacada na busca */
 .linha-pericia-nova.pericia-destacada {
-    /* Fundo escuro translúcido para dar profundidade e leveza */
-    background-color: rgba(192, 158, 7, 0.541) !important;
+    background-color: rgba(244, 180, 26, 0.15) !important;
 
-    /* Borda lateral grossa com a cor dinâmica da sua ficha */
-    border-left: 5px solid var(--cor-tema, #e53e3e) !important;
+    border-radius: 8px !important;
 
-    /* Brilho neon sutil focado apenas na borda esquerda */
-    box-shadow: 2px 0 8px var(--cor-tema, rgba(229, 62, 62, 0.4)) !important;
+    border-left: 4px solid #f4b41a !important;
 
-    /* Dá um leve espaço para o texto não colar na borda colorida */
-    padding-left: 20px !important;
-
-    /* Transição e animação ao acender na tela */
-    transition: all 0.2s ease-in-out;
-    animation: acenderSuave 0.25s ease-in-out;
+    box-shadow: 0 4px 12px 0 rgba(60, 64, 67, 0.08), 0 1px 3px 0 rgba(60, 64, 67, 0.15) !important;
+    
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    animation: entradaGoogleAmarelo 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     position: relative;
     z-index: 1;
 }
 
-/* Garante contraste total do texto e números sobre o fundo sutil */
-.linha-pericia-nova.pericia-destacada span,
-.linha-pericia-nova.pericia-destacada p,
-.linha-pericia-nova.pericia-destacada div,
-.linha-pericia-nova.pericia-destacada input {
-    color: #ffffff !important;
-}
-
-/* Animação para a borda expandir suavemente quando você digita */
-@keyframes acenderSuave {
+/* Animação de transição: a cor amarela e a borda entram de forma extremamente fluida */
+@keyframes entradaGoogleAmarelo {
     0% {
-        opacity: 0.7;
-        border-left-width: 0px;
+        background-color: transparent;
+        border-left-color: transparent;
+        box-shadow: 0 0 0 0 transparent;
     }
-
     100% {
-        opacity: 1;
-        border-left-width: 5px;
+        background-color: rgba(244, 180, 26, 0.15);
+        border-left-color: #f4b41a;
+        box-shadow: 0 4px 12px 0 rgba(60, 64, 67, 0.08), 0 1px 3px 0 rgba(60, 64, 67, 0.15);
     }
 }
-
 /* ==========================================================================
    3. SISTEMA DE TROCA DE PÁGINAS (A MÁGICA DO LIVRO)
    ========================================================================== */
@@ -2143,40 +2155,38 @@ body {
 }
 
 /* ==========================================================================
-   CUSTOMIZAÇÃO: DROPDOWN RESPONSIVO (MOBILE-FRIENDLY)
+   CUSTOMIZAÇÃO: DROPDOWN MINIMALISTA E PREMIUM
    ========================================================================== */
 
-/* Container do Dropdown */
+/* Container Principal do Dropdown */
 .menu-tema-dropdown {
     display: none;
-    /* Escondido por padrão, controlado via JS */
+    /* Controlado via JS */
     position: absolute;
     right: 0;
-    top: 38px;
-    background-color: #1a1a1b;
-    /* Tom escuro profundo imersivo */
-    border: 1.5px solid #2d2b38;
-    border-radius: 8px;
-    padding: 14px;
-    width: 200px;
-    /* Largura levemente maior para melhor leitura no mobile */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    top: 42px;
+    /* Espaço perfeito abaixo do botão do lápis aumentado */
+    background-color: #0c0c0d;
+    /* Preto puro/profundo para integrar com o cabeçalho */
+    border: 1px solid #232326;
+    /* Linha cirúrgica bem fina e discreta */
+    border-radius: 6px;
+    padding: 16px;
+    width: 220px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
     z-index: 110;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-    /* Prepara transições suaves caso queira usar */
-    animation: surgimentoSuave 0.2s ease-out;
+    font-family: Arial, sans-serif;
+    animation: surgimentoSuave 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Classe utilitária para exibir o menu via JS */
+/* Ativação via JS */
 .menu-tema-dropdown.ativo {
     display: flex !important;
     flex-direction: column;
-    gap: 12px;
-    /* Espaçamento ideal para telas de toque */
+    gap: 14px;
 }
 
-/* Seções Internas do Menu */
+/* Estrutura das Seções */
 .menu-tema-secao {
     display: flex;
     flex-direction: column;
@@ -2184,65 +2194,125 @@ body {
     width: 100%;
 }
 
+/* Títulos das Seções (Labels) */
 .menu-tema-secao label {
-    color: #a8a8a8;
-    /* Cinza azulado elegante */
+    color: #71717a;
+    /* Cinza fosco minimalista */
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
+    letter-spacing: 0.8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-/* Customização Dinâmica do Input de Cor */
+.menu-tema-secao label.label-perigo {
+    color: #ef4444;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    /* Alinha o ícone com o topo da primeira linha de texto */
+    justify-content: flex-start;
+    /* Joga todo o bloco para a esquerda */
+    text-align: left;
+    /* Garante que as duas linhas fiquem alinhadas à esquerda */
+    width: 100%;
+    gap: 8px;
+    /* Espaço sutil entre o ícone e o texto */
+    margin-bottom: 4px;
+}
+
+/* Container interno do seletor de cor */
+.input-cor-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 4px;
+    padding: 6px;
+    gap: 10px;
+    transition: border-color 0.2s ease;
+}
+
+.input-cor-wrapper:hover {
+    border-color: #3f3f46;
+}
+
+/* O seletor de cor nativo em formato de quadradinho limpo */
 .menu-tema-secao input[type="color"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    width: 100%;
-    height: 36px;
-    /* Altura confortável para clicar no celular */
-    background: #1e1d26;
-    border: 1px solid #2d2b38;
-    border-radius: 6px;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
     cursor: pointer;
-    padding: 4px;
-    transition: border-color 0.2s ease, transform 0.1s ease;
+    padding: 0;
 }
 
-/* Suporte de bordas internas para navegadores diferentes */
 .menu-tema-secao input[type="color"]::-webkit-color-swatch {
-    border: 1px solid #374151;
-    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
 }
 
 .menu-tema-secao input[type="color"]::-moz-color-swatch {
-    border: 1px solid #374151;
-    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
 }
 
-.menu-tema-secao input[type="color"]:hover {
-    border-color: var(--cor-tema);
+/* Texto descritivo ao lado do seletor de cor */
+.input-cor-texto {
+    color: #d4d4d8;
+    font-size: 12px;
+    font-weight: 500;
 }
 
-.menu-tema-secao input[type="color"]:active {
-    transform: scale(0.98);
-    /* Feedback tátil rápido ao clicar no celular */
-}
-
-/* Linha Divisória */
+/* Linha Divisória Fina */
 .menu-tema-divisor {
-    height: 1.5px;
-    background-color: #2d2b38;
-    margin: 4px 0;
+    height: 1px;
+    background-color: #232326;
     width: 100%;
+    margin: 2px 0;
 }
 
-/* Animação de Entrada */
+/* Botão de Resetar Minimalista */
+.btn-resetar-ficha {
+    background-color: transparent;
+    color: #a1a1aa;
+    border: 1px solid #27272a;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+/* Feedback visual de perigo apenas no Hover do botão de reset */
+.btn-resetar-ficha:hover {
+    background-color: #450a0a;
+    /* Fundo vermelho bem escuro, estilo aviso */
+    color: #fca5a5;
+    border-color: #ef4444;
+}
+
+.btn-resetar-ficha:active {
+    transform: scale(0.98);
+}
+
+/* Animação de Entrada Modernizada (Mais rápida e fluida) */
 @keyframes surgimentoSuave {
     from {
         opacity: 0;
-        transform: translateY(-8px);
+        transform: translateY(-4px);
     }
 
     to {
@@ -2259,9 +2329,12 @@ body {
    VARIÁVEIS DE COR E CONFIGURAÇÕES GERAIS
    ========================================== */
 :root {
-    --cor-tema: #2d7fa8; /* Cor dinâmica principal */
-    --cor-borda-padrao: #1e1e1e; /* Borda preta grossa */
-    --cor-borda-suave: #7e7e7e; /* Borda cinza dos campos internos */
+    --cor-tema: #2d7fa8;
+    /* Cor dinâmica principal */
+    --cor-borda-padrao: #1e1e1e;
+    /* Borda preta grossa */
+    --cor-borda-suave: #7e7e7e;
+    /* Borda cinza dos campos internos */
     --cor-fundo-input: #ffffff;
 }
 
@@ -2406,6 +2479,7 @@ body {
     box-sizing: border-box;
     width: 100%;
     background-color: var(--cor-fundo-input);
+    text-transform: capitalize;
 }
 
 .coluna-textareas-rpg textarea {
@@ -2422,6 +2496,7 @@ body {
     line-height: 1.4;
     background-color: var(--cor-fundo-input);
     overflow-y: auto;
+    text-transform: capitalize;
 }
 
 /* ==========================================
@@ -2466,6 +2541,7 @@ body {
     font-family: inherit;
     box-sizing: border-box;
     background-color: #ffffff;
+    text-transform: capitalize;
 }
 
 .input-relacao-desc {
@@ -2908,18 +2984,18 @@ body {
 
 /* Cores das Badges ajustadas para combinar com as fontes */
 .input-custo-badge.pe {
-    background-color: #f1cc8f; /* Azul claro */
-    color: #9b6307;
+    background-color: #F2EFE0 ; 
+    color: #f0c140;
 }
 
 .input-custo-badge.ps {
-    background-color: #cd9feca0; /* Amarelo suave */
-    color: #55326d;
+    background-color: #E2EFF3; 
+    color: #4285F4;
 }
 
 .input-custo-badge.pv {
-    background-color: #a7e4a4; /* Vermelho claro */
-    color: #1b5819;
+    background-color: #EAF1EA; 
+    color: #34A853;
 }
 
 .input-custo-badge:focus {
@@ -2927,6 +3003,7 @@ body {
     box-shadow: 0 3px 0 var(--cor-borda-padrao);
     border-color: var(--cor-tema);
 }
+
 
 /* ==========================================================================
    CONTADOR DE USOS INTERATIVO NEOBRUTALISTA (SEM SETINHAS & ALINHADO)
@@ -2987,12 +3064,14 @@ body {
 
 /* O número do contador atual (Bloqueado) */
 .contador-usos .valor-uso .atual {
-    color: var(--cor-tema);
-    font-size: 0.9rem;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    line-height: 1;
+    color: var(--cor-tema) !important;
+    font-size: 0.9rem !important;
+    font-weight: 800 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* O divisor barra "/" perfeitamente alinhado */
@@ -3004,7 +3083,7 @@ body {
     align-items: center !important;
     line-height: 1 !important;
     margin: 0 !important;
-    padding: 0 1px !important; /* Espaçamento sutil nas laterais da barra */
+    padding: 0 2px !important; /* Espaçamento sutil nas laterais da barra */
     
     /* TRUQUE DE MESTRE: Eleva levemente a barra para compensar o desenho natural do caractere */
     transform: translateY(-1px) !important; 
@@ -3032,10 +3111,10 @@ body {
     line-height: 1 !important;
     height: 18px !important;
 }
-/* Remove qualquer margem ou padding residual que o navegador aplique ao input */
+
 .input-limite-maximo:focus {
-    border-bottom: 2px solid var(--cor-tema);
-    background: transparent;
+    border-bottom: 2px solid var(--cor-tema) !important;
+    background: transparent !important;
 }
 
 /* ==========================================================================
@@ -3054,10 +3133,133 @@ body {
         opacity: 0;
         transform: translateY(4px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* CAMPO INVENTARIO - PERFIL */
+
+/* Container principal do bloco */
+.cartao-inventario {
+    border: 2px solid #000000;
+    border-radius: 24px;
+    padding: 24px;
+    margin: 20px;
+    background-color: #ffffff;
+}
+
+/* Cabeçalho da sessão - ATUALIZADO */
+.titulo-sessao-inventario {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço perfeito entre o ícone e o texto do título */
+    margin-bottom: 20px;
+}
+
+/* Estilização do ícone do título */
+.titulo-sessao-inventario i {
+    font-size: 18px;
+}
+
+.titulo-sessao-inventario h3 {
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: #000000;
+    margin: 0;
+}
+
+/* Layout das 4 caixas de moedas inline */
+.grid-moedas-rpg {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* Estilo individual de cada slot de moeda */
+.caixa-moeda {
+    border: 2px solid #8c8c8c;
+    border-radius: 12px;
+    padding: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.caixa-moeda label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #727272;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Espaçamento para os ícones internos das moedas e total */
+.caixa-moeda label i,
+.label-total i {
+    margin-right: 4px;
+    opacity: 0.8;
+}
+
+/* Input invisível com foco no número sublinhado igual ao seu print */
+.caixa-moeda input {
+    border: none;
+    border-bottom: 2px solid #8c8c8c;
+    width: 40px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+    outline: none;
+    background: transparent;
+    padding-bottom: 2px;
+}
+
+/* Remove as setas nativas do input do tipo number */
+.caixa-moeda input::-webkit-outer-spin-button,
+.caixa-moeda input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.caixa-moeda input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Faixa Preta do Total */
+.painel-total-dinheiro {
+    background-color: #000000;
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-total {
+    color: #8c8c8c;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.valor-total {
+    color: var(--cor-tema, #7a1827); /* Ajustado para bater com seu novo tom escuro se preferir */
+    font-size: 18px;
+    font-weight: 800;
 }
 
 /* ==========================================
@@ -3115,11 +3317,12 @@ body {
     background-color: #ffffff !important;
     outline: none;
     /* Mistura 30% da cor do seu tema com transparente para criar o brilho perfeito */
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cor-tema) 30%, transparent) !important; 
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cor-tema) 30%, transparent) !important;
     position: relative;
     z-index: 10;
     transform: translateY(-1px);
 }
+
 /* ==========================================================================
    SISTEMA DE EXIBIÇÃO DE SUB-ABAS (OCULTAÇÃO)
    ========================================================================== */

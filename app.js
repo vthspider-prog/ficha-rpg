@@ -27,13 +27,16 @@ function dispararSalvarComDebounce() {
     }, 2000);
 }
 
-// Função para Salvar os dados do Topo da Ficha até as Perícias
+// Função para Salvar todos os dados da ficha (Do Topo até as Habilidades)
 async function salvarDadosFicha() {
-    const usuario = auth.currentUser;
-    if (!usuario) return;
+    // 1. Usamos a variável global usuarioId que é mais estável e rápida
+    if (!usuarioId) {
+        console.log("Usuário não logado. Salvando apenas no navegador (localStorage)...");
+        return;
+    }
 
-    const uid = usuario.uid;
-    const docRef = doc(db, "usuarios", uid);
+    // 2. Aponta para o documento correto (ajustado para a sua coleção "usuarios")
+    const docRef = doc(db, "usuarios", usuarioId);
 
     try {
         const docSnap = await getDoc(docRef);
@@ -47,7 +50,7 @@ async function salvarDadosFicha() {
                 persona: document.querySelector('.tabela-dados tr:nth-child(1) input')?.value || dadosAntigos.topo?.persona || "",
                 especie: document.getElementById("especie_input")?.value || dadosAntigos.topo?.especie || "",
                 classe: document.getElementById("classe_input")?.value || dadosAntigos.topo?.classe || "",
-                foto: imagemBase64Ficha || dadosAntigos.topo?.foto || ""
+                foto: imagemBase64Ficha || dadosAntigos.topo?.foto || "" 
             },
             status: {
                 pv: {
@@ -87,6 +90,8 @@ async function salvarDadosFicha() {
                 bonusGeral: document.getElementById("bonus_geral_pericias")?.value || "0",
                 dadosTreino: obterValoresTreinoPericias()
             },
+            // ADICIONADO: Puxa o objeto completo de habilidades do seu localStorage e salva na nuvem!
+            habilidades: JSON.parse(localStorage.getItem("rpg_habilidades_personagem")) || dadosAntigos.habilidades || {},
             aparencia: {
                 corTema: document.getElementById("seletor-cor")?.value || dadosAntigos.aparencia?.corTema || "#ed1c24",
                 modoBrilho: localStorage.getItem('modoBrilhoFicha') || dadosAntigos.aparencia?.modoBrilho || 'claro'
@@ -94,8 +99,9 @@ async function salvarDadosFicha() {
             atualizadoEm: new Date().toISOString()
         };
 
+        // Envia o super-objeto de uma vez só
         await setDoc(docRef, dadosFicha, { merge: true });
-        console.log("Ficha, atributos e perícias salvos com sucesso!");
+        console.log("Toda a ficha, incluindo foto e habilidades, foi sincronizada na nuvem!");
 
     } catch (error) {
         console.error("Erro ao salvar dados no Firestore:", error);
@@ -614,23 +620,73 @@ function inicializarFicha() {
     };
 
     window.carregarFoto = function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function (e) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const imgElement = new Image();
+        imgElement.src = e.target.result;
+
+        imgElement.onload = function () {
+            // =========================================================
+            // COMPRESSOR AUTOMÁTICO DE IMAGEM (Reduz para o tamanho ideal)
+            // =========================================================
+            const canvas = document.createElement("canvas");
+            
+            // Define o tamanho máximo que o avatar precisa ter na tela (ex: 400x400px)
+            const MAX_LARGURA = 400;
+            const MAX_ALTURA = 400;
+            
+            let largura = imgElement.width;
+            let altura = imgElement.height;
+
+            // Calcula a proporção correta para não distorcer a imagem
+            if (largura > altura) {
+                if (largura > MAX_LARGURA) {
+                    altura *= MAX_LARGURA / largura;
+                    largura = MAX_LARGURA;
+                }
+            } else {
+                if (altura > MAX_ALTURA) {
+                    largura *= MAX_ALTURA / altura;
+                    altura = MAX_ALTURA;
+                }
+            }
+
+            canvas.width = largura;
+            canvas.height = altura;
+
+            // Desenha a imagem reduzida no Canvas
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(imgElement, 0, 0, largura, altura);
+
+            // Transforma o desenho do canvas em uma String Base64 super leve e otimizada (.jpeg com 75% de qualidade)
+            const imagemComprimidaBase64 = canvas.toDataURL("image/jpeg", 0.75);
+
+            // =========================================================
+            // ATUALIZA A TELA E SALVA
+            // =========================================================
             const previewImg = document.getElementById("preview_img");
             const placeholder = document.getElementById("placeholder_upload");
             const containerFoto = document.getElementById("container_foto");
 
-            if (previewImg) { previewImg.src = e.target.result; previewImg.style.display = "block"; }
+            if (previewImg) { 
+                previewImg.src = imagemComprimidaBase64; 
+                previewImg.style.display = "block"; 
+            }
             if (placeholder) placeholder.style.display = "none";
             if (containerFoto) containerFoto.style.borderStyle = "solid";
 
-            imagemBase64Ficha = e.target.result;
+            // Atualiza sua variável global com a foto leve e compactada
+            imagemBase64Ficha = imagemComprimidaBase64;
+            
+            // Dispara o seu salvamento padrão
             dispararSalvarComDebounce();
         };
-        reader.readAsDataURL(file);
     };
+    reader.readAsDataURL(file);
+};
 
     window.validarRapido = function (input) {
         if (!input) return;
@@ -647,80 +703,80 @@ function inicializarFicha() {
     // CAMPO "PERSONAGEM" DA FICHA
 
     // Função que gerencia a troca entre Dropdown e Texto Personalizado
-window.verificarOpcaoRelacao = function (selectElement) {
-    if (selectElement.value === "outro") {
-        const container = selectElement.closest(".container-select-relacao");
+    window.verificarOpcaoRelacao = function (selectElement) {
+        if (selectElement.value === "outro") {
+            const container = selectElement.closest(".container-select-relacao");
+            const selectWrapper = container.querySelector(".select-wrapper-rpg");
+            const customWrapper = container.querySelector(".custom-input-wrapper");
+            const inputPersonalizado = customWrapper.querySelector(".input-relacao-personalizado");
+
+            selectWrapper.style.display = "none";
+            customWrapper.style.display = "flex";
+
+            inputPersonalizado.focus();
+
+            if (!inputPersonalizado.dataset.ouvinteAtivo) {
+                inputPersonalizado.addEventListener("input", function () {
+                    this.value = this.value.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase());
+                });
+                inputPersonalizado.dataset.ouvinteAtivo = "true";
+            }
+        }
+    };
+
+    // Função para cancelar a digitação personalizada e voltar para o Dropdown
+    window.cancelarOpcaoPersonalizada = function (botaoVoltar) {
+        const container = botaoVoltar.closest(".container-select-relacao");
         const selectWrapper = container.querySelector(".select-wrapper-rpg");
         const customWrapper = container.querySelector(".custom-input-wrapper");
-        const inputPersonalizado = customWrapper.querySelector(".input-relacao-personalizado");
-        
-        selectWrapper.style.display = "none";
-        customWrapper.style.display = "flex";
-        
-        inputPersonalizado.focus();
+        const selectElement = selectWrapper.querySelector(".select-relacao-tipo");
+        const inputElement = customWrapper.querySelector(".input-relacao-personalizado");
 
-        if (!inputPersonalizado.dataset.ouvinteAtivo) {
-            inputPersonalizado.addEventListener("input", function() {
-                this.value = this.value.replace(/(^\w{1})|(\s+\w{1})/g, letra => letra.toUpperCase());
-            });
-            inputPersonalizado.dataset.ouvinteAtivo = "true";
-        }
-    }
-};
+        inputElement.value = "";
+        selectElement.value = "";
 
-// Função para cancelar a digitação personalizada e voltar para o Dropdown
-window.cancelarOpcaoPersonalizada = function (botaoVoltar) {
-    const container = botaoVoltar.closest(".container-select-relacao");
-    const selectWrapper = container.querySelector(".select-wrapper-rpg");
-    const customWrapper = container.querySelector(".custom-input-wrapper");
-    const selectElement = selectWrapper.querySelector(".select-relacao-tipo");
-    const inputElement = customWrapper.querySelector(".input-relacao-personalizado");
+        customWrapper.style.display = "none";
+        selectWrapper.style.display = "block";
+    };
 
-    inputElement.value = "";
-    selectElement.value = "";
+    // Altere o nome da função para fazer sentido com corações
+    window.definirAfinidadeCoracao = function (elementoCoracao, nivelSelecionado) {
+        const container = elementoCoracao.parentElement;
+        if (!container) return;
 
-    customWrapper.style.display = "none";
-    selectWrapper.style.display = "block";
-};
+        container.setAttribute("data-valor", nivelSelecionado);
+        const coracoes = container.querySelectorAll(".coracao-rpg");
 
-// Altere o nome da função para fazer sentido com corações
-window.definirAfinidadeCoracao = function (elementoCoracao, nivelSelecionado) {
-    const container = elementoCoracao.parentElement;
-    if (!container) return;
-    
-    container.setAttribute("data-valor", nivelSelecionado);
-    const coracoes = container.querySelectorAll(".coracao-rpg");
-    
-    coracoes.forEach((coracao, indice) => {
-        if (indice < nivelSelecionado) {
-            coracao.classList.add("active");
-        } else {
-            coracao.classList.remove("active");
-        }
-    });
-};
+        coracoes.forEach((coracao, indice) => {
+            if (indice < nivelSelecionado) {
+                coracao.classList.add("active");
+            } else {
+                coracao.classList.remove("active");
+            }
+        });
+    };
 
-window.removerRelacao = function (botaoRemover) {
-    const item = botaoRemover.closest(".item-relacao-rpg");
-    if (!item) return;
+    window.removerRelacao = function (botaoRemover) {
+        const item = botaoRemover.closest(".item-relacao-rpg");
+        if (!item) return;
 
-    item.style.opacity = "0";
-    item.style.transform = "scale(0.9) translateY(-10px)";
-    
-    setTimeout(() => {
-        item.remove();
-    }, 200);
-};
+        item.style.opacity = "0";
+        item.style.transform = "scale(0.9) translateY(-10px)";
 
-// Função de adicionar atualizada com Corações ♥
-window.adicionarNovaRelacao = function () {
-    const lista = document.getElementById("lista-relacoes");
-    if (!lista) return;
+        setTimeout(() => {
+            item.remove();
+        }, 200);
+    };
 
-    const novoItem = document.createElement("div");
-    novoItem.className = "item-relacao-rpg"; 
-    
-    novoItem.innerHTML = `
+    // Função de adicionar atualizada com Corações ♥
+    window.adicionarNovaRelacao = function () {
+        const lista = document.getElementById("lista-relacoes");
+        if (!lista) return;
+
+        const novoItem = document.createElement("div");
+        novoItem.className = "item-relacao-rpg";
+
+        novoItem.innerHTML = `
         <input type="text" class="input-relacao-nome" placeholder="Nome do Aliado / NPC">
         
         <div class="container-coracoes-wrapper">
@@ -762,102 +818,78 @@ window.adicionarNovaRelacao = function () {
         </button>
     `;
 
-    novoItem.style.opacity = "0";
-    novoItem.style.transition = "all 0.2s ease-in-out";
-    novoItem.style.transform = "translateY(10px)";
-    
-    lista.appendChild(novoItem);
-    
-    setTimeout(() => { 
-        novoItem.style.opacity = "1"; 
-        novoItem.style.transform = "translateY(0)";
-        lista.scrollTop = lista.scrollHeight;
-    }, 10);
-};
+        novoItem.style.opacity = "0";
+        novoItem.style.transition = "all 0.2s ease-in-out";
+        novoItem.style.transform = "translateY(10px)";
 
-// ==========================================================================
-// CONTROLE DE ABAS E CARDS DE HABILIDADES EDITÁVEIS (INTEGRADO NO APP.JS)
-// ==========================================================================
+        lista.appendChild(novoItem);
 
-// Dados iniciais genéricos 100% limpos (dados como strings vazias para usar placeholders)
-const habilidadesPadrao = {
-    especie: [
-        { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
-    ],
-    classe: [
-        { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
-    ],
-    outros: [
-        { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
-    ]
-};
+        setTimeout(() => {
+            novoItem.style.opacity = "1";
+            novoItem.style.transform = "translateY(0)";
+            lista.scrollTop = lista.scrollHeight;
+        }, 10);
+    };
 
-// Garante o carregamento inicial das habilidades na tela ao carregar o DOM
-document.addEventListener("DOMContentLoaded", () => {
-    carregarHabilidades();
-});
+    // CAMPO HABILIDADES - PERFIL
+    // ==========================================================================
+    // CONTROLE DE ABAS E CARDS DE HABILIDADES EDITÁVEIS (INTEGRADO NO APP.JS)
+    // ==========================================================================
 
-// Forçando as funções principais a entrarem no escopo global (window) do navegador
-window.mudarAbaHabilidades = function(botao, categoria) {
-    const containerAbas = botao.closest('.card-perfil-rpg');
-    if (!containerAbas) return;
-    
-    containerAbas.querySelectorAll('.btn-aba-interna').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    botao.classList.add('active');
+    // Dados iniciais genéricos 100% limpos (dados como strings vazias para usar placeholders)
+    const habilidadesPadrao = {
+        especie: [
+            { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+        ],
+        classe: [
+            { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+        ],
+        outros: [
+            { subtitulo: "", nome: "", descricao: "", atual: 1, maximo: 1, tipoRecurso: "usos", custo: "" }
+        ]
+    };
 
-    document.querySelectorAll('.secao-habilidade-conteudo').forEach(secao => {
-        secao.style.display = 'none';
-        secao.classList.remove('active');
+    // Garante o carregamento inicial das habilidades na tela ao carregar o DOM
+    document.addEventListener("DOMContentLoaded", () => {
+        carregarHabilidades();
     });
 
-    const secaoAlvo = document.getElementById(`hab-${categoria}`);
-    if (secaoAlvo) {
-        secaoAlvo.style.display = 'block';
-        secaoAlvo.classList.add('active');
-    }
-};
+    // Forçando as funções principais a entrarem no escopo global (window) do navegador
+    window.mudarAbaHabilidades = function (botao, categoria) {
+        const containerAbas = botao.closest('.card-perfil-rpg');
+        if (!containerAbas) return;
 
-// Função auxiliar para capitalizar apenas a primeira letra do input
-window.tratarPrimeiraLetraMaiuscula = function(inputElement) {
-    let texto = inputElement.value;
-    if (texto.length > 0) {
-        inputElement.value = texto.charAt(0).toUpperCase() + texto.slice(1);
-    }
-    salvarProgressoHabilidades();
-};
+        containerAbas.querySelectorAll('.btn-aba-interna').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        botao.classList.add('active');
 
-window.adicionarNovoCardHabilidade = function(categoria) {
-    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
-    let dados = dadosSalvos ? JSON.parse(dadosSalvos) : JSON.parse(JSON.stringify(habilidadesPadrao));
+        document.querySelectorAll('.secao-habilidade-conteudo').forEach(secao => {
+            secao.style.display = 'none';
+            secao.classList.remove('active');
+        });
 
-    // Adiciona um card totalmente vazio e limpo
-    dados[categoria].push({
-        subtitulo: "",
-        nome: "",
-        descricao: "",
-        atual: 1,
-        maximo: 1,
-        tipoRecurso: "usos",
-        custo: ""
-    });
+        const secaoAlvo = document.getElementById(`hab-${categoria}`);
+        if (secaoAlvo) {
+            secaoAlvo.style.display = 'block';
+            secaoAlvo.classList.add('active');
+        }
+    };
 
-    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
-    carregarHabilidades();
-};
+    // Função auxiliar para capitalizar apenas a primeira letra do input
+    window.tratarPrimeiraLetraMaiuscula = function (inputElement) {
+        let texto = inputElement.value;
+        if (texto.length > 0) {
+            inputElement.value = texto.charAt(0).toUpperCase() + texto.slice(1);
+        }
+        salvarProgressoHabilidades();
+    };
 
-window.excluirHabilidade = function(categoria, index) {
-    if (!confirm("Deseja mesmo apagar esta habilidade de sua ficha?")) return;
-    
-    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
-    if (!dadosSalvos) return;
-    
-    let dados = JSON.parse(dadosSalvos);
-    dados[categoria].splice(index, 1);
-    
-    // Se o usuário apagar o último card de uma aba, garante que ela não fique vazia (começa limpo)
-    if (dados[categoria].length === 0) {
+    window.adicionarNovoCardHabilidade = function (categoria) {
+        let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+        let dados = dadosSalvos ? JSON.parse(dadosSalvos) : JSON.parse(JSON.stringify(habilidadesPadrao));
+
+        // Adiciona um card totalmente vazio e limpo
         dados[categoria].push({
             subtitulo: "",
             nome: "",
@@ -867,38 +899,76 @@ window.excluirHabilidade = function(categoria, index) {
             tipoRecurso: "usos",
             custo: ""
         });
-    }
-    
-    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
-    carregarHabilidades();
-};
 
-// Formata dinamicamente o número digitado pelo jogador para incluir o sufixo (PV, PS ou PE)
-window.atualizarCustoAutomatico = function(inputElement) {
+        localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+        carregarHabilidades();
+    };
+
+    window.excluirHabilidade = function (categoria, index) {
+        if (!confirm("Deseja mesmo apagar esta habilidade de sua ficha?")) return;
+
+        let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+        if (!dadosSalvos) return;
+
+        let dados = JSON.parse(dadosSalvos);
+        dados[categoria].splice(index, 1);
+
+        // Se o usuário apagar o último card de uma aba, garante que ela não fique vazia (começa limpo)
+        if (dados[categoria].length === 0) {
+            dados[categoria].push({
+                subtitulo: "",
+                nome: "",
+                descricao: "",
+                atual: 1,
+                maximo: 1,
+                tipoRecurso: "usos",
+                custo: ""
+            });
+        }
+
+        localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+        carregarHabilidades();
+    };
+
+    window.atualizarCustoAutomatico = function(inputElement) {
+    // 1. Acha o card correto
     const card = inputElement.closest('.card-habilidade');
     if (!card) return;
 
+    // 2. Descobre qual tipo de recurso está selecionado no <select> (pv, ps, pe)
     const selectRecurso = card.querySelector('.select-tipo-recurso');
     if (!selectRecurso) return;
     
     const tipo = selectRecurso.value;
     if (tipo === 'usos' || tipo === 'nulo') return;
 
-    // Extrai apenas os dígitos numéricos digitados
-    let valorDigitado = inputElement.value;
+    // 3. Pega o que está escrito e remove espaços inúteis nas pontas
+    let valorDigitado = inputElement.value.trim();
+
+    // SE O CAMPO ESTIVER VAZIO OU SE SÓ SOBROU A SIGLA (ex: o usuário apagou o número e sobrou "PV")
+    // Nós resetamos o campo completamente para ficar 100% limpo!
+    if (valorDigitado === '' || valorDigitado.toLowerCase() === tipo.toLowerCase()) {
+        inputElement.value = ''; // Remove qualquer resquício visual (como o "PV" sozinho)
+        salvarProgressoHabilidades(); // Salva o campo vazio no localStorage
+        return;
+    }
+
+    // 4. Extrai estritamente os números digitados
     let apenasNumeros = valorDigitado.replace(/\D/g, '');
 
-    // Aplica a formatação automatizada se houver números
+    // 5. Se o jogador digitou um número, monta automaticamente com o tipo do select
     if (apenasNumeros !== '') {
         inputElement.value = `${apenasNumeros} ${tipo.toUpperCase()}`;
     } else {
+        // Se apagou tudo ou digitou texto inválido, limpa tudo para voltar o placeholder
         inputElement.value = '';
     }
 
+    // 6. Atualiza o banco de dados local
     salvarProgressoHabilidades();
 };
 
-window.alterarTipoRecurso = function(selectElement, categoria, index) {
+    window.alterarTipoRecurso = function(selectElement, categoria, index) {
     let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
     if (!dadosSalvos) return;
 
@@ -910,127 +980,129 @@ window.alterarTipoRecurso = function(selectElement, categoria, index) {
     if (novoTipo === 'usos') {
         dados[categoria][index].atual = 1;
         dados[categoria][index].maximo = 1;
+        dados[categoria][index].custo = ""; // Limpa para não misturar dados
     } else if (novoTipo === 'nulo') {
         dados[categoria][index].custo = "";
     } else {
-        dados[categoria][index].custo = `1 ${novoTipo.toUpperCase()}`;
+        // AJUSTADO: Agora ao mudar o select, o custo começa 100% LIMPO
+        dados[categoria][index].custo = ""; 
     }
 
     localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
     carregarHabilidades();
 };
 
-window.alterarUsoLocal = function(botao, valor) {
-    const card = botao.closest('.card-habilidade');
-    const index = parseInt(card.dataset.index, 10);
-    const categoria = card.dataset.categoria;
-
-    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
-    if (!dadosSalvos) return;
-
-    let dados = JSON.parse(dadosSalvos);
-    let atual = dados[categoria][index].atual || 0;
-    const maximo = dados[categoria][index].maximo || 0;
-
-    atual += valor;
-    if (atual < 0)  atual = 0;
-    if (atual > maximo) atual = maximo;
-
-    dados[categoria][index].atual = atual;
-    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
-
-    card.querySelector('.atual').textContent = atual;
-};
-
-window.atualizarMaximoLocal = function(input) {
-    const card = input.closest('.card-habilidade');
-    const index = parseInt(card.dataset.index, 10);
-    const categoria = card.dataset.categoria;
-
-    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
-    if (!dadosSalvos) return;
-
-    let dados = JSON.parse(dadosSalvos);
-    let novoMax = parseInt(input.value, 10) || 1;
-    if (novoMax < 1) novoMax = 1;
-
-    dados[categoria][index].maximo = novoMax;
-    
-    if (dados[categoria][index].atual > novoMax) {
-        dados[categoria][index].atual = novoMax;
-        card.querySelector('.atual').textContent = novoMax;
-    }
-
-    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
-};
-
-window.salvarProgressoHabilidades = function() {
-    let dados = { especie: [], classe: [], outros: [] };
-
-    document.querySelectorAll('.card-habilidade-editavel').forEach(card => {
+    window.alterarUsoLocal = function (botao, valor) {
+        const card = botao.closest('.card-habilidade');
+        const index = parseInt(card.dataset.index, 10);
         const categoria = card.dataset.categoria;
-        
-        const subtitulo = card.querySelector('.input-hab-subtitulo').value;
-        const nome = card.querySelector('.input-hab-nome').value;
-        const descricao = card.querySelector('.textarea-hab-sobre').value;
-        const tipoRecurso = card.querySelector('.select-tipo-recurso').value;
 
-        let recursoDados = { subtitulo, nome, descricao, tipoRecurso, atual: 0, maximo: 0, custo: "" };
+        let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+        if (!dadosSalvos) return;
 
-        if (tipoRecurso === 'usos') {
-            recursoDados.atual = parseInt(card.querySelector('.atual').textContent, 10) || 0;
-            recursoDados.maximo = parseInt(card.querySelector('.input-limite-maximo').value, 10) || 1;
-        } else if (tipoRecurso !== 'nulo') {
-            recursoDados.custo = card.querySelector('.input-custo-badge').value;
-        }
+        let dados = JSON.parse(dadosSalvos);
+        let atual = dados[categoria][index].atual || 0;
+        const maximo = dados[categoria][index].maximo || 0;
 
-        dados[categoria].push(recursoDados);
-    });
+        atual += valor;
+        if (atual < 0) atual = 0;
+        if (atual > maximo) atual = maximo;
 
-    localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
-};
+        dados[categoria][index].atual = atual;
+        localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
 
-// Carrega os dados salvos e os renderiza na tela
-function carregarHabilidades() {
-    let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
-    
-    let dados;
-    if (dadosSalvos) {
-        dados = JSON.parse(dadosSalvos);
-        // Garante que nenhuma aba renderize vazia caso esteja sem dados salvos
-        if (!dados.especie || dados.especie.length === 0) dados.especie = JSON.parse(JSON.stringify(habilidadesPadrao.especie));
-        if (!dados.classe || dados.classe.length === 0) dados.classe = JSON.parse(JSON.stringify(habilidadesPadrao.classe));
-        if (!dados.outros || dados.outros.length === 0) dados.outros = JSON.parse(JSON.stringify(habilidadesPadrao.outros));
-    } else {
-        dados = JSON.parse(JSON.stringify(habilidadesPadrao));
-    }
-
-    renderizarAbaHabilidades('especie', dados.especie);
-    renderizarAbaHabilidades('classe', dados.classe);
-    renderizarAbaHabilidades('outros', dados.outros);
-}
-
-function renderizarAbaHabilidades(categoria, lista) {
-    const container = document.getElementById(`lista-hab-${categoria}`);
-    if (!container) return;
-    container.innerHTML = "";
-
-    // Mapeamento dos Placeholders dos Subtítulos de acordo com cada aba
-    const placeholdersSubtitulo = {
-        especie: "SUBTÍTULO (EX: ANJO, VAMPIRO, ELFO)",
-        classe: "SUBTÍTULO (EX: OCULTISTA, GATUNO, BÁRBARO)",
-        outros: "SUBTÍTULO (EX: RITUAIS, MAGIAS)"
+        card.querySelector('.atual').textContent = atual;
     };
 
-    const placeholderAtual = placeholdersSubtitulo[categoria] || "SUBTÍTULO";
+    window.atualizarMaximoLocal = function (input) {
+        const card = input.closest('.card-habilidade');
+        const index = parseInt(card.dataset.index, 10);
+        const categoria = card.dataset.categoria;
 
-    lista.forEach((hab, index) => {
-        const card = document.createElement("div");
-        card.className = "card-habilidade card-habilidade-editavel";
-        card.dataset.index = index;
-        card.dataset.categoria = categoria;
+        let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+        if (!dadosSalvos) return;
 
-        card.innerHTML = `
+        let dados = JSON.parse(dadosSalvos);
+        let novoMax = parseInt(input.value, 10) || 1;
+        if (novoMax < 1) novoMax = 1;
+
+        dados[categoria][index].maximo = novoMax;
+
+        if (dados[categoria][index].atual > novoMax) {
+            dados[categoria][index].atual = novoMax;
+            card.querySelector('.atual').textContent = novoMax;
+        }
+
+        localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+    };
+
+    window.salvarProgressoHabilidades = function () {
+        let dados = { especie: [], classe: [], outros: [] };
+
+        document.querySelectorAll('.card-habilidade-editavel').forEach(card => {
+            const categoria = card.dataset.categoria;
+
+            const subtitulo = card.querySelector('.input-hab-subtitulo').value;
+            const nome = card.querySelector('.input-hab-nome').value;
+            const descricao = card.querySelector('.textarea-hab-sobre').value;
+            const tipoRecurso = card.querySelector('.select-tipo-recurso').value;
+
+            let recursoDados = { subtitulo, nome, descricao, tipoRecurso, atual: 0, maximo: 0, custo: "" };
+
+            if (tipoRecurso === 'usos') {
+                recursoDados.atual = parseInt(card.querySelector('.atual').textContent, 10) || 0;
+                recursoDados.maximo = parseInt(card.querySelector('.input-limite-maximo').value, 10) || 1;
+            } else if (tipoRecurso !== 'nulo') {
+                recursoDados.custo = card.querySelector('.input-custo-badge').value;
+            }
+
+            dados[categoria].push(recursoDados);
+        });
+
+        localStorage.setItem("rpg_habilidades_personagem", JSON.stringify(dados));
+    };
+
+    // Carrega os dados salvos e os renderiza na tela
+    function carregarHabilidades() {
+        let dadosSalvos = localStorage.getItem("rpg_habilidades_personagem");
+
+        let dados;
+        if (dadosSalvos) {
+            dados = JSON.parse(dadosSalvos);
+            // Garante que nenhuma aba renderize vazia caso esteja sem dados salvos
+            if (!dados.especie || dados.especie.length === 0) dados.especie = JSON.parse(JSON.stringify(habilidadesPadrao.especie));
+            if (!dados.classe || dados.classe.length === 0) dados.classe = JSON.parse(JSON.stringify(habilidadesPadrao.classe));
+            if (!dados.outros || dados.outros.length === 0) dados.outros = JSON.parse(JSON.stringify(habilidadesPadrao.outros));
+        } else {
+            dados = JSON.parse(JSON.stringify(habilidadesPadrao));
+        }
+
+        renderizarAbaHabilidades('especie', dados.especie);
+        renderizarAbaHabilidades('classe', dados.classe);
+        renderizarAbaHabilidades('outros', dados.outros);
+    }
+
+    function renderizarAbaHabilidades(categoria, lista) {
+        const container = document.getElementById(`lista-hab-${categoria}`);
+        if (!container) return;
+        container.innerHTML = "";
+
+        // Mapeamento dos Placeholders dos Subtítulos de acordo com cada aba
+        const placeholdersSubtitulo = {
+            especie: "SUBTÍTULO (EX: ANJO, VAMPIRO, ELFO)",
+            classe: "SUBTÍTULO (EX: OCULTISTA, GATUNO, BÁRBARO)",
+            outros: "SUBTÍTULO (EX: RITUAIS, MAGIAS)"
+        };
+
+        const placeholderAtual = placeholdersSubtitulo[categoria] || "SUBTÍTULO";
+
+        lista.forEach((hab, index) => {
+            const card = document.createElement("div");
+            card.className = "card-habilidade card-habilidade-editavel";
+            card.dataset.index = index;
+            card.dataset.categoria = categoria;
+
+            card.innerHTML = `
             <button type="button" class="btn-excluir-habilidade" title="Excluir habilidade" onclick="excluirHabilidade('${categoria}', ${index})">
                 <i class="fa-solid fa-trash-can"></i>
             </button>
@@ -1057,11 +1129,11 @@ function renderizarAbaHabilidades(categoria, lista) {
                 </div>
             </div>
         `;
-        container.appendChild(card);
-    });
-}
+            container.appendChild(card);
+        });
+    }
 
-function gerarCamposRecursoHTML(hab) {
+    function gerarCamposRecursoHTML(hab) {
     if (hab.tipoRecurso === 'usos') {
         return `
             <div class="contador-usos">
@@ -1069,7 +1141,7 @@ function gerarCamposRecursoHTML(hab) {
                 <span class="valor-uso">
                     <strong class="atual">${hab.atual}</strong>
                     <span>/</span>
-                    <input type="number" class="input-limite-maximo" value="${hab.maximo}" min="1" onchange="atualizarMaximoLocal(this)"> Usos
+                    <input type="number" class="input-limite-maximo" value="${hab.maximo}" min="1" onchange="updatingMaximoLocal(this)"> Usos
                 </span>
                 <button type="button" onclick="alterarUsoLocal(this, 1)">+</button>
             </div>
@@ -1078,73 +1150,95 @@ function gerarCamposRecursoHTML(hab) {
         return ``;
     } else {
         const classeBadge = hab.tipoRecurso;
-        const placeholderCusto = `Ex: 6 ${hab.tipoRecurso.toUpperCase()}`;
+        // Transforma o texto do placeholder em letras maiúsculas
+        const placeholderCusto = `EX: 6 ${hab.tipoRecurso.toUpperCase()}`; 
         return `
             <input type="text" 
                    class="input-custo-badge ${classeBadge}" 
                    value="${hab.custo || ''}" 
                    placeholder="${placeholderCusto}" 
-                   oninput="atualizarCustoAutomatico(this)">
+                   onchange="atualizarCustoAutomatico(this)">
         `;
     }
 }
 
-// Objeto na memória para guardar os textos de cada aba
-const textosAnotacoes = {
-    historia: "",
-    outros: ""
-};
+/* CAMPO INVENTARIO - PERFIL */
 
-// Mapeamento de placeholders informativos para ajudar o jogador
-const placeholdersAnotacoes = {
-    historia: "Escreva o passado do seu personagem, origens, motivações ou observações do histórico aqui...",
-    outros: "Use este espaço livre para anotar teorias sobre a história, segredos ou metas do seu personagem!"
-};
+// Calcula a soma dos dinheiros baseado nos multiplicadores da ficha
+function calcularTotalDinheiro() {
+    const platina = parseInt(document.getElementById("moeda_platina")?.value) || 0;
+    const ouro = parseInt(document.getElementById("moeda_ouro")?.value) || 0;
+    const prata = parseInt(document.getElementById("moeda_prata")?.value) || 0;
+    const bronze = parseInt(document.getElementById("moeda_bronze")?.value) || 0;
 
-// Variável para acompanhar qual aba está ativa no momento
-let abaNotaAtiva = "historia";
+    // Multiplica pelos valores indicados nos labels
+    const valorTotal = (platina * 1000) + (ouro * 100) + (prata * 10) + (bronze * 1);
 
-window.mudarNotaInterna = function (botaoElemento, tipoAba) {
-    const textarea = document.getElementById("texto_notas_perfil");
-    if (!textarea) return;
-
-    // 1. Salva o texto que está escrito atualmente antes de mudar
-    textosAnotacoes[abaNotaAtiva] = textarea.value;
-
-    // 2. Atualiza qual é a nova aba ativa
-    abaNotaAtiva = tipoAba;
-
-    // 3. Remove a classe active de todos os botões e adiciona no clicado
-    const containerAbas = botaoElemento.parentElement;
-    containerAbas.querySelectorAll(".btn-aba-interna").forEach(btn => {
-        btn.classList.remove("active");
-    });
-    botaoElemento.classList.add("active");
-
-    // 4. Aplica um efeito suave de "fade" no textarea ao carregar o novo conteúdo
-    textarea.style.opacity = "0";
-    textarea.style.transform = "translateY(5px)";
-    
-    setTimeout(() => {
-        // Recupera o texto salvo da nova aba ativa
-        textarea.value = textosAnotacoes[tipoAba];
-        // Atualiza o placeholder conforme a aba
-        textarea.placeholder = placeholdersAnotacoes[tipoAba];
-        
-        textarea.style.opacity = "1";
-        textarea.style.transform = "translateY(0)";
-    }, 120);
-};
-
-// Salva o progresso dinamicamente enquanto o jogador digita
-document.addEventListener("DOMContentLoaded", () => {
-    const textarea = document.getElementById("texto_notas_perfil");
-    if (textarea) {
-        textarea.addEventListener("input", () => {
-            textosAnotacoes[abaNotaAtiva] = textarea.value;
-        });
+    // Atualiza o visor preto formatando como dinheiro ($)
+    const displayTotal = document.getElementById("total_dinheiro_exibicao");
+    if (displayTotal) {
+        displayTotal.textContent = `$${valorTotal.toLocaleString('pt-BR')}`;
     }
-});
+}
+
+
+
+    // Objeto na memória para guardar os textos de cada aba
+    const textosAnotacoes = {
+        historia: "",
+        outros: ""
+    };
+
+    // Mapeamento de placeholders informativos para ajudar o jogador
+    const placeholdersAnotacoes = {
+        historia: "Escreva o passado do seu personagem, origens, motivações ou observações do histórico aqui...",
+        outros: "Use este espaço livre para anotar teorias sobre a história, segredos ou metas do seu personagem!"
+    };
+
+    // Variável para acompanhar qual aba está ativa no momento
+    let abaNotaAtiva = "historia";
+
+    window.mudarNotaInterna = function (botaoElemento, tipoAba) {
+        const textarea = document.getElementById("texto_notas_perfil");
+        if (!textarea) return;
+
+        // 1. Salva o texto que está escrito atualmente antes de mudar
+        textosAnotacoes[abaNotaAtiva] = textarea.value;
+
+        // 2. Atualiza qual é a nova aba ativa
+        abaNotaAtiva = tipoAba;
+
+        // 3. Remove a classe active de todos os botões e adiciona no clicado
+        const containerAbas = botaoElemento.parentElement;
+        containerAbas.querySelectorAll(".btn-aba-interna").forEach(btn => {
+            btn.classList.remove("active");
+        });
+        botaoElemento.classList.add("active");
+
+        // 4. Aplica um efeito suave de "fade" no textarea ao carregar o novo conteúdo
+        textarea.style.opacity = "0";
+        textarea.style.transform = "translateY(5px)";
+
+        setTimeout(() => {
+            // Recupera o texto salvo da nova aba ativa
+            textarea.value = textosAnotacoes[tipoAba];
+            // Atualiza o placeholder conforme a aba
+            textarea.placeholder = placeholdersAnotacoes[tipoAba];
+
+            textarea.style.opacity = "1";
+            textarea.style.transform = "translateY(0)";
+        }, 120);
+    };
+
+    // Salva o progresso dinamicamente enquanto o jogador digita
+    document.addEventListener("DOMContentLoaded", () => {
+        const textarea = document.getElementById("texto_notas_perfil");
+        if (textarea) {
+            textarea.addEventListener("input", () => {
+                textosAnotacoes[abaNotaAtiva] = textarea.value;
+            });
+        }
+    });
 
     window.mudarFiltroAtributo = function (botaoClicado) {
         const containerBotoes = botaoClicado.parentElement;
@@ -1254,14 +1348,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================================================
-    // 2. COMPORTAMENTO DO DROPDOWN (PREVINE FECHAMENTO ACIDENTAL)
+    // 2. COMPORTAMENTO DO DROPDOWN (CORRIGIDO PARA O SELETOR DE COR)
     // ==========================================================================
-
-    // Evita que cliques dentro do painel de cores ou do botão fechem o menu
-    const dropdownMenu = document.getElementById('menu-tema-dropdown');
-    if (dropdownMenu) {
-        dropdownMenu.addEventListener('click', (e) => e.stopPropagation());
-    }
 
     // Gerencia a abertura e fechamento seguro do menu
     window.toggleMenuTema = function (event) {
@@ -1277,8 +1365,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const dropdown = document.getElementById('menu-tema-dropdown');
         const botaoLapis = document.getElementById('btn-menu-tema');
 
-        // Só fecha se o clique não foi no próprio menu e nem no botão do lápis
-        if (dropdown && !dropdown.contains(e.target) && botaoLapis && !botaoLapis.contains(e.target)) {
+        // Se o dropdown não existir ou não estiver aberto, não faz nada
+        if (!dropdown || !dropdown.classList.contains('ativo')) return;
+
+        // Só fecha se o clique ocorreu FORA do dropdown E FORA do botão do lápis
+        const clicouForaDropdown = !dropdown.contains(e.target);
+        const clicouForaBotao = botaoLapis ? !botaoLapis.contains(e.target) : true;
+
+        if (clicouForaDropdown && clicouForaBotao) {
             dropdown.classList.remove('ativo');
         }
     });
@@ -1315,7 +1409,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // VERSÃO INTEGRADA AO FIREBASE:
     // Limpa o banco de dados online, o cache local e reseta a tela de forma limpa.
-     
+
     async function resetarCamposFicha() {
         // 1. Bloqueia o salvamento automático para não salvar campos vazios por engano
         window.onbeforeunload = null;
@@ -1504,3 +1598,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // === FECHAMENTO SEGURO DA FUNÇÃO inicializarFicha() ===
     // Esta chave fecha a função aberta lá na Parte 2/3!
 }
+
+export { app, auth, db, usuarioId };
