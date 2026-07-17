@@ -3230,9 +3230,6 @@ body {
     -webkit-appearance: none;
     margin: 0;
 }
-.caixa-moeda input[type=number] {
-    -moz-appearance: textfield;
-}
 
 /* Faixa Preta do Total */
 .painel-total-dinheiro {
